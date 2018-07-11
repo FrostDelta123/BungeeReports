@@ -1,0 +1,12 @@
+name: BungeeReports
+main: ru.frostdelta.bungeereports.loader
+version: 0.2
+authors: [FrostDelta123]
+description:
+commands:
+  report:
+    permission: bungeereports.player
+  getreports:
+    permission: bungeereports.admin
+
+
