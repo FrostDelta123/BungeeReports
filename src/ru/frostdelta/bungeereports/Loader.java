@@ -2,6 +2,7 @@ package ru.frostdelta.bungeereports;
 
 import org.bukkit.plugin.java.JavaPlugin;
 import ru.frostdelta.bungeereports.executor.Executor;
+import ru.frostdelta.bungeereports.hash.HashedLists;
 import ru.frostdelta.bungeereports.modules.VaultLoader;
 import ru.frostdelta.bungeereports.pluginMessage.PluginMessage;
 
@@ -33,6 +34,8 @@ public class Loader extends JavaPlugin {
 
 
     public void onEnable(){
+
+        HashedLists hashedLists = new HashedLists();
 
         this.saveDefaultConfig();
 
