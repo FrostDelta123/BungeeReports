@@ -43,6 +43,7 @@ public class Executor implements CommandExecutor {
             plugin.rewardAmount = plugin.getConfig().getInt("reward.amount");
             plugin.customRewardAmount = plugin.getConfig().getInt("customreward.amount");
             plugin.uuid = plugin.getConfig().getBoolean("customreward.uuid");
+            plugin.whitelist = plugin.getConfig().getStringList("whitelist");
 
 
             s.sendMessage(ChatColor.GREEN + "Конфиг перезагружен!");
