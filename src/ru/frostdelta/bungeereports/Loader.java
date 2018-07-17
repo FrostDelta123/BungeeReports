@@ -6,8 +6,15 @@ import ru.frostdelta.bungeereports.modules.VaultLoader;
 import ru.frostdelta.bungeereports.pluginMessage.PluginMessage;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Loader extends JavaPlugin {
+
+    /**
+     *
+     * @author FrostDelta123
+     */
 
     public static void main(String args[]){
     }
@@ -19,6 +26,7 @@ public class Loader extends JavaPlugin {
     public boolean customEnabled;
     public boolean limitEnabled;
     public boolean uuid;
+    public List<String> whitelist = new ArrayList<String>();
 
     public int rewardAmount;
     public int customRewardAmount;
@@ -38,6 +46,7 @@ public class Loader extends JavaPlugin {
         rewardAmount = getConfig().getInt("reward.amount");
         customRewardAmount = getConfig().getInt("customreward.amount");
         uuid = getConfig().getBoolean("customreward.uuid");
+        whitelist = getConfig().getStringList("whitelist");
 
         if(vaultEnabled){
 
@@ -70,6 +79,10 @@ public class Loader extends JavaPlugin {
         getCommand("getreports").setExecutor(executor);
         getCommand("br").setExecutor(executor);
 
+    }
+
+    public List<String> getWhitelist(){
+        return whitelist;
     }
 
     public String getPassword(){

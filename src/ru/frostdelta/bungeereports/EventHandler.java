@@ -1,5 +1,6 @@
 package ru.frostdelta.bungeereports;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
@@ -89,14 +90,23 @@ public class EventHandler implements Listener {
 
             e.setCancelled(true);
         }
+
         if(e.getInventory().getName().equalsIgnoreCase("reports")){
 
-            ReasonsUI ReasonsUI = new ReasonsUI(plugin);
-            map.put(e.getWhoClicked().getName(), e.getCurrentItem().getItemMeta().getDisplayName());
-            ReasonsUI.openGUI(p);
+            if(!plugin.getWhitelist().contains(e.getCurrentItem().getItemMeta().getDisplayName())) {
 
-            e.setCancelled(true);
+                ReasonsUI ReasonsUI = new ReasonsUI(plugin);
+                map.put(e.getWhoClicked().getName(), e.getCurrentItem().getItemMeta().getDisplayName());
+                ReasonsUI.openGUI(p);
+
+                e.setCancelled(true);
+            }else {
+                p.getOpenInventory().close();
+                e.setCancelled(true);
+                p.sendMessage(ChatColor.RED + "На данного игрока невозможно отправить жалобу!");
+            }
         }
+
         if(e.getInventory().getName().equalsIgnoreCase("reasons")){
 
             if(!plugin.getConfig().getBoolean("comments")) {
