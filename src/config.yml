@@ -1,4 +1,4 @@
-#BungeeReports config v0.4
+#BungeeReports config v0.1
 
 #Данные для подключения к базе данных.
 url: jdbc:mysql://localhost:3306/test

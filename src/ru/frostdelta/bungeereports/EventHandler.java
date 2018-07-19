@@ -2,12 +2,15 @@ package ru.frostdelta.bungeereports;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import ru.frostdelta.bungeereports.gui.PunishUI;
 import ru.frostdelta.bungeereports.gui.ReasonsUI;
+import ru.frostdelta.bungeereports.hash.HashedLists;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -15,6 +18,7 @@ import java.util.Map;
 public class EventHandler implements Listener {
 
     private Loader plugin;
+    private int index;
 
     public EventHandler(Loader instance){
 
@@ -46,6 +50,7 @@ public class EventHandler implements Listener {
            map.remove(player);
            comment.remove(player);
 
+           HashedLists.loadReports();
            e.getPlayer().sendMessage(ChatColor.GREEN + "Репорт успешно отправлен!");
 
            e.setCancelled(true);
@@ -57,72 +62,80 @@ public class EventHandler implements Listener {
     @org.bukkit.event.EventHandler
     public void onInventoryClick(InventoryClickEvent e) {
 
+
         Player p = (Player) e.getWhoClicked();
 
-        if(e.getInventory().getName().equalsIgnoreCase("punishmenu")){
+        if(e.getSlotType() != InventoryType.SlotType.OUTSIDE) {
+            if (e.getInventory().getName().equalsIgnoreCase("punishmenu") && !e.getCurrentItem().getType().equals(Material.AIR)) {
 
-            String s = p.getOpenInventory().getItem(4).getItemMeta().getDisplayName();
+                String s = p.getOpenInventory().getItem(4).getItemMeta().getDisplayName();
 
-            if(e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase("Принять")){
+                if (e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase("Принять")) {
 
-                update.updateReport(ban.get(p.getName()), s, "accept");
-                ban.remove(p.getName());
-                p.getOpenInventory().close();
-                p.sendMessage(ChatColor.GREEN + "Репорт принят");
-            }else{
-                update.updateReport(ban.get(p.getName()), s, "reject");
-                ban.remove(p.getName());
-                p.getOpenInventory().close();
-                p.sendMessage(ChatColor.RED + "Репорт отклонён!");
-            }
-
-            e.setCancelled(true);
-        }
-
-        if(e.getInventory().getName().equalsIgnoreCase("getreports")){
-
-            PunishUI PunishUI = new PunishUI(plugin);
-
-            String s = send.get(e.getSlot());
-
-            ban.put(e.getWhoClicked().getName(), e.getCurrentItem().getItemMeta().getDisplayName());
-            PunishUI.openGUI(e.getCurrentItem().getItemMeta().getDisplayName(), p, s);
-
-            e.setCancelled(true);
-        }
-
-        if(e.getInventory().getName().equalsIgnoreCase("reports")){
-
-            if(!plugin.getWhitelist().contains(e.getCurrentItem().getItemMeta().getDisplayName())) {
-
-                ReasonsUI ReasonsUI = new ReasonsUI(plugin);
-                map.put(e.getWhoClicked().getName(), e.getCurrentItem().getItemMeta().getDisplayName());
-                ReasonsUI.openGUI(p);
+                    update.updateReport(ban.get(p.getName()), s, "accept");
+                    ban.remove(p.getName());
+                    p.getOpenInventory().close();
+                    p.sendMessage(ChatColor.GREEN + "Репорт принят");
+                    HashedLists.changeCount(index);
+                } else {
+                    update.updateReport(ban.get(p.getName()), s, "reject");
+                    ban.remove(p.getName());
+                    p.getOpenInventory().close();
+                    p.sendMessage(ChatColor.RED + "Репорт отклонён!");
+                    HashedLists.changeCount(index);
+                }
 
                 e.setCancelled(true);
-            }else {
-                p.getOpenInventory().close();
+            }
+
+            if (e.getInventory().getName().equalsIgnoreCase("getreports") && !e.getCurrentItem().getType().equals(Material.AIR)) {
+
+                PunishUI PunishUI = new PunishUI(plugin);
+
+                String s = send.get(e.getSlot());
+
+                ban.put(e.getWhoClicked().getName(), e.getCurrentItem().getItemMeta().getDisplayName());
+                PunishUI.openGUI(e.getCurrentItem().getItemMeta().getDisplayName(), p, s);
+                index = e.getSlot();
+
                 e.setCancelled(true);
-                p.sendMessage(ChatColor.RED + "На данного игрока невозможно отправить жалобу!");
-            }
-        }
-
-        if(e.getInventory().getName().equalsIgnoreCase("reasons")){
-
-            if(!plugin.getConfig().getBoolean("comments")) {
-
-                Network.addReport(e.getWhoClicked().getName(), map.get(e.getWhoClicked().getName()), e.getCurrentItem().getItemMeta().getDisplayName(),"");
-                map.remove(e.getWhoClicked().getName());
-                e.getWhoClicked().getOpenInventory().close();
-                p.sendMessage(ChatColor.GREEN + "Репорт успешно отправлен!");
-
-            }else{
-                comment.put(e.getWhoClicked().getName(), e.getCurrentItem().getItemMeta().getDisplayName());
-                e.getWhoClicked().getOpenInventory().close();
-                e.getWhoClicked().sendMessage(ChatColor.RED + "Введите комментарий в чат!");
             }
 
-            e.setCancelled(true);
+            if (e.getInventory().getName().equalsIgnoreCase("reports") && !e.getCurrentItem().getType().equals(Material.AIR)) {
+
+                if (!plugin.getWhitelist().contains(e.getCurrentItem().getItemMeta().getDisplayName())) {
+
+                    ReasonsUI ReasonsUI = new ReasonsUI(plugin);
+                    map.put(e.getWhoClicked().getName(), e.getCurrentItem().getItemMeta().getDisplayName());
+                    ReasonsUI.openGUI(p);
+
+                    e.setCancelled(true);
+                } else {
+                    p.getOpenInventory().close();
+                    e.setCancelled(true);
+                    p.sendMessage(ChatColor.RED + "На данного игрока невозможно отправить жалобу!");
+                }
+            }
+
+            if (e.getInventory().getName().equalsIgnoreCase("reasons") && !e.getCurrentItem().getType().equals(Material.AIR)) {
+
+                if (!plugin.getConfig().getBoolean("comments")) {
+
+                    Network.addReport(e.getWhoClicked().getName(), map.get(e.getWhoClicked().getName()), e.getCurrentItem().getItemMeta().getDisplayName(), "");
+                    HashedLists.addReport(e.getWhoClicked().getName(), map.get(e.getWhoClicked().getName()), e.getCurrentItem().getItemMeta().getDisplayName(), "");
+
+                    map.remove(e.getWhoClicked().getName());
+                    e.getWhoClicked().getOpenInventory().close();
+                    p.sendMessage(ChatColor.GREEN + "Репорт успешно отправлен!");
+
+                } else {
+                    comment.put(e.getWhoClicked().getName(), e.getCurrentItem().getItemMeta().getDisplayName());
+                    e.getWhoClicked().getOpenInventory().close();
+                    e.getWhoClicked().sendMessage(ChatColor.RED + "Введите комментарий в чат!");
+                }
+
+                e.setCancelled(true);
+            }
         }
     }
 

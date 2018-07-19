@@ -10,6 +10,7 @@ import ru.frostdelta.bungeereports.Loader;
 import ru.frostdelta.bungeereports.gui.GetReportsUI;
 import ru.frostdelta.bungeereports.Network;
 import ru.frostdelta.bungeereports.NonBungee;
+import ru.frostdelta.bungeereports.hash.HashedLists;
 import ru.frostdelta.bungeereports.pluginMessage.GetPlayerCount;
 
 public class Executor implements CommandExecutor {
@@ -49,42 +50,42 @@ public class Executor implements CommandExecutor {
             s.sendMessage(ChatColor.GREEN + "Конфиг перезагружен!");
         }
 
-        if(cmd.getName().equalsIgnoreCase("getreports")){
+        if(s instanceof Player) {
+            if (cmd.getName().equalsIgnoreCase("getreports")) {
 
-            Network Network = new Network();
-            GetReportsUI getReportsUI = new GetReportsUI(plugin);
-
-
-            //сколько запросов в 1 момент, охуеть оптимизация, каюсь, исправлю
-            getReportsUI.openGUI((Player)s,
-                    Network.totalReports(),
-                    Network.reportList("sender"),
-                    Network.reportList("reason"),
-                    Network.reportList("player"),
-                    Network.reportList("comment"));
+                GetReportsUI getReportsUI = new GetReportsUI(plugin);
 
 
-        }
 
-        if(cmd.getName().equalsIgnoreCase("report")) {
+                getReportsUI.openGUI((Player) s,
+                        HashedLists.getTotalRepors(),
+                        HashedLists.getSenderList(),
+                        HashedLists.getReasonList(),
+                        HashedLists.getReportList(),
+                        HashedLists.getCommentList());
 
-            GetPlayerCount GetPlayerCount = new GetPlayerCount(plugin);
-            NonBungee NonBungee = new NonBungee(plugin);
-            CanReport CanReport = new CanReport(plugin);
 
-            CanReport.needReward(s.getName());
-
-            if(plugin.isLimitEnabled() && CanReport.limit(s.getName())) {
-
-                if (isBungee()) {
-
-                    GetPlayerCount.sendMessage((Player) s);
-
-                } else NonBungee.getNonBungeePlayerlist((Player) s);
             }
 
-        }
+            if (cmd.getName().equalsIgnoreCase("report")) {
 
+                GetPlayerCount GetPlayerCount = new GetPlayerCount(plugin);
+                NonBungee NonBungee = new NonBungee(plugin);
+                CanReport CanReport = new CanReport(plugin);
+
+                CanReport.needReward(s.getName());
+
+                if (plugin.isLimitEnabled() && CanReport.limit(s.getName())) {
+
+                    if (isBungee()) {
+
+                        GetPlayerCount.sendMessage((Player) s);
+
+                    } else NonBungee.getNonBungeePlayerlist((Player) s);
+                }
+
+            }
+        }else plugin.getLogger().severe("For players only!");
         return true;
     }
 }

@@ -35,7 +35,6 @@ public class Loader extends JavaPlugin {
 
     public void onEnable(){
 
-        HashedLists hashedLists = new HashedLists();
 
         this.saveDefaultConfig();
 
@@ -76,6 +75,8 @@ public class Loader extends JavaPlugin {
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
+
+        HashedLists.loadReports();
 
         getServer().getPluginManager().registerEvents(new EventHandler(this), this);
         getCommand("report").setExecutor(executor);
