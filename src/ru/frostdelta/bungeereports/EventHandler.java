@@ -123,7 +123,6 @@ public class EventHandler implements Listener {
 
                     Network.addReport(e.getWhoClicked().getName(), map.get(e.getWhoClicked().getName()), e.getCurrentItem().getItemMeta().getDisplayName(), "");
                     HashedLists.addReport(e.getWhoClicked().getName(), map.get(e.getWhoClicked().getName()), e.getCurrentItem().getItemMeta().getDisplayName(), "");
-
                     map.remove(e.getWhoClicked().getName());
                     e.getWhoClicked().getOpenInventory().close();
                     p.sendMessage(ChatColor.GREEN + "Репорт успешно отправлен!");

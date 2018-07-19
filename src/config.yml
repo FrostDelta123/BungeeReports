@@ -1,4 +1,4 @@
-#BungeeReports config v0.1
+#BungeeReports config v1.0
 
 #Данные для подключения к базе данных.
 url: jdbc:mysql://localhost:3306/test
@@ -47,7 +47,7 @@ reward:
 #false по умолчанию
 #ВАЖНО!!!
 #Если включены оба вида наград - будет выдаваься через vault
-customreward:
+customreward: 
   enabled: false
   #Количество одобренных репортов, необходимых для выдачи наград
   reportsneed: 10
