@@ -60,7 +60,7 @@ public class HashedLists {
     }
 
     public static void addReport(String sender, String player, String reason, String comment){
-        
+
         reportList.add(player);
         reasonList.add(reason);
         senderList.add(sender);
