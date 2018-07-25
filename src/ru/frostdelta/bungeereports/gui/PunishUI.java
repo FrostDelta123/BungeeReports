@@ -7,6 +7,8 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import ru.frostdelta.bungeereports.Loader;
+import ru.frostdelta.bungeereports.holders.PunishHolder;
+import ru.frostdelta.bungeereports.holders.ReasonHolder;
 
 public class PunishUI {
 
@@ -21,7 +23,7 @@ public class PunishUI {
 
     public void openGUI(String player, Player moder, String sender) {
 
-        Inventory inv = Bukkit.createInventory(null, 9, "PunishMenu");
+        Inventory inv = Bukkit.createInventory(new PunishHolder(), 9, "PunishMenu");
 
 
         ItemStack skull = new ItemStack(Material.SKULL_ITEM);

@@ -9,6 +9,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import ru.frostdelta.bungeereports.EventHandler;
 import ru.frostdelta.bungeereports.Loader;
+import ru.frostdelta.bungeereports.holders.GetReportsHolder;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -37,7 +38,7 @@ public class GetReportsUI {
                 }
             }
 
-            Inventory inv = Bukkit.createInventory(null, slots, "GetReports");
+            Inventory inv = Bukkit.createInventory(new GetReportsHolder(), slots, "GetReports");
 
 
 

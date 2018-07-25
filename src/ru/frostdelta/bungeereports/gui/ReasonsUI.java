@@ -7,6 +7,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import ru.frostdelta.bungeereports.Loader;
+import ru.frostdelta.bungeereports.holders.ReasonHolder;
 
 import java.util.List;
 
@@ -34,21 +35,21 @@ public class ReasonsUI {
             }
         }
 
-        Inventory inv = Bukkit.createInventory(null, slots, "Reasons");
+        Inventory inv = Bukkit.createInventory(new ReasonHolder(), slots, "Reasons");
 
-            int x = 0;
+        int x = 0;
 
-            for (String reason : reasons) {
+        for (String reason : reasons) {
 
-                ItemStack skull = new ItemStack(Material.SKULL_ITEM);
+            ItemStack skull = new ItemStack(Material.SKULL_ITEM);
 
-                ItemMeta itemMeta = skull.getItemMeta();
-                itemMeta.setDisplayName(reason);
-                skull.setItemMeta(itemMeta);
-                inv.setItem(x, skull);
+            ItemMeta itemMeta = skull.getItemMeta();
+            itemMeta.setDisplayName(reason);
+            skull.setItemMeta(itemMeta);
+            inv.setItem(x, skull);
 
-                x++;
-            }
+            x++;
+        }
 
 
         p.openInventory(inv);

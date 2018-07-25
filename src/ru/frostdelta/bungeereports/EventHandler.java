@@ -11,6 +11,10 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 import ru.frostdelta.bungeereports.gui.PunishUI;
 import ru.frostdelta.bungeereports.gui.ReasonsUI;
 import ru.frostdelta.bungeereports.hash.HashedLists;
+import ru.frostdelta.bungeereports.holders.GetReportsHolder;
+import ru.frostdelta.bungeereports.holders.PunishHolder;
+import ru.frostdelta.bungeereports.holders.ReasonHolder;
+import ru.frostdelta.bungeereports.holders.UserHolder;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -66,7 +70,8 @@ public class EventHandler implements Listener {
         Player p = (Player) e.getWhoClicked();
 
         if(e.getSlotType() != InventoryType.SlotType.OUTSIDE) {
-            if (e.getInventory().getName().equalsIgnoreCase("punishmenu") && !e.getCurrentItem().getType().equals(Material.AIR)) {
+
+            if (e.getInventory().getHolder() instanceof PunishHolder && !e.getCurrentItem().getType().equals(Material.AIR)) {
 
                 String s = p.getOpenInventory().getItem(4).getItemMeta().getDisplayName();
 
@@ -88,7 +93,7 @@ public class EventHandler implements Listener {
                 e.setCancelled(true);
             }
 
-            if (e.getInventory().getName().equalsIgnoreCase("getreports") && !e.getCurrentItem().getType().equals(Material.AIR)) {
+            if (e.getInventory().getHolder() instanceof GetReportsHolder && !e.getCurrentItem().getType().equals(Material.AIR)) {
 
                 PunishUI PunishUI = new PunishUI(plugin);
 
@@ -101,7 +106,7 @@ public class EventHandler implements Listener {
                 e.setCancelled(true);
             }
 
-            if (e.getInventory().getName().equalsIgnoreCase("reports") && !e.getCurrentItem().getType().equals(Material.AIR)) {
+            if (e.getInventory().getHolder() instanceof UserHolder && !e.getCurrentItem().getType().equals(Material.AIR)) {
 
                 if (!plugin.getWhitelist().contains(e.getCurrentItem().getItemMeta().getDisplayName())) {
 
@@ -117,7 +122,7 @@ public class EventHandler implements Listener {
                 }
             }
 
-            if (e.getInventory().getName().equalsIgnoreCase("reasons") && !e.getCurrentItem().getType().equals(Material.AIR)) {
+            if (e.getInventory().getHolder() instanceof ReasonHolder && !e.getCurrentItem().getType().equals(Material.AIR)) {
 
                 if (!plugin.getConfig().getBoolean("comments")) {
 
