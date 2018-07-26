@@ -64,12 +64,11 @@ public class EventHandler implements Listener {
 
 
     @org.bukkit.event.EventHandler
-    public void onInventoryClick(InventoryClickEvent e) {
-
+    public void onInventoryClick(InventoryClickEvent e){
 
         Player p = (Player) e.getWhoClicked();
 
-        if(e.getSlotType() != InventoryType.SlotType.OUTSIDE) {
+        if(e.getSlotType() != InventoryType.SlotType.OUTSIDE && e.getSlotType() == InventoryType.SlotType.CONTAINER) {
 
             if (e.getInventory().getHolder() instanceof PunishHolder && !e.getCurrentItem().getType().equals(Material.AIR)) {
 

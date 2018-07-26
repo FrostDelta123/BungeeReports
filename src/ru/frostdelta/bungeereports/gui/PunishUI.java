@@ -26,23 +26,25 @@ public class PunishUI {
         Inventory inv = Bukkit.createInventory(new PunishHolder(), 9, "PunishMenu");
 
 
-        ItemStack skull = new ItemStack(Material.SKULL_ITEM);
+        ItemStack accept = new ItemStack(Material.GREEN_GLAZED_TERRACOTTA);
+        ItemStack deny = new ItemStack(Material.RED_GLAZED_TERRACOTTA);
         ItemStack send = new ItemStack(Material.APPLE);
 
-        ItemMeta itemMeta = skull.getItemMeta();
-        ItemMeta item = send.getItemMeta();
+        ItemMeta acceptItemMeta = accept.getItemMeta();
+        ItemMeta itemMeta = accept.getItemMeta();
+        ItemMeta denyMeta = deny.getItemMeta();
 
-        itemMeta.setDisplayName("Принять");
-        skull.setItemMeta(itemMeta);
-        inv.setItem(2, skull);
+        acceptItemMeta.setDisplayName("Принять");
+        accept.setItemMeta(acceptItemMeta);
+        inv.setItem(2, accept);
 
         itemMeta.setDisplayName(sender);
-        skull.setItemMeta(itemMeta);
-        inv.setItem(4, skull);
+        send.setItemMeta(itemMeta);
+        inv.setItem(4, send);
 
-        itemMeta.setDisplayName("Отклонить");
-        skull.setItemMeta(itemMeta);
-        inv.setItem(6, skull);
+        denyMeta.setDisplayName("Отклонить");
+        deny.setItemMeta(denyMeta);
+        inv.setItem(6, deny);
 
 
         moder.openInventory(inv);
