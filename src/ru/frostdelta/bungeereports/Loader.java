@@ -17,20 +17,17 @@ public class Loader extends JavaPlugin {
      * @author FrostDelta123
      */
 
-    public static void main(String args[]){
-    }
-
     Network db = new Network();
     Executor executor = new Executor(this);
-    public boolean vaultEnabled;
-    public boolean rewardsEnabled;
-    public boolean customEnabled;
-    public boolean limitEnabled;
-    public boolean uuid;
-    public List<String> whitelist = new ArrayList<String>();
+    private boolean vaultEnabled;
+    private boolean rewardsEnabled;
+    private boolean customEnabled;
+    private boolean limitEnabled;
+    private boolean uuid;
+    private List<String> whitelist = new ArrayList<String>();
 
-    public int rewardAmount;
-    public int customRewardAmount;
+    private int rewardAmount;
+    private int customRewardAmount;
 
 
     public void onEnable(){
@@ -70,9 +67,7 @@ public class Loader extends JavaPlugin {
         try {
             db.openConnection();
             db.createDB();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -124,21 +119,18 @@ public class Loader extends JavaPlugin {
     }
 
     public boolean isLimitEnabled() {
-
+        
         return limitEnabled;
     }
 
     public boolean isRewardsEnabled() {
-
+        
         return rewardsEnabled;
     }
 
     public boolean isCustomEnabled() {
-
+        
         return customEnabled;
-    }
-
-    public void onDisable(){
     }
 
 }
