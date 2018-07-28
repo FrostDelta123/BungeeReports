@@ -86,6 +86,6 @@ public class Executor implements CommandExecutor {
 
             }
         }else plugin.getLogger().severe("For players only!");
-        return true;
+        return false;
     }
 }

@@ -1,6 +1,7 @@
 package ru.frostdelta.bungeereports.gui;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
@@ -46,8 +47,10 @@ public class UserUI {
 
                     x++;
                 }
+             if(p.hasPermission("bungeereports.player")){
+                 p.openInventory(inv);
+             }else p.sendMessage(ChatColor.RED + "У вас нет прав!");
 
-            p.openInventory(inv);
     }
 
 }
