@@ -7,13 +7,13 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import ru.frostdelta.bungeereports.CanReport;
 import ru.frostdelta.bungeereports.Loader;
-import ru.frostdelta.bungeereports.gui.GetReportsUI;
-import ru.frostdelta.bungeereports.Network;
 import ru.frostdelta.bungeereports.NonBungee;
+import ru.frostdelta.bungeereports.gui.GetReportsUI;
 import ru.frostdelta.bungeereports.hash.HashedLists;
 import ru.frostdelta.bungeereports.pluginMessage.GetPlayerCount;
+import ru.frostdelta.bungeereports.spectate.SpectateManager;
 
-public class Executor implements CommandExecutor {
+public class Executor extends SpectateManager implements CommandExecutor {
 
     private Loader plugin;
 
@@ -45,7 +45,7 @@ public class Executor implements CommandExecutor {
             plugin.customRewardAmount = plugin.getConfig().getInt("customreward.amount");
             plugin.uuid = plugin.getConfig().getBoolean("customreward.uuid");
             plugin.whitelist = plugin.getConfig().getStringList("whitelist");
-
+            plugin.spectateEnabled = plugin.getConfig().getBoolean("spectate");
 
             s.sendMessage(ChatColor.GREEN + "Конфиг перезагружен!");
         }
@@ -55,16 +55,28 @@ public class Executor implements CommandExecutor {
 
                 GetReportsUI getReportsUI = new GetReportsUI(plugin);
 
-
-
                 getReportsUI.openGUI((Player) s,
                         HashedLists.getTotalRepors(),
                         HashedLists.getSenderList(),
                         HashedLists.getReasonList(),
                         HashedLists.getReportList(),
                         HashedLists.getCommentList());
+                return true;
+            }
 
+            if(cmd.getName().equalsIgnoreCase("spectateoff")){
+                if(isSpectate((Player)s)){
+                    spectateOff((Player)s);
+                }else s.sendMessage(ChatColor.RED + "Ошибка. Вы ни за кем не наблюдаете!");
+                return true;
+            }
 
+            if(cmd.getName().equalsIgnoreCase("spectate") && args.length == 1){
+
+                if(plugin.getServer().getPlayer(args[0]) != null){
+                    setSpectate((Player)s, plugin.getServer().getPlayer(args[0]));
+                }else s.sendMessage(ChatColor.DARK_RED + "Игрок не найден!");
+                return true;
             }
 
             if (cmd.getName().equalsIgnoreCase("report")) {
@@ -83,9 +95,9 @@ public class Executor implements CommandExecutor {
 
                     } else NonBungee.getNonBungeePlayerlist((Player) s);
                 }
-
+                return true;
             }
         }else plugin.getLogger().severe("For players only!");
-        return false;
+        return true;
     }
 }

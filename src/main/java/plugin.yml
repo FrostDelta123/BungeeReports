@@ -1,6 +1,6 @@
 name: BungeeReports
 main: ru.frostdelta.bungeereports.Loader
-version: 1.0
+version: 2.0
 authors: [FrostDelta123]
 description:
 commands:
@@ -10,3 +10,7 @@ commands:
     permission: bungeereports.admin
   br:
     permission: bungeereports.reload
+  spectate:
+    permission: bungeereports.spectate
+  spectateoff:
+    permission: bungeereports.spectate

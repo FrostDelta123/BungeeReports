@@ -1,13 +1,16 @@
 package ru.frostdelta.bungeereports;
 
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import ru.frostdelta.bungeereports.gui.PunishUI;
 import ru.frostdelta.bungeereports.gui.ReasonsUI;
 import ru.frostdelta.bungeereports.hash.HashedLists;
@@ -15,11 +18,12 @@ import ru.frostdelta.bungeereports.holders.GetReportsHolder;
 import ru.frostdelta.bungeereports.holders.PunishHolder;
 import ru.frostdelta.bungeereports.holders.ReasonHolder;
 import ru.frostdelta.bungeereports.holders.UserHolder;
+import ru.frostdelta.bungeereports.spectate.SpectateManager;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class EventHandler implements Listener {
+public class EventHandler extends SpectateManager implements Listener {
 
     private Loader plugin;
     private int index;
@@ -37,13 +41,21 @@ public class EventHandler implements Listener {
     private Map<String, String> ban = new HashMap<String, String>();
     private Map<String, String> comment = new HashMap<String, String>();
     private static Map<Integer, String> send = new HashMap<Integer, String>();
+    private Map<Player, SpectateManager> spectateManagerMap = new HashMap<>();
 
     public EventHandler(HashMap<Integer, String> sender) {
-
         EventHandler.send = sender;
-
     }
 
+    @org.bukkit.event.EventHandler(priority = EventPriority.LOW)
+    public void playerDisconnect(PlayerQuitEvent e){
+        if(isTarget(e.getPlayer())){
+            Player player = (Player) getTarget().get(e.getPlayer());
+            spectateOff(player);
+            getTarget().remove(e.getPlayer());
+            player.sendMessage(ChatColor.RED + "Игрок вышел из игры!");
+        }
+    }
 
     @org.bukkit.event.EventHandler
     public void asyncChatEvent(AsyncPlayerChatEvent e){
@@ -65,28 +77,34 @@ public class EventHandler implements Listener {
 
     @org.bukkit.event.EventHandler
     public void onInventoryClick(InventoryClickEvent e){
-
         Player p = (Player) e.getWhoClicked();
-
         if(e.getSlotType() != InventoryType.SlotType.OUTSIDE && e.getSlotType() == InventoryType.SlotType.CONTAINER) {
 
             if (e.getInventory().getHolder() instanceof PunishHolder && !e.getCurrentItem().getType().equals(Material.AIR)) {
-
                 String s = p.getOpenInventory().getItem(4).getItemMeta().getDisplayName();
-
-                if (e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase("Принять")) {
-
-                    update.updateReport(ban.get(p.getName()), s, "accept");
-                    ban.remove(p.getName());
-                    p.getOpenInventory().close();
-                    p.sendMessage(ChatColor.GREEN + "Репорт принят");
-                    HashedLists.changeCount(index);
-                } else {
-                    update.updateReport(ban.get(p.getName()), s, "reject");
-                    ban.remove(p.getName());
-                    p.getOpenInventory().close();
-                    p.sendMessage(ChatColor.RED + "Репорт отклонён!");
-                    HashedLists.changeCount(index);
+                //СДЕЛАТЬ SWITCH CASE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                switch(e.getCurrentItem().getItemMeta().getDisplayName()){
+                    case "Принять":
+                        update.updateReport(ban.get(p.getName()), s, "accept");
+                        ban.remove(p.getName());
+                        p.getOpenInventory().close();
+                        p.sendMessage(ChatColor.GREEN + "Репорт принят");
+                        HashedLists.changeCount(index);
+                        break;
+                    case "Отклонить":
+                        update.updateReport(ban.get(p.getName()), s, "reject");
+                        ban.remove(p.getName());
+                        p.getOpenInventory().close();
+                        p.sendMessage(ChatColor.RED + "Репорт отклонён!");
+                        HashedLists.changeCount(index);
+                        break;
+                    case "Наблюдать":
+                        if(Bukkit.getServer().getPlayer(ban.get(p.getName())) != null && !isSpectate(p)){
+                            Player target = Bukkit.getServer().getPlayer(ban.get(p.getName()));
+                            setSpectate(p,target);
+                            p.getOpenInventory().close();
+                        }
+                        break;
                 }
 
                 e.setCancelled(true);
@@ -141,5 +159,4 @@ public class EventHandler implements Listener {
             }
         }
     }
-
 }

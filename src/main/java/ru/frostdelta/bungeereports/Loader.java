@@ -27,6 +27,7 @@ public class Loader extends JavaPlugin {
     public boolean customEnabled;
     public boolean limitEnabled;
     public boolean uuid;
+    public boolean spectateEnabled;
     public List<String> whitelist = new ArrayList<String>();
 
     public int rewardAmount;
@@ -49,6 +50,8 @@ public class Loader extends JavaPlugin {
         customRewardAmount = getConfig().getInt("customreward.amount");
         uuid = getConfig().getBoolean("customreward.uuid");
         whitelist = getConfig().getStringList("whitelist");
+        spectateEnabled = getConfig().getBoolean("spectate");
+
 
         if(vaultEnabled){
 
@@ -82,7 +85,8 @@ public class Loader extends JavaPlugin {
         getCommand("report").setExecutor(executor);
         getCommand("getreports").setExecutor(executor);
         getCommand("br").setExecutor(executor);
-
+        getCommand("spectate").setExecutor(executor);
+        getCommand("spectateoff").setExecutor(executor);
     }
 
     public List<String> getWhitelist(){
@@ -136,6 +140,10 @@ public class Loader extends JavaPlugin {
     public boolean isCustomEnabled() {
 
         return customEnabled;
+    }
+
+    public boolean isSpectateEnabled() {
+        return spectateEnabled;
     }
 
     public void onDisable(){

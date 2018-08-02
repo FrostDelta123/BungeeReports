@@ -5,6 +5,10 @@ url: jdbc:mysql://localhost:3306/test
 username: test
 password: test
 
+#Включить возможность наблюдения за игроком
+#true по умолчанию
+spectate: true
+
 #Список игнорируемых игроков
 #На них нельзя отправить репорт
 whitelist:
