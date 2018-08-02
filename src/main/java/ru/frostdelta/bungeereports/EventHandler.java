@@ -82,7 +82,7 @@ public class EventHandler extends SpectateManager implements Listener {
 
             if (e.getInventory().getHolder() instanceof PunishHolder && !e.getCurrentItem().getType().equals(Material.AIR)) {
                 String s = p.getOpenInventory().getItem(4).getItemMeta().getDisplayName();
-                //СДЕЛАТЬ SWITCH CASE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+               
                 switch(e.getCurrentItem().getItemMeta().getDisplayName()){
                     case "Принять":
                         update.updateReport(ban.get(p.getName()), s, "accept");
