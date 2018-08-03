@@ -9,7 +9,7 @@ public class CanReport {
 
 
     private Loader plugin;
-    Network Network = new Network();
+    private Network Network = new Network();
 
 
 
@@ -48,10 +48,7 @@ public class CanReport {
 
     public boolean limit(String player){
 
-        if(Network.playerReports(player, "no") >= plugin.getConfig().getInt("limit.limit")){
-            return false;
-        }
-        return true;
+        return Network.playerReports(player, "no") >= plugin.getConfig().getInt("limit.limit");
     }
 
 }

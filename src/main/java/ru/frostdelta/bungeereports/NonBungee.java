@@ -16,7 +16,7 @@ public class NonBungee {
 
     }
 
-    UserUI UserUI = new UserUI(plugin);
+    private UserUI UserUI = new UserUI(plugin);
 
     public void getNonBungeePlayerlist(Player player){
 

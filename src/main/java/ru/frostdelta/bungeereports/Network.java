@@ -1,8 +1,5 @@
 package ru.frostdelta.bungeereports;
 
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -10,7 +7,7 @@ import java.util.HashMap;
 public class Network {
 
     public String url, username, password;
-    static HashMap<String, PreparedStatement> preparedStatements = new HashMap<String, PreparedStatement>();
+    private static HashMap<String, PreparedStatement> preparedStatements = new HashMap<String, PreparedStatement>();
     private Connection connection;
 
     public void openConnection() throws SQLException, ClassNotFoundException {

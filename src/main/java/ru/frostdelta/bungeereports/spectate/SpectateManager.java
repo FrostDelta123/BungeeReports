@@ -13,20 +13,20 @@ public class SpectateManager {
 
     private static Map<Entity, Player> targetMap = new HashMap<Entity, Player>();
 
-    public static void spectateOff(Player p){
+    protected static void spectateOff(Player p){
         p.setGameMode(GameMode.SURVIVAL);
         getTarget().remove(p.getSpectatorTarget());
         p.sendMessage(ChatColor.RED + "Наблюдение выключено!");
 
     }
 
-    public static boolean isSpectate(Player p){
-        if(p.getGameMode() == GameMode.SPECTATOR){
-            return true;
-        } return false;
+    protected static boolean isSpectate(Player p){
+
+        return p.getGameMode() == GameMode.SPECTATOR;
+
     }
 
-    public static void setSpectate(Player p, Player tar){
+    protected static void setSpectate(Player p, Player tar){
 
         p.setGameMode(GameMode.SPECTATOR);
         p.setSpectatorTarget(tar);
@@ -35,11 +35,11 @@ public class SpectateManager {
         p.sendMessage(ChatColor.GOLD + "Для отмены пропишите /spectateoff");
     }
 
-    public static boolean isTarget(Player p){
+    protected static boolean isTarget(Player p){
         return getTarget().containsKey(p);
     }
 
-    public static Map getTarget(){
+    protected static Map getTarget(){
         return targetMap;
     }
 

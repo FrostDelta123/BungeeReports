@@ -15,7 +15,7 @@ public class GiveCustomReward {
 
     }
 
-    Network Network = new Network();
+   private Network Network = new Network();
 
     public void giveCustomReward(String player){
 
