@@ -34,14 +34,13 @@ public class EventHandler extends SpectateManager implements Listener {
 
     }
 
-    Network Network = new Network();
-    UpdateReport update = new UpdateReport();
+    private final Network Network = new Network();
+    private final UpdateReport update = new UpdateReport();
 
-    private Map<String, String> map = new HashMap<String, String>();
-    private Map<String, String> ban = new HashMap<String, String>();
-    private Map<String, String> comment = new HashMap<String, String>();
-    private static Map<Integer, String> send = new HashMap<Integer, String>();
-    private Map<Player, SpectateManager> spectateManagerMap = new HashMap<>();
+    private Map<String, String> map = new HashMap<>();
+    private Map<String, String> ban = new HashMap<>();
+    private Map<String, String> comment = new HashMap<>();
+    private static Map<Integer, String> send = new HashMap<>();
 
     public EventHandler(HashMap<Integer, String> sender) {
         EventHandler.send = sender;
