@@ -20,7 +20,7 @@ public class PluginMessage implements PluginMessageListener {
     }
 
 
-    UserUI UserUI = new UserUI(plugin);
+    private final UserUI UserUI = new UserUI(plugin);
 
     public void sendMessage(Player player){
         ByteArrayDataOutput out = ByteStreams.newDataOutput();

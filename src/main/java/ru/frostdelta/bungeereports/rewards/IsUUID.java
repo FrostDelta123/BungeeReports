@@ -16,7 +16,7 @@ public class IsUUID {
 
     }
 
-    Network Network = new Network();
+    private final Network Network = new Network();
 
     public void getUUID(String table, String money, String playerCol, String player) {
 
