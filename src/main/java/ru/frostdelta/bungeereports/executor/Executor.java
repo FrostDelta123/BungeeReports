@@ -71,13 +71,13 @@ public class Executor extends SpectateManager implements CommandExecutor {
                 return true;
             }
 
-            if(cmd.getName().equalsIgnoreCase("spectate") && args.length == 1){
+            if(cmd.getName().equalsIgnoreCase("spectate") && args.length == 1 && plugin.isSpectateEnabled()){
 
                 if(plugin.getServer().getPlayer(args[0]) != null){
                     setSpectate((Player)s, plugin.getServer().getPlayer(args[0]));
                 }else s.sendMessage(ChatColor.DARK_RED + "Игрок не найден!");
                 return true;
-            }
+            }else s.sendMessage(ChatColor.DARK_RED + "Ошибка выполнения команды!");
 
             if (cmd.getName().equalsIgnoreCase("report")) {
 

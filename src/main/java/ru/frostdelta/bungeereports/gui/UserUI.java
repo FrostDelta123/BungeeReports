@@ -49,6 +49,7 @@ public class UserUI {
                 }
              if(p.hasPermission("bungeereports.player")){
                  p.openInventory(inv);
+                 return;
              }else p.sendMessage(ChatColor.RED + "У вас нет прав!");
 
     }

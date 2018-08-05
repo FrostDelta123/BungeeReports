@@ -128,6 +128,7 @@ public class EventHandler extends SpectateManager implements Listener {
 
                     ReasonsUI ReasonsUI = new ReasonsUI(plugin);
                     map.put(e.getWhoClicked().getName(), e.getCurrentItem().getItemMeta().getDisplayName());
+                    p.getOpenInventory().close();
                     ReasonsUI.openGUI(p);
 
                     e.setCancelled(true);
@@ -156,6 +157,6 @@ public class EventHandler extends SpectateManager implements Listener {
 
                 e.setCancelled(true);
             }
-        }
+        }else return;
     }
 }
