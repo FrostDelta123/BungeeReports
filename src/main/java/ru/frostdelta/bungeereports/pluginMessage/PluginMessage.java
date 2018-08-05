@@ -55,8 +55,9 @@ public class PluginMessage implements PluginMessageListener {
 
             String[] playerList = in.readUTF().split(", ");
 
-            UserUI.openGUI(player, players, playerList);
-
+            if(player.hasPermission("bungeereports.player")){
+                player.openInventory(UserUI.openGUI(player, players, playerList));
+            }
         }
 
     }

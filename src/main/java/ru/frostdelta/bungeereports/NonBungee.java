@@ -30,8 +30,9 @@ public class NonBungee {
 
         String[] strings = players.stream().toArray(String[]::new);
 
-        UserUI.openGUI(player, players.size(), strings);
-
+        if(player.hasPermission("bungeereports.player")){
+            player.openInventory(UserUI.openGUI(player, players.size(), strings));
+        }
     }
 
 }
