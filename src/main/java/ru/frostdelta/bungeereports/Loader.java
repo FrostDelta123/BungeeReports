@@ -74,7 +74,10 @@ public class Loader extends JavaPlugin {
             db.openConnection();
             db.createDB();
         } catch (SQLException e) {
-            e.printStackTrace();
+            getLogger().severe("ERROR! Cant load SQL, check config!");
+            getLogger().severe("PLUGIN DISABLED");
+            this.setEnabled(false);
+            return;
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
