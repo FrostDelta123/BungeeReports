@@ -6,6 +6,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import ru.frostdelta.bungeereports.EventHandler;
 import ru.frostdelta.bungeereports.Loader;
 import ru.frostdelta.bungeereports.holders.PunishHolder;
 
@@ -53,7 +54,8 @@ public class PunishUI {
         spectateMeta.setDisplayName("Наблюдать");
         spectateMeta.setLore(Collections.singletonList("BETA"));
         spectate.setItemMeta(spectateMeta);
-        if(plugin.isSpectateEnabled()) {
+        EventHandler handler = new EventHandler(plugin);
+        if(plugin.isSpectateEnabled() && Bukkit.getPlayer(handler.getBan().get(sender)) != null) {
             inv.setItem(8, spectate);
         }
 

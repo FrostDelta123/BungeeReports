@@ -72,7 +72,9 @@ public class EventHandler extends SpectateManager implements Listener {
        }
     }
 
-
+    public Map<String, String> getBan(){
+        return ban;
+    }
 
     @org.bukkit.event.EventHandler
     public void onInventoryClick(InventoryClickEvent e){

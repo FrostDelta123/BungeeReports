@@ -35,7 +35,7 @@ public class SpectateManager {
         p.sendMessage(ChatColor.GOLD + "Для отмены пропишите /spectateoff");
     }
 
-    protected static boolean isTarget(Player p){
+    protected static boolean isTarget(Entity p){
         return getTarget().containsKey(p);
     }
 
