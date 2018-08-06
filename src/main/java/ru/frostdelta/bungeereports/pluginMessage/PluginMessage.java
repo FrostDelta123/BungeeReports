@@ -6,6 +6,7 @@ import com.google.common.io.ByteStreams;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.messaging.PluginMessageListener;
 import ru.frostdelta.bungeereports.Loader;
+import ru.frostdelta.bungeereports.executor.Executor;
 import ru.frostdelta.bungeereports.gui.UserUI;
 
 public class PluginMessage implements PluginMessageListener {
@@ -48,6 +49,7 @@ public class PluginMessage implements PluginMessageListener {
 
             players = playercount;
             sendMessage(player);
+            return;
         }
 
         if(subchannel.equalsIgnoreCase("PlayerList")) {
@@ -55,8 +57,10 @@ public class PluginMessage implements PluginMessageListener {
 
             String[] playerList = in.readUTF().split(", ");
 
-            if(player.hasPermission("bungeereports.player")){
+            if(player.hasPermission("bungeereports.player") && Executor.getSenders().contains(player)){
                 player.openInventory(UserUI.openGUI(player, players, playerList));
+                Executor.getSenders().remove(players);
+                return;
             }
         }
 

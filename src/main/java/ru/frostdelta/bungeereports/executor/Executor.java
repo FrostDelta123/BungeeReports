@@ -13,6 +13,9 @@ import ru.frostdelta.bungeereports.hash.HashedLists;
 import ru.frostdelta.bungeereports.pluginMessage.GetPlayerCount;
 import ru.frostdelta.bungeereports.spectate.SpectateManager;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Executor extends SpectateManager implements CommandExecutor {
 
     private Loader plugin;
@@ -24,7 +27,7 @@ public class Executor extends SpectateManager implements CommandExecutor {
 
     }
     public boolean bungee;
-
+    private static List<Player> senders = new ArrayList<>();
     private boolean isBungee(){
         return bungee;
     }
@@ -81,6 +84,8 @@ public class Executor extends SpectateManager implements CommandExecutor {
 
             if (cmd.getName().equalsIgnoreCase("report")) {
 
+
+                senders.add((Player)s);
                 GetPlayerCount GetPlayerCount = new GetPlayerCount(plugin);
                 NonBungee NonBungee = new NonBungee(plugin);
                 CanReport CanReport = new CanReport(plugin);
@@ -99,5 +104,9 @@ public class Executor extends SpectateManager implements CommandExecutor {
             }
         }else plugin.getLogger().severe("For players only!");
         return true;
+    }
+
+    public static List<Player> getSenders(){
+        return senders;
     }
 }

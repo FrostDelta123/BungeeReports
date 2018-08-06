@@ -16,6 +16,10 @@ public class GetPlayerCount {
     }
 
     public void sendMessage(Player player){
+
+        if(!plugin.isEnabled()){
+            return;
+        }
         ByteArrayDataOutput out = ByteStreams.newDataOutput();
 
         out.writeUTF("PlayerCount");
