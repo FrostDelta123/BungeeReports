@@ -81,7 +81,7 @@ public class Executor extends SpectateManager implements CommandExecutor {
                     setSpectate((Player)s, plugin.getServer().getPlayer(args[0]));
                 }else s.sendMessage(ChatColor.DARK_RED + "Игрок не найден!");
                 return true;
-            }else s.sendMessage(ChatColor.DARK_RED + "Ошибка выполнения команды!");
+            }
 
             if (cmd.getName().equalsIgnoreCase("report")) {
 
