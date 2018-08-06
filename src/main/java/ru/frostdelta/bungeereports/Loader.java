@@ -36,17 +36,6 @@ public class Loader extends JavaPlugin {
 
     public void onEnable(){
 
-        try {
-            db.openConnection();
-            db.createDB();
-        } catch (SQLException e) {
-            getLogger().severe("ERROR! Cant load SQL, check config!");
-            getLogger().severe("PLUGIN DISABLED");
-            this.setEnabled(false);
-            return;
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
 
         this.saveDefaultConfig();
 
@@ -62,7 +51,21 @@ public class Loader extends JavaPlugin {
         uuid = getConfig().getBoolean("customreward.uuid");
         whitelist = getConfig().getStringList("whitelist");
         spectateEnabled = getConfig().getBoolean("spectate");
+        db.url = getConfig().getString("url");
+        db.username = getConfig().getString("username");
+        db.password = getConfig().getString("password");
 
+        try {
+            db.openConnection();
+            db.createDB();
+        } catch (SQLException e) {
+            getLogger().severe("ERROR! Cant load SQL, check config!");
+            getLogger().severe("PLUGIN DISABLED");
+            this.setEnabled(false);
+            return;
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
 
         if(vaultEnabled){
 
@@ -76,9 +79,7 @@ public class Loader extends JavaPlugin {
             getLogger().info("Выдача наград невозможна!");
         }
 
-        db.url = getConfig().getString("url");
-        db.username = getConfig().getString("username");
-        db.password = getConfig().getString("password");
+
         executor.bungee = getConfig().getBoolean("bungee.enabled");
 
 
