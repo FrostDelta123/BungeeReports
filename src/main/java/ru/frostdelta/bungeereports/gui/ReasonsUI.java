@@ -28,9 +28,9 @@ public class ReasonsUI {
 
 
         int slots = 9;
-        while (reasons.toArray().length > slots) {
+        while (reasons.size() > slots) {
             slots = slots + 9;
-            if(reasons.toArray().length < slots){
+            if(reasons.size() < slots){
                 break;
             }
         }
