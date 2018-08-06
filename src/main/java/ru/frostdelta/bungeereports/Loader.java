@@ -36,6 +36,17 @@ public class Loader extends JavaPlugin {
 
     public void onEnable(){
 
+        try {
+            db.openConnection();
+            db.createDB();
+        } catch (SQLException e) {
+            getLogger().severe("ERROR! Cant load SQL, check config!");
+            getLogger().severe("PLUGIN DISABLED");
+            this.setEnabled(false);
+            return;
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
 
         this.saveDefaultConfig();
 
@@ -70,17 +81,7 @@ public class Loader extends JavaPlugin {
         db.password = getConfig().getString("password");
         executor.bungee = getConfig().getBoolean("bungee.enabled");
 
-        try {
-            db.openConnection();
-            db.createDB();
-        } catch (SQLException e) {
-            getLogger().severe("ERROR! Cant load SQL, check config!");
-            getLogger().severe("PLUGIN DISABLED");
-            this.setEnabled(false);
-            return;
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
+
 
         HashedLists.loadReports();
 

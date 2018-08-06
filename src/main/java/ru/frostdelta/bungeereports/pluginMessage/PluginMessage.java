@@ -24,6 +24,7 @@ public class PluginMessage implements PluginMessageListener {
     private final UserUI UserUI = new UserUI(plugin);
 
     public void sendMessage(Player player){
+        if(!plugin.isEnabled()) return;
         ByteArrayDataOutput out = ByteStreams.newDataOutput();
 
         out.writeUTF("PlayerList");
@@ -35,7 +36,7 @@ public class PluginMessage implements PluginMessageListener {
 
     @Override
     public void onPluginMessageReceived(String channel, Player player, byte[] message) {
-        if (!channel.equals("BungeeCord")) {
+        if (!channel.equals("BungeeCord") || !plugin.isEnabled()) {
             return;
         }
         ByteArrayDataInput in = ByteStreams.newDataInput(message);
@@ -56,6 +57,7 @@ public class PluginMessage implements PluginMessageListener {
             String server = in.readUTF();
 
             String[] playerList = in.readUTF().split(", ");
+
 
             if(player.hasPermission("bungeereports.player") && Executor.getSenders().contains(player)){
                 player.openInventory(UserUI.openGUI(player, players, playerList));

@@ -51,9 +51,10 @@ public class Executor extends SpectateManager implements CommandExecutor {
             plugin.spectateEnabled = plugin.getConfig().getBoolean("spectate");
 
             s.sendMessage(ChatColor.GREEN + "Конфиг перезагружен!");
+            return true;
         }
 
-        if(s instanceof Player) {
+        if(s instanceof Player && plugin.isEnabled()) {
             if (cmd.getName().equalsIgnoreCase("getreports")) {
 
                 GetReportsUI getReportsUI = new GetReportsUI(plugin);
@@ -83,7 +84,6 @@ public class Executor extends SpectateManager implements CommandExecutor {
             }else s.sendMessage(ChatColor.DARK_RED + "Ошибка выполнения команды!");
 
             if (cmd.getName().equalsIgnoreCase("report")) {
-
 
                 senders.add((Player)s);
                 GetPlayerCount GetPlayerCount = new GetPlayerCount(plugin);
