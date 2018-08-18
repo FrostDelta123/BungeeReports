@@ -22,8 +22,6 @@ public class GiveReward {
 
         if(plugin.isVaultEnabled()){
 
-            VaultLoader VaultLoader = new VaultLoader();
-
             VaultLoader.economy.depositPlayer(p, plugin.getRewardAmount());
 
             p.sendMessage(ChatColor.GREEN + "Вам была выдана награда в размере " + plugin.getRewardAmount() + " за корректное использование репорт-системы!");
