@@ -1,5 +1,6 @@
 package ru.frostdelta.bungeereports;
 
+import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 import ru.frostdelta.bungeereports.executor.Executor;
 import ru.frostdelta.bungeereports.hash.HashedLists;
@@ -17,18 +18,20 @@ public class Loader extends JavaPlugin {
      * @author FrostDelta123
      */
 
-    public static void main(String args[]){
-    }
+
+    Loader plugin = this;
 
     Network db = new Network();
     Executor executor = new Executor(this);
-    public boolean vaultEnabled;
-    public boolean rewardsEnabled;
-    public boolean customEnabled;
-    public boolean limitEnabled;
-    public boolean uuid;
-    public boolean spectateEnabled;
-    public List<String> whitelist = new ArrayList<String>();
+    private boolean vaultEnabled;
+    private boolean rewardsEnabled;
+    private boolean customEnabled;
+    private boolean limitEnabled;
+    private boolean uuid;
+    private boolean spectateEnabled;
+    private boolean debugEnabled;
+    private boolean bungee;
+    private List<String> whitelist = new ArrayList<String>();
 
     public int rewardAmount;
     public int customRewardAmount;
@@ -39,8 +42,10 @@ public class Loader extends JavaPlugin {
 
         this.saveDefaultConfig();
 
-        this.getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
-        this.getServer().getMessenger().registerIncomingPluginChannel(this, "BungeeCord", new PluginMessage(this));
+        if(isBungee()) {
+            this.getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
+            this.getServer().getMessenger().registerIncomingPluginChannel(this, "BungeeCord", new PluginMessage(this));
+        }else getLogger().info("BungeeCord disabled");
 
         vaultEnabled = getConfig().getBoolean("vault.enabled");
         rewardsEnabled = getConfig().getBoolean("reward.enabled");
@@ -51,23 +56,37 @@ public class Loader extends JavaPlugin {
         uuid = getConfig().getBoolean("customreward.uuid");
         whitelist = getConfig().getStringList("whitelist");
         spectateEnabled = getConfig().getBoolean("spectate");
+        debugEnabled = getConfig().getBoolean("debug");
         db.url = getConfig().getString("url");
         db.username = getConfig().getString("username");
         db.password = getConfig().getString("password");
+        bungee = getConfig().getBoolean("bungee.enabled");
+        executor.bungee = getConfig().getBoolean("bungee.enabled");
 
-        try {
-            db.openConnection();
-            db.createDB();
-        } catch (SQLException e) {
-            getLogger().severe("ERROR! Cant load SQL, check config!");
-            getLogger().severe("PLUGIN DISABLED");
-            this.setEnabled(false);
-            return;
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
 
-        if(vaultEnabled){
+        Bukkit.getScheduler().runTaskAsynchronously(this, new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    db.openConnection();
+                    db.createDB();
+                } catch (SQLException e) {
+                    getLogger().severe("ERROR! Cant load SQL, check config!");
+                    getLogger().severe("PLUGIN DISABLED");
+                    getLogger().severe("Set debug to true in config.yml");
+                    if(isDebugEnabled()){
+                        e.printStackTrace();
+                    }
+                    plugin.setEnabled(false);
+                    return;
+                } catch (ClassNotFoundException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+
+        if(isVaultEnabled()){
 
             VaultLoader VaultLoader = new VaultLoader();
             VaultLoader.setupChat();
@@ -79,11 +98,6 @@ public class Loader extends JavaPlugin {
             getLogger().info("Выдача наград невозможна!");
         }
 
-
-        executor.bungee = getConfig().getBoolean("bungee.enabled");
-
-
-
         HashedLists.loadReports();
 
         getServer().getPluginManager().registerEvents(new EventHandler(this), this);
@@ -94,8 +108,32 @@ public class Loader extends JavaPlugin {
         getCommand("spectateoff").setExecutor(executor);
     }
 
+    public void reloadConfig(){
+        this.vaultEnabled = plugin.getConfig().getBoolean("vault.enabled");
+        this.rewardsEnabled = plugin.getConfig().getBoolean("reward.enabled");
+        this.customEnabled = plugin.getConfig().getBoolean("customreward.enabled");
+        this.limitEnabled = plugin.getConfig().getBoolean("limit.enabled");
+        this.rewardAmount = plugin.getConfig().getInt("reward.amount");
+        this.customRewardAmount = plugin.getConfig().getInt("customreward.amount");
+        this.uuid = plugin.getConfig().getBoolean("customreward.uuid");
+        this.whitelist = plugin.getConfig().getStringList("whitelist");
+        this.spectateEnabled = plugin.getConfig().getBoolean("spectate");
+    }
+
+    public Boolean isVaultEnabled(){
+        return vaultEnabled;
+    }
+
     public List<String> getWhitelist(){
         return whitelist;
+    }
+
+    public Boolean isBungee(){
+        return bungee;
+    }
+
+    public Boolean isDebugEnabled(){
+        return debugEnabled;
     }
 
     public String getPassword(){

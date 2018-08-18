@@ -40,15 +40,7 @@ public class Executor extends SpectateManager implements CommandExecutor {
             plugin.reloadConfig();
             plugin.getConfig().options().copyHeader(true);
 
-            plugin.vaultEnabled = plugin.getConfig().getBoolean("vault.enabled");
-            plugin.rewardsEnabled = plugin.getConfig().getBoolean("reward.enabled");
-            plugin.customEnabled = plugin.getConfig().getBoolean("customreward.enabled");
-            plugin.limitEnabled = plugin.getConfig().getBoolean("limit.enabled");
-            plugin.rewardAmount = plugin.getConfig().getInt("reward.amount");
-            plugin.customRewardAmount = plugin.getConfig().getInt("customreward.amount");
-            plugin.uuid = plugin.getConfig().getBoolean("customreward.uuid");
-            plugin.whitelist = plugin.getConfig().getStringList("whitelist");
-            plugin.spectateEnabled = plugin.getConfig().getBoolean("spectate");
+            plugin.reloadConfig();
 
             s.sendMessage(ChatColor.GREEN + "Конфиг перезагружен!");
             return true;

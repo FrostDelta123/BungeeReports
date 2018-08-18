@@ -3,8 +3,6 @@
     <output-path>$PROJECT_DIR$/out/artifacts/BungeeReports_jar</output-path>
     <root id="archive" name="BungeeReports.jar">
       <element id="module-output" name="BungeeReports" />
-      <element id="file-copy" path="$PROJECT_DIR$/src/main/java/plugin.yml" />
-      <element id="file-copy" path="$PROJECT_DIR$/src/main/java/config.yml" />
     </root>
   </artifact>
 </component>

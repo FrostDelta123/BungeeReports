@@ -46,7 +46,6 @@ public class Network {
            Connection con = DriverManager.getConnection(conUrl + "?useUnicode=true&characterEncoding=UTF-8", user, pass);
            Statement sql = con.createStatement();
 
-           //кастомные награды, пока так
            sql.executeUpdate("UPDATE "+table+" t1 JOIN  "+table+" t2 ON t2."+playerCol+ "= '"+player+"' SET t1."+money+" = t2."+money+" + "+amount+" WHERE t1."+playerCol+" = '"+player+"'");
 
 

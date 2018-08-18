@@ -20,7 +20,7 @@ public class GiveReward {
 
 
 
-        if(plugin.vaultEnabled){
+        if(plugin.isVaultEnabled()){
 
             VaultLoader VaultLoader = new VaultLoader();
 

@@ -1,5 +1,9 @@
 #BungeeReports config v1.0
 
+#Режим отладки
+#false по умолчанию
+debug: false
+
 #Данные для подключения к базе данных.
 url: jdbc:mysql://localhost:3306/test
 username: test
@@ -21,10 +25,12 @@ reasons:
   - чат
   - example
 
-#Использовать bungee cord, если false, то bungee cord не используется и имя не задаётся. false по умолчанию.
+#Использовать bungee cord, если false, то bungee cord не используется и имя не задаётся.
+#false по умолчанию.
 bungee:
   enabled: false
-  #имя сервера bungee cord, прописано в config. ALL для игроков со всех сервреов. ALL по умолчанию.
+  #имя сервера bungee cord, прописано в config. ALL для игроков со всех сервреов.
+  #ALL по умолчанию.
   servername: ALL
 
 #Комментарии игроков к репортам, если true, то для отправки репорта игрок будет обязан оставить свой комментарий в чат,например скриншот.

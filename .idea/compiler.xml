@@ -9,8 +9,5 @@
         <module name="BungeeReports" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="BungeeReports" target="8" />
-    </bytecodeTargetLevel>
   </component>
 </project>
