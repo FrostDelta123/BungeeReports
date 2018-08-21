@@ -25,6 +25,11 @@
             <id>vault-repo</id>
             <url>http://nexus.hc.to/content/repositories/pub_releases</url>
         </repository>
+        <repository>
+            <id>bintray-endlesscode-repo</id>
+            <name>bintray</name>
+            <url>https://dl.bintray.com/endlesscode/repo</url>
+        </repository>
     </repositories>
     <dependencies>
         <dependency>
