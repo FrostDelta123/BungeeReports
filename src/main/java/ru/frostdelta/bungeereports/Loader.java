@@ -112,14 +112,13 @@ public class Loader extends PluginLifecycle {
         getCommand("spectateoff").setExecutor(executor);
     }
 
-    // Метод-заглушка. Необходим при компиляции под версию ниже чем 1.12.2
+
     @Override
     public EbeanServer getDatabase() {
         return null;
     }
 
-    // Метод переименован чтобы он не перекрывал встроенный метод reloadConfig().
-    // Судя по тому, что около него не было аннотации Override, я предположил что так не задумывалось.
+
     public void loadConfig(){
         this.vaultEnabled = plugin.getConfig().getBoolean("vault.enabled");
         this.rewardsEnabled = plugin.getConfig().getBoolean("reward.enabled");
