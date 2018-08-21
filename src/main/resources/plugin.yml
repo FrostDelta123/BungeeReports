@@ -1,0 +1,18 @@
+name: BungeeReports
+main: ru.frostdelta.bungeereports.TrackedLoader
+version: 2.2.1
+authors: [FrostDelta123]
+description:
+depend:
+  - Inspector
+commands:
+  report:
+    permission: bungeereports.player
+  getreports:
+    permission: bungeereports.admin
+  br:
+    permission: bungeereports.reload
+  spectate:
+    permission: bungeereports.spectate
+  spectateoff:
+    permission: bungeereports.spectate

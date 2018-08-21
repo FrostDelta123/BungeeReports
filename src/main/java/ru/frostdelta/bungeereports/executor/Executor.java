@@ -37,10 +37,10 @@ public class Executor extends SpectateManager implements CommandExecutor {
 
         if(cmd.getName().equalsIgnoreCase("br") && args.length == 1 && args[0].equals("reload")){
 
-            plugin.reloadConfig();
+            plugin.loadConfig();
             plugin.getConfig().options().copyHeader(true);
 
-            plugin.reloadConfig();
+            plugin.loadConfig();
 
             s.sendMessage(ChatColor.GREEN + "Конфиг перезагружен!");
             return true;

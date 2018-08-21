@@ -1,7 +1,9 @@
 package ru.frostdelta.bungeereports;
 
+import com.avaje.ebean.EbeanServer;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
+import ru.endlesscode.inspector.bukkit.plugin.PluginLifecycle;
 import ru.frostdelta.bungeereports.executor.Executor;
 import ru.frostdelta.bungeereports.hash.HashedLists;
 import ru.frostdelta.bungeereports.modules.VaultLoader;
@@ -11,7 +13,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Loader extends JavaPlugin {
+public class Loader extends PluginLifecycle {
 
     /**
      *
@@ -108,7 +110,15 @@ public class Loader extends JavaPlugin {
         getCommand("spectateoff").setExecutor(executor);
     }
 
-    public void reloadConfig(){
+    // Метод-заглушка. Необходим при компиляции под версию ниже чем 1.12.2
+    @Override
+    public EbeanServer getDatabase() {
+        return null;
+    }
+
+    // Метод переименован чтобы он не перекрывал встроенный метод reloadConfig().
+    // Судя по тому, что около него не было аннотации Override, я предположил что так не задумывалось.
+    public void loadConfig(){
         this.vaultEnabled = plugin.getConfig().getBoolean("vault.enabled");
         this.rewardsEnabled = plugin.getConfig().getBoolean("reward.enabled");
         this.customEnabled = plugin.getConfig().getBoolean("customreward.enabled");
