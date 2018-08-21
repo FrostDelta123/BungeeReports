@@ -66,7 +66,24 @@ public class Loader extends PluginLifecycle {
         bungee = getConfig().getBoolean("bungee.enabled");
         executor.bungee = getConfig().getBoolean("bungee.enabled");
 
+        /*try {
+            db.openConnection();
+        } catch (SQLException e) {
+            getLogger().severe("ERROR! Cant load SQL, check config!");
+            getLogger().severe("PLUGIN DISABLED");
+            getLogger().severe("Set debug to true in config.yml");
 
+            if(isDebugEnabled()){
+                e.printStackTrace();
+            }
+            plugin.setEnabled(false);
+            return;
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        db.createDB();
+        HashedLists.loadReports();
+*/
         Bukkit.getScheduler().runTaskAsynchronously(this, new Runnable() {
             @Override
             public void run() {

@@ -1,5 +1,6 @@
 package ru.frostdelta.bungeereports.executor;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -84,7 +85,7 @@ public class Executor extends SpectateManager implements CommandExecutor {
 
                 CanReport.needReward(s.getName());
 
-                if (plugin.isLimitEnabled() && CanReport.limit(s.getName())) {
+                if (!plugin.isLimitEnabled() || plugin.isLimitEnabled() && CanReport.limit(s.getName())) {
 
                     if (isBungee()) {
 

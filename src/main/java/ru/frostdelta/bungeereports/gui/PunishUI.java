@@ -54,10 +54,9 @@ public class PunishUI {
         spectateMeta.setDisplayName("Наблюдать");
         spectateMeta.setLore(Collections.singletonList("BETA"));
         spectate.setItemMeta(spectateMeta);
-        EventHandler handler = new EventHandler(plugin);
-        if(plugin.isSpectateEnabled() && Bukkit.getPlayer(handler.getBan().get(sender)) != null) {
-            inv.setItem(8, spectate);
-        }
+
+        inv.setItem(8, spectate);
+
 
         moder.openInventory(inv);
 

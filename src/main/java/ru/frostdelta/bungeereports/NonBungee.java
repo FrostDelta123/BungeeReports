@@ -1,5 +1,6 @@
 package ru.frostdelta.bungeereports;
 
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import ru.frostdelta.bungeereports.gui.UserUI;
 
@@ -32,7 +33,7 @@ public class NonBungee {
 
         if(player.hasPermission("bungeereports.player")){
             player.openInventory(UserUI.openGUI(player, players.size(), strings));
-        }
+        }else player.sendMessage(ChatColor.RED + "У вас нет прав!");
     }
 
 }
