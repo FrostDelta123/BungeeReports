@@ -78,6 +78,7 @@ public class EventHandler extends SpectateManager implements Listener {
 
     @org.bukkit.event.EventHandler
     public void onInventoryClick(InventoryClickEvent e){
+
         Player p = (Player) e.getWhoClicked();
         if(e.getSlotType() != InventoryType.SlotType.OUTSIDE && e.getSlotType() == InventoryType.SlotType.CONTAINER) {
 

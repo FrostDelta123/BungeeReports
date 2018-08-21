@@ -39,6 +39,7 @@ public class Loader extends PluginLifecycle {
     public int customRewardAmount;
 
 
+    @Override
     public void onEnable(){
 
 
@@ -72,10 +73,12 @@ public class Loader extends PluginLifecycle {
                 try {
                     db.openConnection();
                     db.createDB();
+                    HashedLists.loadReports();
                 } catch (SQLException e) {
                     getLogger().severe("ERROR! Cant load SQL, check config!");
                     getLogger().severe("PLUGIN DISABLED");
                     getLogger().severe("Set debug to true in config.yml");
+
                     if(isDebugEnabled()){
                         e.printStackTrace();
                     }
@@ -100,7 +103,6 @@ public class Loader extends PluginLifecycle {
             getLogger().info("Выдача наград невозможна!");
         }
 
-        HashedLists.loadReports();
 
         getServer().getPluginManager().registerEvents(new EventHandler(this), this);
         getCommand("report").setExecutor(executor);
