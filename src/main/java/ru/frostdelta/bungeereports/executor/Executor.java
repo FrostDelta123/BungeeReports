@@ -62,8 +62,8 @@ public class Executor extends SpectateManager implements CommandExecutor {
             }
 
             if(cmd.getName().equalsIgnoreCase("spectateoff")){
-                if(isSpectate((Player)s)){
-                    spectateOff((Player)s);
+                if(super.isSpectate((Player)s)){
+                    super.spectateOff((Player)s);
                 }else s.sendMessage(ChatColor.RED + "Ошибка. Вы ни за кем не наблюдаете!");
                 return true;
             }
@@ -71,27 +71,24 @@ public class Executor extends SpectateManager implements CommandExecutor {
             if(cmd.getName().equalsIgnoreCase("spectate") && args.length == 1 && plugin.isSpectateEnabled()){
 
                 if(plugin.getServer().getPlayer(args[0]) != null){
-                    setSpectate((Player)s, plugin.getServer().getPlayer(args[0]));
+                    super.setSpectate((Player)s, plugin.getServer().getPlayer(args[0]));
                 }else s.sendMessage(ChatColor.DARK_RED + "Игрок не найден!");
                 return true;
             }
 
             if (cmd.getName().equalsIgnoreCase("report")) {
-
                 senders.add((Player)s);
-                GetPlayerCount GetPlayerCount = new GetPlayerCount(plugin);
-                NonBungee NonBungee = new NonBungee(plugin);
-                CanReport CanReport = new CanReport(plugin);
+                GetPlayerCount getPlayerCount = new GetPlayerCount(plugin);
+                NonBungee nonBungee = new NonBungee(plugin);
+                CanReport canReport = new CanReport(plugin);
 
-                CanReport.needReward(s.getName());
+                canReport.needReward(s.getName());
 
-                if (!plugin.isLimitEnabled() || plugin.isLimitEnabled() && CanReport.limit(s.getName())) {
+                if (!plugin.isLimitEnabled() || plugin.isLimitEnabled() && canReport.limit(s.getName())) {
 
                     if (isBungee()) {
-
-                        GetPlayerCount.sendMessage((Player) s);
-
-                    } else NonBungee.getNonBungeePlayerlist((Player) s);
+                        getPlayerCount.sendMessage((Player) s);
+                    } else nonBungee.getNonBungeePlayerlist((Player) s);
                 }
                 return true;
             }

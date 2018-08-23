@@ -34,7 +34,7 @@ public class EventHandler extends SpectateManager implements Listener {
 
     }
 
-    private final Network Network = new Network();
+    private final Network network = new Network();
     private final UpdateReport update = new UpdateReport();
 
     private Map<String, String> map = new HashMap<>();
@@ -45,13 +45,18 @@ public class EventHandler extends SpectateManager implements Listener {
     public EventHandler(HashMap<Integer, String> sender) {
         EventHandler.send = sender;
     }
+    public Map<String, String> getBan(){
+        return ban;
+    }
+    public Map<String, String> getMap(){return map;}
+    public Map<String, String> getComment(){return comment;}
 
     @org.bukkit.event.EventHandler(priority = EventPriority.LOW)
     public void playerDisconnect(PlayerQuitEvent e){
-        if(isTarget(e.getPlayer())){
-            Player player = (Player) getTarget().get(e.getPlayer());
-            spectateOff(player);
-            getTarget().remove(e.getPlayer());
+        if(super.isTarget(e.getPlayer())){
+            Player player = (Player)super.getTarget().get(e.getPlayer());
+            super.spectateOff(player);
+            super.getTarget().remove(e.getPlayer());
             player.sendMessage(ChatColor.RED + "Игрок вышел из игры!");
         }
     }
@@ -59,11 +64,11 @@ public class EventHandler extends SpectateManager implements Listener {
     @org.bukkit.event.EventHandler
     public void asyncChatEvent(AsyncPlayerChatEvent e){
         String player = e.getPlayer().getName();
-       if(comment.containsKey(player)){
-           String reason = comment.get(player);
-           Network.addReport(player, map.get(player),reason, e.getMessage());
-           map.remove(player);
-           comment.remove(player);
+       if(getComment().containsKey(player)){
+           String reason = getComment().get(player);
+           network.addReport(player, getMap().get(player),reason, e.getMessage());
+           getMap().remove(player);
+           getComment().remove(player);
 
            HashedLists.loadReports();
            e.getPlayer().sendMessage(ChatColor.GREEN + "Репорт успешно отправлен!");
@@ -72,9 +77,7 @@ public class EventHandler extends SpectateManager implements Listener {
        }
     }
 
-    public Map<String, String> getBan(){
-        return ban;
-    }
+
 
     @org.bukkit.event.EventHandler
     public void onInventoryClick(InventoryClickEvent e){
@@ -87,22 +90,22 @@ public class EventHandler extends SpectateManager implements Listener {
                
                 switch(e.getCurrentItem().getItemMeta().getDisplayName()){
                     case "Принять":
-                        update.updateReport(ban.get(p.getName()), s, "accept");
-                        ban.remove(p.getName());
+                        update.updateReport(getBan().get(p.getName()), s, "accept");
+                        getBan().remove(p.getName());
                         p.getOpenInventory().close();
                         p.sendMessage(ChatColor.GREEN + "Репорт принят");
                         HashedLists.changeCount(index);
                         break;
                     case "Отклонить":
-                        update.updateReport(ban.get(p.getName()), s, "reject");
-                        ban.remove(p.getName());
+                        update.updateReport(getBan().get(p.getName()), s, "reject");
+                        getBan().remove(p.getName());
                         p.getOpenInventory().close();
                         p.sendMessage(ChatColor.RED + "Репорт отклонён!");
                         HashedLists.changeCount(index);
                         break;
                     case "Наблюдать":
-                        if(Bukkit.getServer().getPlayer(ban.get(p.getName())) != null && !isSpectate(p)){
-                            Player target = Bukkit.getServer().getPlayer(ban.get(p.getName()));
+                        if(Bukkit.getServer().getPlayer(getBan().get(p.getName())) != null && !isSpectate(p)){
+                            Player target = Bukkit.getServer().getPlayer(getBan().get(p.getName()));
                             setSpectate(p,target);
                             p.getOpenInventory().close();
                         }
@@ -116,9 +119,9 @@ public class EventHandler extends SpectateManager implements Listener {
 
                 PunishUI PunishUI = new PunishUI(plugin);
 
-                String s = send.get(e.getSlot());
+                String s = this.send.get(e.getSlot());
 
-                ban.put(e.getWhoClicked().getName(), e.getCurrentItem().getItemMeta().getDisplayName());
+                getBan().put(e.getWhoClicked().getName(), e.getCurrentItem().getItemMeta().getDisplayName());
                 PunishUI.openGUI(e.getCurrentItem().getItemMeta().getDisplayName(), p, s);
                 index = e.getSlot();
 
@@ -130,7 +133,7 @@ public class EventHandler extends SpectateManager implements Listener {
                 if (!plugin.getWhitelist().contains(e.getCurrentItem().getItemMeta().getDisplayName())) {
 
                     ReasonsUI ReasonsUI = new ReasonsUI(plugin);
-                    map.put(e.getWhoClicked().getName(), e.getCurrentItem().getItemMeta().getDisplayName());
+                    getMap().put(e.getWhoClicked().getName(), e.getCurrentItem().getItemMeta().getDisplayName());
                     p.getOpenInventory().close();
                     ReasonsUI.openGUI(p);
 
@@ -146,14 +149,14 @@ public class EventHandler extends SpectateManager implements Listener {
 
                 if (!plugin.getConfig().getBoolean("comments")) {
 
-                    Network.addReport(e.getWhoClicked().getName(), map.get(e.getWhoClicked().getName()), e.getCurrentItem().getItemMeta().getDisplayName(), "");
-                    HashedLists.addReport(e.getWhoClicked().getName(), map.get(e.getWhoClicked().getName()), e.getCurrentItem().getItemMeta().getDisplayName(), "");
-                    map.remove(e.getWhoClicked().getName());
+                    network.addReport(e.getWhoClicked().getName(), getMap().get(e.getWhoClicked().getName()), e.getCurrentItem().getItemMeta().getDisplayName(), "");
+                    HashedLists.addReport(e.getWhoClicked().getName(), getMap().get(e.getWhoClicked().getName()), e.getCurrentItem().getItemMeta().getDisplayName(), "");
+                    getMap().remove(e.getWhoClicked().getName());
                     e.getWhoClicked().getOpenInventory().close();
                     p.sendMessage(ChatColor.GREEN + "Репорт успешно отправлен!");
 
                 } else {
-                    comment.put(e.getWhoClicked().getName(), e.getCurrentItem().getItemMeta().getDisplayName());
+                    getComment().put(e.getWhoClicked().getName(), e.getCurrentItem().getItemMeta().getDisplayName());
                     e.getWhoClicked().getOpenInventory().close();
                     e.getWhoClicked().sendMessage(ChatColor.RED + "Введите комментарий в чат!");
                 }
