@@ -5,6 +5,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Event;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -78,7 +79,6 @@ public class EventHandler extends SpectateManager implements Listener {
     }
 
 
-
     @org.bukkit.event.EventHandler
     public void onInventoryClick(InventoryClickEvent e){
 
@@ -119,7 +119,7 @@ public class EventHandler extends SpectateManager implements Listener {
 
                 PunishUI PunishUI = new PunishUI(plugin);
 
-                String s = this.send.get(e.getSlot());
+                String s = send.get(e.getSlot());
 
                 getBan().put(e.getWhoClicked().getName(), e.getCurrentItem().getItemMeta().getDisplayName());
                 PunishUI.openGUI(e.getCurrentItem().getItemMeta().getDisplayName(), p, s);

@@ -45,11 +45,6 @@ public class Loader extends PluginLifecycle {
 
         this.saveDefaultConfig();
 
-        if(isBungee()) {
-            this.getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
-            this.getServer().getMessenger().registerIncomingPluginChannel(this, "BungeeCord", new PluginMessage(this));
-        }else getLogger().info("BungeeCord disabled");
-
         vaultEnabled = getConfig().getBoolean("vault.enabled");
         rewardsEnabled = getConfig().getBoolean("reward.enabled");
         customEnabled = getConfig().getBoolean("customreward.enabled");
@@ -107,6 +102,10 @@ public class Loader extends PluginLifecycle {
             }
         });
 
+        if(isBungee()) {
+            this.getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
+            this.getServer().getMessenger().registerIncomingPluginChannel(this, "BungeeCord", new PluginMessage(this));
+        }else getLogger().info("BungeeCord disabled");
 
         if(isVaultEnabled()){
 
