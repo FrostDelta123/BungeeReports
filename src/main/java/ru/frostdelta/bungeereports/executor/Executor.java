@@ -1,5 +1,8 @@
 package ru.frostdelta.bungeereports.executor;
 
+import com.google.common.io.ByteArrayDataOutput;
+import com.google.common.io.ByteStreams;
+import net.milkbowl.vault.chat.Chat;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -8,16 +11,23 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import ru.frostdelta.bungeereports.CanReport;
 import ru.frostdelta.bungeereports.Loader;
+import ru.frostdelta.bungeereports.Network;
 import ru.frostdelta.bungeereports.NonBungee;
+import ru.frostdelta.bungeereports.action.Action;
 import ru.frostdelta.bungeereports.gui.GetReportsUI;
 import ru.frostdelta.bungeereports.hash.HashedLists;
 import ru.frostdelta.bungeereports.pluginMessage.GetPlayerCount;
 import ru.frostdelta.bungeereports.spectate.SpectateManager;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Executor extends SpectateManager implements CommandExecutor {
+
+    private static HashMap<String, Action> actionQueue = new HashMap<>();
+    private static HashMap<String, String> requestQueue = new HashMap<>();
 
     private Loader plugin;
 
@@ -35,6 +45,41 @@ public class Executor extends SpectateManager implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender s, Command cmd, String st, String[] args) {
+
+        Network db = new Network();
+
+        Player player = (Player) s;
+
+        if (cmd.getName().equalsIgnoreCase("screen") && player.hasPermission("bungeereports.screen")) {
+            Player targetPlayer = plugin.getServer().getPlayer(args[0]);
+            if (targetPlayer.isOnline()) {
+                if (cmd.getName().equalsIgnoreCase("screen")) {
+                    requestQueue.put(targetPlayer.getName(), player.getName());
+                    actionQueue.put(targetPlayer.getName(), Action.SCREENSHOT);
+                    ByteArrayDataOutput out = ByteStreams.newDataOutput();
+                    out.writeUTF(Action.SCREENSHOT.getActionName());
+                    out.writeUTF(plugin.getConfig().getString("mod.clientID"));
+                    sendMessage(targetPlayer, out);
+                    if(plugin.isDebugEnabled()){
+                        s.sendMessage(ChatColor.RED + "Сообщение моду отпралвено");
+                    }
+                }
+                if (cmd.getName().equalsIgnoreCase("getscreens")) {
+                    String screenshots = db.getScreenshots(targetPlayer.getName());
+                    if (!screenshots.isEmpty()) {
+                        ByteArrayDataOutput out = ByteStreams.newDataOutput();
+                        out.writeUTF(Action.SCREENSHOTS.getActionName());
+                        out.writeUTF(targetPlayer.getName());
+                        out.writeUTF(db.getScreenshots(targetPlayer.getName()));
+                        sendMessage(player, out);
+                    } else {
+                        sendMessage(player, "&cДля начала сделай скрин его экрана.");
+                    }
+                }
+            } else {
+                sendMessage(player, "&cИгрок " + targetPlayer + " оффлайн!");
+            }
+        }
 
         if(cmd.getName().equalsIgnoreCase("br") && args.length == 1 && args[0].equals("reload")){
 
@@ -94,6 +139,22 @@ public class Executor extends SpectateManager implements CommandExecutor {
             }
         }else plugin.getLogger().severe("For players only!");
         return true;
+    }
+
+    public static HashMap<String, Action> getActionQueue() {
+        return actionQueue;
+    }
+
+    public static HashMap<String, String> getRequestQueue() {
+        return requestQueue;
+    }
+
+    public void sendMessage(Player p, String msg) {
+        p.sendMessage(("&f[&bBungeeReports&f] " + msg).replace("&", "§"));
+    }
+
+    private void sendMessage(Player p, ByteArrayDataOutput buffer) {
+        p.sendPluginMessage(plugin, "AntiCheat", buffer.toByteArray());
     }
 
     public static List<Player> getSenders(){

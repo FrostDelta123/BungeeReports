@@ -35,8 +35,56 @@ public class Network {
             preparedStatements.put("purge", connection.prepareStatement("DELETE FROM `reports` WHERE `sender`=? AND `solved`=?"));
 
 
+            //Проверить данные
+            preparedStatements.put("addScreenshot",
+                    connection.prepareStatement(
+                            "INSERT INTO `screenshots` (player, screenshots) VALUES (?,?)"
+                                    + " ON DUPLICATE KEY "
+                                    + "UPDATE screenshots = IF(player=?,CONCAT(screenshots,?),screenshots);"));
+            preparedStatements.put("getScreenshots", connection.prepareStatement("SELECT screenshots FROM screenshots WHERE player=?;"));
+
         }
 
+    }
+
+    public void addScreenshot(String player, String screenID) {
+        PreparedStatement addScreenshot = preparedStatements.get("addScreenshot");
+
+        try {
+            addScreenshot.setString(1, player);
+            addScreenshot.setString(2, screenID);
+            addScreenshot.setString(3, player);
+            addScreenshot.setString(4, ";" +screenID);
+
+            addScreenshot.executeUpdate();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    public String getScreenshots(String player) {
+        PreparedStatement getScreenshots = preparedStatements.get("getScreenshots");
+
+        ResultSet rs = null;
+        try {
+            getScreenshots.setString(1, player);
+
+            rs = getScreenshots.executeQuery();
+            while (rs.next()) {
+                return rs.getString("screenshots");
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        } finally {
+            if (rs != null) {
+                try {
+                    rs.close();
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            }
+        }
+        return "";
     }
 
     public void customReward(String table, String money, String playerCol, double amount, String player, String conUrl, String user, String pass){
@@ -62,7 +110,7 @@ public class Network {
 
             statement = connection.createStatement();
             String sql = "CREATE TABLE IF NOT EXISTS `reports` (sender varchar(200), player varchar(200), reason varchar(200), comment varchar(200), solved varchar(200)) CHARACTER SET utf8 COLLATE utf8_general_ci";
-
+            //Заебенить автосоздание
             statement.executeUpdate(sql);
 
             System.out.println("Database created!");

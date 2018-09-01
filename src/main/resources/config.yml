@@ -4,6 +4,15 @@
 #false по умолчанию
 debug: false
 
+
+#Использовать мод на скриншоты экрана игроков
+#Мод на версию 1.7.10
+#false по умолчанию
+mod:
+  enabled: false
+  #ID imgur клиента
+  clientID: 02a329b6070b1e3
+
 #Данные для подключения к базе данных.
 url: jdbc:mysql://localhost:3306/test
 username: test

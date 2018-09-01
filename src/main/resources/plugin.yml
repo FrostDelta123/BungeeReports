@@ -16,3 +16,7 @@ commands:
     permission: bungeereports.spectate
   spectateoff:
     permission: bungeereports.spectate
+  screen:
+    permission: bungeereports.screen
+  getscreens:
+    permission: bungeereports.getscreens

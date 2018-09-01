@@ -2,7 +2,6 @@ package ru.frostdelta.bungeereports;
 
 import com.avaje.ebean.EbeanServer;
 import org.bukkit.Bukkit;
-import org.bukkit.plugin.java.JavaPlugin;
 import ru.endlesscode.inspector.bukkit.plugin.PluginLifecycle;
 import ru.frostdelta.bungeereports.executor.Executor;
 import ru.frostdelta.bungeereports.hash.HashedLists;
@@ -33,6 +32,7 @@ public class Loader extends PluginLifecycle {
     private boolean spectateEnabled;
     private boolean debugEnabled;
     private boolean bungee;
+    private boolean modEnabled;
     private List<String> whitelist = new ArrayList<String>();
 
     public int rewardAmount;
@@ -60,6 +60,7 @@ public class Loader extends PluginLifecycle {
         db.password = getConfig().getString("password");
         bungee = getConfig().getBoolean("bungee.enabled");
         executor.bungee = getConfig().getBoolean("bungee.enabled");
+        modEnabled = getConfig().getBoolean("mod.enabled");
 
         /*try {
             db.openConnection();
@@ -105,7 +106,13 @@ public class Loader extends PluginLifecycle {
         if(isBungee()) {
             this.getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
             this.getServer().getMessenger().registerIncomingPluginChannel(this, "BungeeCord", new PluginMessage(this));
+
         }else getLogger().info("BungeeCord disabled");
+
+        if(isModEnabled()){
+            this.getServer().getMessenger().registerOutgoingPluginChannel(this, "AntiCheat");
+            this.getServer().getMessenger().registerIncomingPluginChannel(this, "AntiCheat", new PluginMessage(this));
+        }
 
         if(isVaultEnabled()){
 
@@ -121,11 +128,18 @@ public class Loader extends PluginLifecycle {
 
 
         getServer().getPluginManager().registerEvents(new EventHandler(this), this);
-        getCommand("report").setExecutor(executor);
-        getCommand("getreports").setExecutor(executor);
-        getCommand("br").setExecutor(executor);
-        getCommand("spectate").setExecutor(executor);
-        getCommand("spectateoff").setExecutor(executor);
+        try {
+            getCommand("report").setExecutor(executor);
+            getCommand("getreports").setExecutor(executor);
+            getCommand("br").setExecutor(executor);
+            getCommand("spectate").setExecutor(executor);
+            getCommand("spectateoff").setExecutor(executor);
+            getCommand("screen").setExecutor(executor);
+            getCommand("getscreens").setExecutor(executor);
+        }catch (NullPointerException e){
+            e.printStackTrace();
+            getLogger().severe("Вы получили пизды.");
+        }
     }
 
 
@@ -145,6 +159,10 @@ public class Loader extends PluginLifecycle {
         this.uuid = plugin.getConfig().getBoolean("customreward.uuid");
         this.whitelist = plugin.getConfig().getStringList("whitelist");
         this.spectateEnabled = plugin.getConfig().getBoolean("spectate");
+    }
+
+    public Boolean isModEnabled(){
+        return modEnabled;
     }
 
     public Boolean isVaultEnabled(){

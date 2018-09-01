@@ -1,6 +1,8 @@
 package ru.frostdelta.bungeereports;
 
 
+import com.google.common.io.ByteArrayDataOutput;
+import com.google.common.io.ByteStreams;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -11,7 +13,10 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
+import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import ru.frostdelta.bungeereports.action.Action;
+import ru.frostdelta.bungeereports.executor.Executor;
 import ru.frostdelta.bungeereports.gui.PunishUI;
 import ru.frostdelta.bungeereports.gui.ReasonsUI;
 import ru.frostdelta.bungeereports.hash.HashedLists;
@@ -59,6 +64,15 @@ public class EventHandler extends SpectateManager implements Listener {
             super.spectateOff(player);
             super.getTarget().remove(e.getPlayer());
             player.sendMessage(ChatColor.RED + "Игрок вышел из игры!");
+        }
+    }
+
+
+
+    @org.bukkit.event.EventHandler
+    public void onLogout(PlayerQuitEvent e) {
+        if (Executor.getRequestQueue().containsKey(e.getPlayer().getName())) {
+            Executor.getActionQueue().remove(e.getPlayer().getName());
         }
     }
 
