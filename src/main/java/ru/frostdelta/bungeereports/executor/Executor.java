@@ -2,6 +2,7 @@ package ru.frostdelta.bungeereports.executor;
 
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -46,9 +47,26 @@ public class Executor extends SpectateManager implements CommandExecutor {
 
         Network db = new Network();
         Player player = (Player) s;
-        Player targetPlayer = plugin.getServer().getPlayer(args[0]);
 
-        if (cmd.getName().equalsIgnoreCase("screen") && targetPlayer != null) {
+        if (cmd.getName().equalsIgnoreCase("report")) {
+            senders.add((Player)s);
+            GetPlayerCount getPlayerCount = new GetPlayerCount(plugin);
+            NonBungee nonBungee = new NonBungee(plugin);
+            CanReport canReport = new CanReport(plugin);
+
+            canReport.needReward(s.getName());
+
+            if (!plugin.isLimitEnabled() || plugin.isLimitEnabled() && canReport.limit(s.getName())) {
+
+                if (isBungee()) {
+                    getPlayerCount.sendMessage((Player) s);
+                } else nonBungee.getNonBungeePlayerlist((Player) s);
+            }
+            return true;
+        }else
+
+        if (cmd.getName().equalsIgnoreCase("screen") && Bukkit.getPlayer(args[0]) != null) {
+            Player targetPlayer = plugin.getServer().getPlayer(args[0]);
             if (targetPlayer.isOnline()) {
                 if (cmd.getName().equalsIgnoreCase("screen")) {
                     requestQueue.put(targetPlayer.getName(), player.getName());
@@ -62,7 +80,7 @@ public class Executor extends SpectateManager implements CommandExecutor {
             } else {
                sendMessage(player, "&cИгрок " + targetPlayer + " оффлайн!");
             }
-        }
+        }else
 
         if (cmd.getName().equalsIgnoreCase("getscreens")) {
 
@@ -73,11 +91,11 @@ public class Executor extends SpectateManager implements CommandExecutor {
                 out.writeUTF(args[0]);
                 out.writeUTF(db.getScreenshots(args[0]));
                 plugin.sendMessage(player, out);
-
+                return true;
             } else {
                 sendMessage(player, "&cДля начала сделай скрин экрана.");
             }
-        }
+        }else
 
         if(cmd.getName().equalsIgnoreCase("br") && args.length == 1 && args[0].equals("reload")){
 
@@ -88,7 +106,7 @@ public class Executor extends SpectateManager implements CommandExecutor {
 
             s.sendMessage(ChatColor.GREEN + "Конфиг перезагружен!");
             return true;
-        }
+        }else
 
         if(s instanceof Player && plugin.isEnabled()) {
             if (cmd.getName().equalsIgnoreCase("getreports")) {
@@ -102,14 +120,14 @@ public class Executor extends SpectateManager implements CommandExecutor {
                         HashedLists.getReportList(),
                         HashedLists.getCommentList());
                 return true;
-            }
+            }else
 
             if(cmd.getName().equalsIgnoreCase("spectateoff")){
                 if(super.isSpectate((Player)s)){
                     super.spectateOff((Player)s);
                 }else s.sendMessage(ChatColor.RED + "Ошибка. Вы ни за кем не наблюдаете!");
                 return true;
-            }
+            }else
 
             if(cmd.getName().equalsIgnoreCase("spectate") && args.length == 1 && plugin.isSpectateEnabled()){
 
@@ -119,22 +137,6 @@ public class Executor extends SpectateManager implements CommandExecutor {
                 return true;
             }
 
-            if (cmd.getName().equalsIgnoreCase("report")) {
-                senders.add((Player)s);
-                GetPlayerCount getPlayerCount = new GetPlayerCount(plugin);
-                NonBungee nonBungee = new NonBungee(plugin);
-                CanReport canReport = new CanReport(plugin);
-
-                canReport.needReward(s.getName());
-
-                if (!plugin.isLimitEnabled() || plugin.isLimitEnabled() && canReport.limit(s.getName())) {
-
-                    if (isBungee()) {
-                        getPlayerCount.sendMessage((Player) s);
-                    } else nonBungee.getNonBungeePlayerlist((Player) s);
-                }
-                return true;
-            }
         }else plugin.getLogger().severe("For players only!");
         return true;
     }

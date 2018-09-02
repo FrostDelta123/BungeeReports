@@ -37,6 +37,7 @@ public class Loader extends PluginLifecycle {
     private boolean debugEnabled;
     private boolean bungee;
     private boolean modEnabled;
+    private boolean isModUsed;
     private List<String> whitelist = new ArrayList<String>();
 
     public int rewardAmount;
@@ -65,6 +66,7 @@ public class Loader extends PluginLifecycle {
         bungee = getConfig().getBoolean("bungee.enabled");
         executor.bungee = getConfig().getBoolean("bungee.enabled");
         modEnabled = getConfig().getBoolean("mod.enabled");
+        isModUsed = getConfig().getBoolean("mod.use");
 
         /*try {
             db.openConnection();
@@ -113,10 +115,10 @@ public class Loader extends PluginLifecycle {
 
         }else getLogger().info("BungeeCord disabled");
 
-        //if(isModEnabled()){
+        if(isModEnabled()){
             this.getServer().getMessenger().registerOutgoingPluginChannel(this, "AntiCheat");
             this.getServer().getMessenger().registerIncomingPluginChannel(this, "AntiCheat", new AntiCheat(this));
-        //}
+        }
 
         if(isVaultEnabled()){
 
@@ -171,6 +173,10 @@ public class Loader extends PluginLifecycle {
             Bukkit.broadcastMessage(ChatColor.RED + "Сообщение моду отпралвено");
         }
 
+    }
+
+    public boolean isModUsed(){
+        return isModUsed;
     }
 
     public Boolean isModEnabled(){

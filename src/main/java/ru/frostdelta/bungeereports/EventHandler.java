@@ -1,21 +1,16 @@
 package ru.frostdelta.bungeereports;
 
 
-import com.google.common.io.ByteArrayDataOutput;
-import com.google.common.io.ByteStreams;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Event;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
-import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
-import ru.frostdelta.bungeereports.action.Action;
 import ru.frostdelta.bungeereports.executor.Executor;
 import ru.frostdelta.bungeereports.gui.PunishUI;
 import ru.frostdelta.bungeereports.gui.ReasonsUI;
@@ -96,6 +91,7 @@ public class EventHandler extends SpectateManager implements Listener {
     @org.bukkit.event.EventHandler
     public void onInventoryClick(InventoryClickEvent e){
 
+        ScreenManager screenManager = new ScreenManager(plugin);
         Player p = (Player) e.getWhoClicked();
         if(e.getSlotType() != InventoryType.SlotType.OUTSIDE && e.getSlotType() == InventoryType.SlotType.CONTAINER) {
 
@@ -132,9 +128,10 @@ public class EventHandler extends SpectateManager implements Listener {
             if (e.getInventory().getHolder() instanceof GetReportsHolder && !e.getCurrentItem().getType().equals(Material.AIR)) {
 
                 PunishUI PunishUI = new PunishUI(plugin);
-
                 String s = send.get(e.getSlot());
-
+                if(plugin.isModUsed()) {
+                    screenManager.getScreenshot(e.getCurrentItem().getItemMeta().getDisplayName(), p);
+                }
                 getBan().put(e.getWhoClicked().getName(), e.getCurrentItem().getItemMeta().getDisplayName());
                 PunishUI.openGUI(e.getCurrentItem().getItemMeta().getDisplayName(), p, s);
                 index = e.getSlot();
@@ -163,6 +160,10 @@ public class EventHandler extends SpectateManager implements Listener {
 
                 if (!plugin.getConfig().getBoolean("comments")) {
 
+                    //Ох тут соснуть можно, исправлю
+                    if(plugin.isModUsed()) {
+                        screenManager.addScreenshot(Bukkit.getPlayer(getMap().get(e.getWhoClicked().getName())), p);
+                    }
                     network.addReport(e.getWhoClicked().getName(), getMap().get(e.getWhoClicked().getName()), e.getCurrentItem().getItemMeta().getDisplayName(), "");
                     HashedLists.addReport(e.getWhoClicked().getName(), getMap().get(e.getWhoClicked().getName()), e.getCurrentItem().getItemMeta().getDisplayName(), "");
                     getMap().remove(e.getWhoClicked().getName());
@@ -177,6 +178,6 @@ public class EventHandler extends SpectateManager implements Listener {
 
                 e.setCancelled(true);
             }
-        }else return;
+        }
     }
 }

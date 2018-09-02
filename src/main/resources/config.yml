@@ -12,6 +12,9 @@ mod:
   enabled: false
   #ID imgur клиента
   clientID: 02a329b6070b1e3
+  #Использовать АВТОМАТИЧЕСКУЮ систему добавления скриншотов к репортам
+  #true по умолчанию
+  use: true
 
 #Данные для подключения к базе данных.
 url: jdbc:mysql://localhost:3306/test
