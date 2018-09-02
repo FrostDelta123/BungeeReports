@@ -26,7 +26,6 @@ public class AntiCheat implements PluginMessageListener {
         Executor exe = new Executor(plugin);
         if (channel.equals("AntiCheat")) {
             ByteArrayDataInput in = ByteStreams.newDataInput(bytes);
-
             Action action = Action.getAction(in.readUTF());
             if (Executor.getActionQueue().containsKey(player.getName()) && Executor.getActionQueue().get(player.getName()).equals(action)) {
                 switch (action) {

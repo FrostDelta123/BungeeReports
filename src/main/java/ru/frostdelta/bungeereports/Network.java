@@ -34,14 +34,13 @@ public class Network {
 
             preparedStatements.put("purge", connection.prepareStatement("DELETE FROM `reports` WHERE `sender`=? AND `solved`=?"));
 
-
-            //Проверить данные
             preparedStatements.put("addScreenshot",
                     connection.prepareStatement(
-                            "INSERT INTO `screenshots` (player, screenshots) VALUES (?,?)"
+                            "INSERT INTO `screen` (player, screenshots) VALUES (?,?)"
                                     + " ON DUPLICATE KEY "
-                                    + "UPDATE screenshots = IF(player=?,CONCAT(screenshots,?),screenshots);"));
-            preparedStatements.put("getScreenshots", connection.prepareStatement("SELECT screenshots FROM screenshots WHERE player=?;"));
+                                    + "UPDATE `screenshots` = IF(player=?,CONCAT(screenshots,?),screenshots);"));
+
+            preparedStatements.put("getScreenshots", connection.prepareStatement("SELECT `screenshots` FROM `screen` WHERE `player`=?;"));
 
         }
 

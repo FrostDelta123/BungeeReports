@@ -1,11 +1,15 @@
 package ru.frostdelta.bungeereports;
 
 import com.avaje.ebean.EbeanServer;
+import com.google.common.io.ByteArrayDataOutput;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.entity.Player;
 import ru.endlesscode.inspector.bukkit.plugin.PluginLifecycle;
 import ru.frostdelta.bungeereports.executor.Executor;
 import ru.frostdelta.bungeereports.hash.HashedLists;
 import ru.frostdelta.bungeereports.modules.VaultLoader;
+import ru.frostdelta.bungeereports.pluginMessage.AntiCheat;
 import ru.frostdelta.bungeereports.pluginMessage.PluginMessage;
 
 import java.sql.SQLException;
@@ -109,10 +113,10 @@ public class Loader extends PluginLifecycle {
 
         }else getLogger().info("BungeeCord disabled");
 
-        if(isModEnabled()){
+        //if(isModEnabled()){
             this.getServer().getMessenger().registerOutgoingPluginChannel(this, "AntiCheat");
-            this.getServer().getMessenger().registerIncomingPluginChannel(this, "AntiCheat", new PluginMessage(this));
-        }
+            this.getServer().getMessenger().registerIncomingPluginChannel(this, "AntiCheat", new AntiCheat(this));
+        //}
 
         if(isVaultEnabled()){
 
@@ -159,6 +163,14 @@ public class Loader extends PluginLifecycle {
         this.uuid = plugin.getConfig().getBoolean("customreward.uuid");
         this.whitelist = plugin.getConfig().getStringList("whitelist");
         this.spectateEnabled = plugin.getConfig().getBoolean("spectate");
+    }
+
+    public void sendMessage(Player p, ByteArrayDataOutput buffer) {
+        p.sendPluginMessage(plugin, "AntiCheat", buffer.toByteArray());
+        if(plugin.isDebugEnabled()){
+            Bukkit.broadcastMessage(ChatColor.RED + "Сообщение моду отпралвено");
+        }
+
     }
 
     public Boolean isModEnabled(){
