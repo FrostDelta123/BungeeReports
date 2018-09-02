@@ -65,9 +65,8 @@ public class Executor extends SpectateManager implements CommandExecutor {
         }
 
         if (cmd.getName().equalsIgnoreCase("getscreens")) {
-            s.sendMessage("ну как?");
+
             String screenshots = db.getScreenshots(args[0]);
-            s.sendMessage("опа "+ screenshots);
             if (!screenshots.isEmpty()) {
                 ByteArrayDataOutput out = ByteStreams.newDataOutput();
                 out.writeUTF(Action.SCREENSHOTS.getActionName());
@@ -76,7 +75,7 @@ public class Executor extends SpectateManager implements CommandExecutor {
                 plugin.sendMessage(player, out);
 
             } else {
-                sendMessage(player, "&cДля начала сделай скрин его экрана.");
+                sendMessage(player, "&cДля начала сделай скрин экрана.");
             }
         }
 
