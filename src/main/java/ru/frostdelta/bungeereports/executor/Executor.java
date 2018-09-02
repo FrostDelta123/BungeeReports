@@ -56,7 +56,7 @@ public class Executor extends SpectateManager implements CommandExecutor {
 
             canReport.needReward(s.getName());
 
-            if (!plugin.isLimitEnabled() || plugin.isLimitEnabled() && canReport.limit(s.getName())) {
+            if (!plugin.isLimitEnabled() || plugin.isLimitEnabled() && !canReport.limit(s.getName())) {
 
                 if (isBungee()) {
                     getPlayerCount.sendMessage((Player) s);
