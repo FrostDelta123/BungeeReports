@@ -12,13 +12,11 @@ import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import ru.frostdelta.bungeereports.executor.Executor;
+import ru.frostdelta.bungeereports.gui.BanReasons;
 import ru.frostdelta.bungeereports.gui.PunishUI;
 import ru.frostdelta.bungeereports.gui.ReasonsUI;
 import ru.frostdelta.bungeereports.hash.HashedLists;
-import ru.frostdelta.bungeereports.holders.GetReportsHolder;
-import ru.frostdelta.bungeereports.holders.PunishHolder;
-import ru.frostdelta.bungeereports.holders.ReasonHolder;
-import ru.frostdelta.bungeereports.holders.UserHolder;
+import ru.frostdelta.bungeereports.holders.*;
 import ru.frostdelta.bungeereports.spectate.SpectateManager;
 
 import java.util.HashMap;
@@ -93,7 +91,15 @@ public class EventHandler extends SpectateManager implements Listener {
 
         ScreenManager screenManager = new ScreenManager(plugin);
         Player p = (Player) e.getWhoClicked();
+
         if(e.getSlotType() != InventoryType.SlotType.OUTSIDE && e.getSlotType() == InventoryType.SlotType.CONTAINER) {
+
+            if(e.getInventory().getHolder() instanceof BanReasonsHolder && !e.getCurrentItem().getType().equals(Material.AIR)){
+
+                //ДОБАВИТЬ В БД ДАННЫЕ, ПОЛУЧИВ ИЗ ЭКЗЕМПЛЯРА КЛАССА ВСЕ ДАННЫЕ
+
+                e.setCancelled(true);
+            }else
 
             if (e.getInventory().getHolder() instanceof PunishHolder && !e.getCurrentItem().getType().equals(Material.AIR)) {
                 String s = p.getOpenInventory().getItem(4).getItemMeta().getDisplayName();
@@ -128,12 +134,18 @@ public class EventHandler extends SpectateManager implements Listener {
             if (e.getInventory().getHolder() instanceof GetReportsHolder && !e.getCurrentItem().getType().equals(Material.AIR)) {
 
                 PunishUI PunishUI = new PunishUI(plugin);
+                BanReasons banReasons = new BanReasons(plugin);
                 String s = send.get(e.getSlot());
-                if(plugin.isModUsed()) {
+                if(plugin.isModUsed() && plugin.isModEnabled()) {
                     screenManager.getScreenshot(e.getCurrentItem().getItemMeta().getDisplayName(), p);
                 }
                 getBan().put(e.getWhoClicked().getName(), e.getCurrentItem().getItemMeta().getDisplayName());
-                PunishUI.openGUI(e.getCurrentItem().getItemMeta().getDisplayName(), p, s);
+
+                if(!plugin.isBanSystemUsed()) {
+                    PunishUI.openGUI(e.getCurrentItem().getItemMeta().getDisplayName(), p, s);
+                }else{
+                    banReasons.openGUI(p);
+                }
                 index = e.getSlot();
 
                 e.setCancelled(true);
@@ -161,7 +173,7 @@ public class EventHandler extends SpectateManager implements Listener {
                 if (!plugin.getConfig().getBoolean("comments")) {
 
                     //Ох тут соснуть можно, исправлю
-                    if(plugin.isModUsed()) {
+                    if(plugin.isModUsed() && plugin.isModEnabled()) {
                         screenManager.addScreenshot(Bukkit.getPlayer(getMap().get(e.getWhoClicked().getName())), p);
                     }
                     network.addReport(e.getWhoClicked().getName(), getMap().get(e.getWhoClicked().getName()), e.getCurrentItem().getItemMeta().getDisplayName(), "");

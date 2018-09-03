@@ -16,7 +16,15 @@ mod:
   #true по умолчанию
   use: true
 
-#Данные для подключения к базе данных.
+
+#Баны, встроенные в плагин
+#true по умолчанию
+ban:
+  enabled: true
+  reasons:
+    - omg:12:ban
+
+
 url: jdbc:mysql://localhost:3306/test
 username: test
 password: test

@@ -38,6 +38,7 @@ public class Loader extends PluginLifecycle {
     private boolean bungee;
     private boolean modEnabled;
     private boolean isModUsed;
+    private boolean banSystemUsed;
     private List<String> whitelist = new ArrayList<String>();
 
     public int rewardAmount;
@@ -67,6 +68,7 @@ public class Loader extends PluginLifecycle {
         executor.bungee = getConfig().getBoolean("bungee.enabled");
         modEnabled = getConfig().getBoolean("mod.enabled");
         isModUsed = getConfig().getBoolean("mod.use");
+        banSystemUsed = getConfig().getBoolean("ban.enabled");
 
         /*try {
             db.openConnection();
@@ -175,7 +177,11 @@ public class Loader extends PluginLifecycle {
 
     }
 
-    public boolean isModUsed(){
+    public Boolean isBanSystemUsed(){
+        return banSystemUsed;
+    }
+
+    public Boolean isModUsed(){
         return isModUsed;
     }
 
