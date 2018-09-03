@@ -10,6 +10,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import ru.frostdelta.bungeereports.executor.Executor;
 import ru.frostdelta.bungeereports.gui.BanReasons;
@@ -19,7 +20,9 @@ import ru.frostdelta.bungeereports.hash.HashedLists;
 import ru.frostdelta.bungeereports.holders.*;
 import ru.frostdelta.bungeereports.spectate.SpectateManager;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class EventHandler extends SpectateManager implements Listener {
@@ -39,6 +42,8 @@ public class EventHandler extends SpectateManager implements Listener {
     private Map<String, String> map = new HashMap<>();
     private Map<String, String> ban = new HashMap<>();
     private Map<String, String> comment = new HashMap<>();
+    private List<Player> mutelist = new ArrayList<Player>();
+
     private static Map<Integer, String> send = new HashMap<>();
 
     public EventHandler(HashMap<Integer, String> sender) {
@@ -58,9 +63,23 @@ public class EventHandler extends SpectateManager implements Listener {
             super.getTarget().remove(e.getPlayer());
             player.sendMessage(ChatColor.RED + "Игрок вышел из игры!");
         }
+        if(mutelist.contains(e.getPlayer())){
+            mutelist.remove(e.getPlayer());
+        }
     }
 
 
+    //Сделать нормальные enum с типами банов, пока хуйня
+    @org.bukkit.event.EventHandler
+    public void checkBan(PlayerJoinEvent e){
+        String type = network.checkBan(e.getPlayer().getName());
+        if(type.equalsIgnoreCase("ban") || type.equalsIgnoreCase("tempban")){
+            e.getPlayer().kickPlayer(ChatColor.RED + "Вы забенены на сервере!");
+        }
+        if(type.equalsIgnoreCase("mute")){
+            mutelist.add(e.getPlayer());
+        }
+    }
 
     @org.bukkit.event.EventHandler
     public void onLogout(PlayerQuitEvent e) {
@@ -72,6 +91,10 @@ public class EventHandler extends SpectateManager implements Listener {
     @org.bukkit.event.EventHandler
     public void asyncChatEvent(AsyncPlayerChatEvent e){
         String player = e.getPlayer().getName();
+        if (mutelist.contains(e.getPlayer())){
+            e.setCancelled(true);
+            e.getPlayer().sendMessage(ChatColor.RED + "Вам запрещено писать в чат!");
+        }
        if(getComment().containsKey(player)){
            String reason = getComment().get(player);
            network.addReport(player, getMap().get(player),reason, e.getMessage());
@@ -96,7 +119,31 @@ public class EventHandler extends SpectateManager implements Listener {
 
             if(e.getInventory().getHolder() instanceof BanReasonsHolder && !e.getCurrentItem().getType().equals(Material.AIR)){
 
-                //ДОБАВИТЬ В БД ДАННЫЕ, ПОЛУЧИВ ИЗ ЭКЗЕМПЛЯРА КЛАССА ВСЕ ДАННЫЕ
+                if(e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase("Отклонить")){
+                    update.updateReport(getBan().get(p.getName()), e.getInventory().getName(), "reject");
+                    getBan().remove(p.getName());
+                    p.getOpenInventory().close();
+                    p.sendMessage(ChatColor.RED + "Репорт отклонён!");
+                    HashedLists.changeCount(index);
+                    e.setCancelled(true);
+                    return;
+                }
+
+                long time = BanReasons.getAPI().get(e.getCurrentItem().getItemMeta().getDisplayName()).getTime() * 60;
+                String type = BanReasons.getAPI().get(e.getCurrentItem().getItemMeta().getDisplayName()).getType();
+                time += System.currentTimeMillis()/1000;
+                network.addBan(getBan().get(p.getName()), System.currentTimeMillis()/1000,time, type);
+                if(Bukkit.getPlayer(getBan().get(p.getName())) != null && type.equals("ban") || type.equals("tempban")){
+                    Bukkit.getPlayer(getBan().get(p.getName())).kickPlayer(ChatColor.RED + "Вы забенены на сервере!");
+                }
+                if((Bukkit.getPlayer(getBan().get(p.getName())) != null && type.equals("mute"))){
+                    mutelist.add((Bukkit.getPlayer(getBan().get(p.getName()))));
+                }
+                update.updateReport(getBan().get(p.getName()), e.getInventory().getName(), "accept");
+                p.getOpenInventory().close();
+                p.sendMessage(ChatColor.GREEN + "Репорт принят");
+                HashedLists.changeCount(index);
+                getBan().remove(p.getName());
 
                 e.setCancelled(true);
             }else
@@ -144,7 +191,7 @@ public class EventHandler extends SpectateManager implements Listener {
                 if(!plugin.isBanSystemUsed()) {
                     PunishUI.openGUI(e.getCurrentItem().getItemMeta().getDisplayName(), p, s);
                 }else{
-                    banReasons.openGUI(p);
+                    banReasons.openGUI(p, s);
                 }
                 index = e.getSlot();
 

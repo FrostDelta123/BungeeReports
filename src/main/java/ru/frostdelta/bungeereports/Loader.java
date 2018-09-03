@@ -5,6 +5,7 @@ import com.google.common.io.ByteArrayDataOutput;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitScheduler;
 import ru.endlesscode.inspector.bukkit.plugin.PluginLifecycle;
 import ru.frostdelta.bungeereports.executor.Executor;
 import ru.frostdelta.bungeereports.hash.HashedLists;
@@ -95,6 +96,7 @@ public class Loader extends PluginLifecycle {
                     db.openConnection();
                     db.createDB();
                     HashedLists.loadReports();
+                    autoUnban();
                 } catch (SQLException e) {
                     getLogger().severe("ERROR! Cant load SQL, check config!");
                     getLogger().severe("PLUGIN DISABLED");
@@ -134,7 +136,6 @@ public class Loader extends PluginLifecycle {
             getLogger().info("Выдача наград невозможна!");
         }
 
-
         getServer().getPluginManager().registerEvents(new EventHandler(this), this);
         try {
             getCommand("report").setExecutor(executor);
@@ -148,8 +149,19 @@ public class Loader extends PluginLifecycle {
             e.printStackTrace();
             getLogger().severe("Вы получили пизды.");
         }
+
     }
 
+    public void autoUnban(){
+        BukkitScheduler scheduler = getServer().getScheduler();
+        scheduler.scheduleSyncRepeatingTask(this, new Runnable() {
+            @Override
+            public void run() {
+                long time = System.currentTimeMillis()/1000;
+                db.autoUnban(time);
+            }
+        }, 0L, 1200L);
+    }
 
     @Override
     public EbeanServer getDatabase() {

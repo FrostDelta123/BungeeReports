@@ -28,7 +28,7 @@ public class BanReasons {
 
     private static Map<String, ReasonAPI> reasonAPIMap = new HashMap<String, ReasonAPI>();
 
-    public void openGUI(Player moder) {
+    public void openGUI(Player moder, String sender) {
 
         ItemStack banButton = new ItemStack(Material.EYE_OF_ENDER);
         ItemMeta itemMeta = banButton.getItemMeta();
@@ -42,7 +42,7 @@ public class BanReasons {
             }
         }
 
-        Inventory inv = Bukkit.createInventory(new BanReasonsHolder(), slots, "BanReasons");
+        Inventory inv = Bukkit.createInventory(new BanReasonsHolder(), slots, sender);
 
         int x = 0;
         for(String name : plugin.getConfig().getStringList("ban.reasons")){
@@ -52,12 +52,21 @@ public class BanReasons {
             }
             getAPI().put(list.get(0), new ReasonAPI(list.get(0), Integer.parseInt(list.get(1)), list.get(2)));
             itemMeta.setDisplayName(list.get(0));
-            itemMeta.setLore(list);
+            ArrayList<String> lore = new ArrayList<String>();
+            lore.add("Время наказания (в минутах): " + getAPI().get(list.get(0)).getTime());
+            lore.add("Тип наказания: " + getAPI().get(list.get(0)).getType());
+            itemMeta.setLore(lore);
             banButton.setItemMeta(itemMeta);
             inv.setItem(x, banButton);
             x++;
         }
 
+        ItemStack rejectButton = new ItemStack(Material.REDSTONE_BLOCK);
+        ItemMeta meta = rejectButton.getItemMeta();
+        meta.setDisplayName("Отклонить");
+        rejectButton.setItemMeta(meta);
+
+        inv.setItem(x++, rejectButton);
         moder.openInventory(inv);
 
     }

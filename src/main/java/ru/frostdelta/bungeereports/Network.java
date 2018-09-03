@@ -42,8 +42,64 @@ public class Network {
 
             preparedStatements.put("getScreenshots", connection.prepareStatement("SELECT `screenshots` FROM `screen` WHERE `player`=?;"));
 
+            preparedStatements.put("checkBan", connection.prepareStatement("SELECT `type` FROM `banlist` WHERE player=?"));
+
+            preparedStatements.put("autoUnban", connection.prepareStatement("DELETE FROM `banlist` WHERE unbantime<? AND unbantime<>0"));
+
+            preparedStatements.put("addBan", connection.prepareStatement("INSERT INTO `banlist` (player, bantime, unbantime, type) VALUES (?,?,?,?) "));
         }
 
+    }
+
+    public void addBan(String player, long bantime, long unban, String type){
+        PreparedStatement addPunish = preparedStatements.get("addBan");
+        try {
+
+            addPunish.setString(1, player);
+            addPunish.setLong(2, bantime);
+            addPunish.setLong(3, unban);
+            addPunish.setString(4, type);
+
+            addPunish.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void autoUnban(long unban){
+        PreparedStatement autoUnban = preparedStatements.get("autoUnban");
+        try {
+            autoUnban.setLong(1,unban);
+
+            autoUnban.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public String checkBan(String player){
+        PreparedStatement checkBan = preparedStatements.get("checkBan");
+        ResultSet rs = null;
+        try {
+
+            checkBan.setString(1, player);
+
+            rs = checkBan.executeQuery();
+            while (rs.next()) {
+                return rs.getString("type");
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        } finally {
+            if (rs != null) {
+                try {
+                    rs.close();
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            }
+        }
+        return "";
     }
 
     public void addScreenshot(String player, String screenID) {
@@ -109,8 +165,10 @@ public class Network {
 
             statement = connection.createStatement();
             String sql = "CREATE TABLE IF NOT EXISTS `reports` (sender varchar(200), player varchar(200), reason varchar(200), comment varchar(200), solved varchar(200)) CHARACTER SET utf8 COLLATE utf8_general_ci";
+            String sql2 = "CREATE TABLE IF NOT EXISTS `banlist` (player varchar(200), bantime bigint(200), unbantime bigint(200), type varchar(200)) CHARACTER SET utf8 COLLATE utf8_general_ci";
             //Заебенить автосоздание
             statement.executeUpdate(sql);
+            statement.executeUpdate(sql2);
 
             System.out.println("Database created!");
 

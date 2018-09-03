@@ -21,8 +21,12 @@ mod:
 #true по умолчанию
 ban:
   enabled: true
+  #Выдача банов, пишется в формате причина:время_в минутах:тип_наказания
+  #Возможные типы:
+  #mute, ban, tempban
+  #ДЛЯ типа ban в мминутах указывайте 0
   reasons:
-    - omg:12:ban
+    - Example:10:ban
 
 
 url: jdbc:mysql://localhost:3306/test
