@@ -170,15 +170,25 @@ public class Loader extends PluginLifecycle {
 
 
     public void loadConfig(){
-        this.vaultEnabled = plugin.getConfig().getBoolean("vault.enabled");
-        this.rewardsEnabled = plugin.getConfig().getBoolean("reward.enabled");
-        this.customEnabled = plugin.getConfig().getBoolean("customreward.enabled");
-        this.limitEnabled = plugin.getConfig().getBoolean("limit.enabled");
-        this.rewardAmount = plugin.getConfig().getInt("reward.amount");
-        this.customRewardAmount = plugin.getConfig().getInt("customreward.amount");
-        this.uuid = plugin.getConfig().getBoolean("customreward.uuid");
-        this.whitelist = plugin.getConfig().getStringList("whitelist");
-        this.spectateEnabled = plugin.getConfig().getBoolean("spectate");
+
+        vaultEnabled = getConfig().getBoolean("vault.enabled");
+        rewardsEnabled = getConfig().getBoolean("reward.enabled");
+        customEnabled = getConfig().getBoolean("customreward.enabled");
+        limitEnabled = getConfig().getBoolean("limit.enabled");
+        rewardAmount = getConfig().getInt("reward.amount");
+        customRewardAmount = getConfig().getInt("customreward.amount");
+        uuid = getConfig().getBoolean("customreward.uuid");
+        whitelist = getConfig().getStringList("whitelist");
+        spectateEnabled = getConfig().getBoolean("spectate");
+        debugEnabled = getConfig().getBoolean("debug");
+        db.url = getConfig().getString("url");
+        db.username = getConfig().getString("username");
+        db.password = getConfig().getString("password");
+        bungee = getConfig().getBoolean("bungee.enabled");
+        executor.bungee = getConfig().getBoolean("bungee.enabled");
+        modEnabled = getConfig().getBoolean("mod.enabled");
+        isModUsed = getConfig().getBoolean("mod.use");
+        banSystemUsed = getConfig().getBoolean("ban.enabled");
     }
 
     public void sendMessage(Player p, ByteArrayDataOutput buffer) {
