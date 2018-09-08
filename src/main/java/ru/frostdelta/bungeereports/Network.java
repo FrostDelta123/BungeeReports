@@ -53,8 +53,9 @@ public class Network {
     }
 
     public void addBan(String player, long bantime, long unban, String type) {
-        PreparedStatement addPunish = preparedStatements.get("addBan");
         try {
+            openConnection();
+            PreparedStatement addPunish = preparedStatements.get("addBan");
             addPunish.setString(1, player);
             addPunish.setLong(2, bantime);
             addPunish.setLong(3, unban);
@@ -62,22 +63,28 @@ public class Network {
             addPunish.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
         }
     }
 
     public void autoUnban(long unban) {
-        PreparedStatement autoUnban = preparedStatements.get("autoUnban");
         try {
+            openConnection();
+            PreparedStatement autoUnban = preparedStatements.get("autoUnban");
             autoUnban.setLong(1, unban);
             autoUnban.executeUpdate();
         } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
     }
 
     public String checkBan(String player) {
-        PreparedStatement checkBan = preparedStatements.get("checkBan");
         try {
+            openConnection();
+            PreparedStatement checkBan = preparedStatements.get("checkBan");
             checkBan.setString(1, player);
             try (ResultSet rs = checkBan.executeQuery()) {
                 if (rs.next()) {
@@ -86,13 +93,16 @@ public class Network {
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
         }
         return "";
     }
 
     public void addScreenshot(String player, String screenID) {
-        PreparedStatement addScreenshot = preparedStatements.get("addScreenshot");
         try {
+            openConnection();
+            PreparedStatement addScreenshot = preparedStatements.get("addScreenshot");
             addScreenshot.setString(1, player);
             addScreenshot.setString(2, screenID);
             addScreenshot.setString(3, player);
@@ -100,12 +110,15 @@ public class Network {
             addScreenshot.executeUpdate();
         } catch (SQLException ex) {
             ex.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
         }
     }
 
     public String getScreenshots(String player) {
-        PreparedStatement getScreenshots = preparedStatements.get("getScreenshots");
         try {
+            openConnection();
+            PreparedStatement getScreenshots = preparedStatements.get("getScreenshots");
             getScreenshots.setString(1, player);
             try (ResultSet rs = getScreenshots.executeQuery()) {
                 if (rs.next()) {
@@ -114,6 +127,8 @@ public class Network {
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
         }
         return "";
     }
@@ -121,11 +136,14 @@ public class Network {
     public void customReward(String table, String money, String playerCol, double amount,
                              String player, String conUrl, String user, String pass) {
         try {
+           openConnection();
            Connection con = DriverManager.getConnection(conUrl + "?useUnicode=true&characterEncoding=UTF-8", user, pass);
            Statement sql = con.createStatement();
            sql.executeUpdate("UPDATE " + table +
                    "SET " + money + " = " + money + " + " + amount + " WHERE " + playerCol + " = '" + player + "'");
         } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
     }
@@ -133,6 +151,7 @@ public class Network {
 
     public void createDB() {
         try {
+            openConnection();
             Statement statement = connection.createStatement();
             String sql = "CREATE TABLE IF NOT EXISTS `reports` (sender varchar(200), player varchar(200), reason varchar(200), comment varchar(200), solved varchar(200)) CHARACTER SET utf8 COLLATE utf8_general_ci";
             String sql2 = "CREATE TABLE IF NOT EXISTS `banlist` (player varchar(200), bantime bigint(200), unbantime bigint(200), type varchar(200)) CHARACTER SET utf8 COLLATE utf8_general_ci";
@@ -147,23 +166,29 @@ public class Network {
             } else {
                 sqlException.printStackTrace();
             }
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
         }
     }
 
     public void purge(String sender, String solved) {
-        PreparedStatement purge = preparedStatements.get("purge");
         try {
+            openConnection();
+            PreparedStatement purge = preparedStatements.get("purge");
             purge.setString(1, sender);
             purge.setString(2, solved);
             purge.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
         }
     }
 
     public int playerReports(String sender, String solved) {
-        PreparedStatement playerReports = preparedStatements.get("playerReports");
         try {
+            openConnection();
+            PreparedStatement playerReports = preparedStatements.get("playerReports");
             playerReports.setString(1, sender);
             playerReports.setString(2, solved);
             try (ResultSet rs = playerReports.executeQuery()) {
@@ -173,13 +198,16 @@ public class Network {
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
         }
         return 0;
     }
 
     public void updateReport(String solved, String player, String sender) {
-        PreparedStatement updateReport = preparedStatements.get("updateReport");
         try {
+            openConnection();
+            PreparedStatement updateReport = preparedStatements.get("updateReport");
             updateReport.setString(1, solved );
             updateReport.setString(2, player );
             updateReport.setString(3, sender);
@@ -187,14 +215,17 @@ public class Network {
             updateReport.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
         }
     }
 
 
     public ArrayList<String> reportList(String col) {
-        PreparedStatement reportList = preparedStatements.get("reportList");
-        ArrayList<String> list = new ArrayList<String>();
         try {
+            openConnection();
+            PreparedStatement reportList = preparedStatements.get("reportList");
+            ArrayList<String> list = new ArrayList<String>();
             reportList.setString(1, "no" );
             try (ResultSet rs = reportList.executeQuery()) {
                 while (rs.next()) {
@@ -205,13 +236,16 @@ public class Network {
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
         }
         return null;
     }
 
     public int totalReports() {
-        PreparedStatement totalReports = preparedStatements.get("totalReports");
         try {
+            openConnection();
+            PreparedStatement totalReports = preparedStatements.get("totalReports");
             totalReports.setString(1, "no");
             try (ResultSet rs = totalReports.executeQuery()) {
                 if (rs.next()) {
@@ -220,13 +254,16 @@ public class Network {
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
         }
         return 0;
     }
 
     public void addReport(String sender, String player, String reason, String comment) {
-        PreparedStatement addReport = preparedStatements.get("addReport");
         try {
+            openConnection();
+            PreparedStatement addReport = preparedStatements.get("addReport");
             addReport.setString(1, sender);
             addReport.setString(2, player);
             addReport.setString(3, reason);
@@ -234,6 +271,8 @@ public class Network {
             addReport.setString(5, "no");
             addReport.executeUpdate();
         } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
     }
