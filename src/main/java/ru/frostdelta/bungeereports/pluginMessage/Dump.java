@@ -18,8 +18,8 @@ public class Dump  implements PluginMessageListener {
     @Override
     public void onPluginMessageReceived(String channel, Player player, byte[] bytes) {
         try {
-            plugin.getLogger().info("File created in folder " + plugin.getDataFolder().getAbsolutePath()+"/"+player.getUniqueId().toString()+".txt");
-            FileUtils.writeByteArrayToFile(new File(plugin.getDataFolder().getAbsolutePath()+"/"+player.getUniqueId().toString()+".txt"),bytes);
+            plugin.getLogger().info("File created in folder " + plugin.getDataFolder().getAbsolutePath()+"/dump/"+player.getUniqueId().toString()+".txt");
+            FileUtils.writeByteArrayToFile(new File(plugin.getDataFolder().getAbsolutePath()+"/dump/"+player.getUniqueId().toString()+".txt"),bytes);
         } catch (IOException e) {
             plugin.getLogger().severe("ERROR!");
             e.printStackTrace();

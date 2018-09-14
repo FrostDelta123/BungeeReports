@@ -150,6 +150,7 @@ public class Loader extends PluginLifecycle {
             getCommand("screen").setExecutor(executor);
             getCommand("getscreens").setExecutor(executor);
             getCommand("dump").setExecutor(executor);
+            getCommand("getdump").setExecutor(executor);
         }catch (NullPointerException e){
             e.printStackTrace();
         }

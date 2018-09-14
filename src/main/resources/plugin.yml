@@ -22,3 +22,5 @@ commands:
     permission: bungeereports.getscreens
   dump:
     permission: bungeereports.dump
+  getdump:
+    permission: bungeereports.dump

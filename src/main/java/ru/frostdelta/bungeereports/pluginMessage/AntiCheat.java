@@ -2,7 +2,6 @@ package ru.frostdelta.bungeereports.pluginMessage;
 
 import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteStreams;
-import org.apache.commons.io.FileUtils;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.messaging.PluginMessageListener;
 import ru.frostdelta.bungeereports.Loader;

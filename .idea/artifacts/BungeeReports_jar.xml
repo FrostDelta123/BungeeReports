@@ -3,6 +3,7 @@
     <output-path>$PROJECT_DIR$/out/artifacts/BungeeReports_jar</output-path>
     <root id="archive" name="BungeeReports.jar">
       <element id="module-output" name="BungeeReports" />
+      <element id="dir-copy" path="$PROJECT_DIR$/../libs/apachelib" />
     </root>
   </artifact>
 </component>

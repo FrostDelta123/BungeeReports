@@ -4,6 +4,7 @@ import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -18,6 +19,9 @@ import ru.frostdelta.bungeereports.hash.HashedLists;
 import ru.frostdelta.bungeereports.pluginMessage.GetPlayerCount;
 import ru.frostdelta.bungeereports.spectate.SpectateManager;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -50,6 +54,28 @@ public class Executor extends SpectateManager implements CommandExecutor {
         Network db = new Network();
         Player player = (Player) s;
 
+        if(cmd.getName().equalsIgnoreCase("getdump") && args.length == 1){
+            OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(args[0]);
+            File file = new File(plugin.getDataFolder().getAbsolutePath()+"/dump/"+offlinePlayer.getUniqueId().toString()+".txt");
+            if(!file.exists()){
+                s.sendMessage(ChatColor.RED + "Dump not found!");
+                return true;
+            }
+            ByteArrayDataOutput out = ByteStreams.newDataOutput();
+            out.writeUTF(Action.DUMPS.getActionName());
+            byte[] fileContent = new byte[0];
+            try {
+                fileContent = Files.readAllBytes(file.toPath());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            out.writeUTF(file.getName());
+            out.write(fileContent);
+            plugin.sendDump(player, out);
+            file.delete();
+            return true;
+        }else
+
         if(cmd.getName().equalsIgnoreCase("dump")){
             if(args.length == 1 && Bukkit.getServer().getPlayer(args[0]) != null){
 
@@ -59,6 +85,8 @@ public class Executor extends SpectateManager implements CommandExecutor {
               ByteArrayDataOutput out = ByteStreams.newDataOutput();
               out.writeUTF(Action.PROCESS.getActionName());
               plugin.sendDump(dumped, out);
+              s.sendMessage(ChatColor.GREEN + "Dump created");
+              return true;
             }else s.sendMessage(ChatColor.RED + "Ошибка выполнения команды");
         }else
 
