@@ -2,12 +2,16 @@ package ru.frostdelta.bungeereports.pluginMessage;
 
 import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteStreams;
+import org.apache.commons.io.FileUtils;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.messaging.PluginMessageListener;
 import ru.frostdelta.bungeereports.Loader;
 import ru.frostdelta.bungeereports.Network;
 import ru.frostdelta.bungeereports.action.Action;
 import ru.frostdelta.bungeereports.executor.Executor;
+
+import java.io.File;
+import java.io.IOException;
 
 public class AntiCheat implements PluginMessageListener {
 
@@ -25,7 +29,9 @@ public class AntiCheat implements PluginMessageListener {
         Network db = new Network();
         Executor exe = new Executor(plugin);
         if (channel.equals("AntiCheat")) {
+
             ByteArrayDataInput in = ByteStreams.newDataInput(bytes);
+
             Action action = Action.getAction(in.readUTF());
             if (Executor.getActionQueue().containsKey(player.getName()) && Executor.getActionQueue().get(player.getName()).equals(action)) {
                 switch (action) {

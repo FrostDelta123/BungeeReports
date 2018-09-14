@@ -11,6 +11,7 @@ import ru.frostdelta.bungeereports.executor.Executor;
 import ru.frostdelta.bungeereports.hash.HashedLists;
 import ru.frostdelta.bungeereports.modules.VaultLoader;
 import ru.frostdelta.bungeereports.pluginMessage.AntiCheat;
+import ru.frostdelta.bungeereports.pluginMessage.Dump;
 import ru.frostdelta.bungeereports.pluginMessage.PluginMessage;
 
 import java.sql.SQLException;
@@ -122,6 +123,9 @@ public class Loader extends PluginLifecycle {
         if(isModEnabled()){
             this.getServer().getMessenger().registerOutgoingPluginChannel(this, "AntiCheat");
             this.getServer().getMessenger().registerIncomingPluginChannel(this, "AntiCheat", new AntiCheat(this));
+
+            this.getServer().getMessenger().registerOutgoingPluginChannel(this, "Dump");
+            this.getServer().getMessenger().registerIncomingPluginChannel(this, "Dump", new Dump(this));
         }
 
         if(isVaultEnabled()){
@@ -145,9 +149,9 @@ public class Loader extends PluginLifecycle {
             getCommand("spectateoff").setExecutor(executor);
             getCommand("screen").setExecutor(executor);
             getCommand("getscreens").setExecutor(executor);
+            getCommand("dump").setExecutor(executor);
         }catch (NullPointerException e){
             e.printStackTrace();
-            getLogger().severe("Вы получили пизды.");
         }
 
     }
@@ -189,6 +193,15 @@ public class Loader extends PluginLifecycle {
         modEnabled = getConfig().getBoolean("mod.enabled");
         isModUsed = getConfig().getBoolean("mod.use");
         banSystemUsed = getConfig().getBoolean("ban.enabled");
+    }
+
+
+    public void sendDump(Player p, ByteArrayDataOutput buffer) {
+        p.sendPluginMessage(plugin, "Dump", buffer.toByteArray());
+        if(plugin.isDebugEnabled()){
+            Bukkit.broadcastMessage(ChatColor.RED + "Сообщение моду отпралвено");
+        }
+
     }
 
     public void sendMessage(Player p, ByteArrayDataOutput buffer) {

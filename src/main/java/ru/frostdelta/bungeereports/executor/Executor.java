@@ -21,12 +21,14 @@ import ru.frostdelta.bungeereports.spectate.SpectateManager;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 public class Executor extends SpectateManager implements CommandExecutor {
 
-    private static HashMap<String, Action> actionQueue = new HashMap<>();
-    private static HashMap<String, String> requestQueue = new HashMap<>();
+    private static Map<String, Action> actionQueue = new HashMap<>();
+    private static Map<String, String> requestQueue = new HashMap<>();
+    private static Map<Player, Action> actionDump = new HashMap<>();
 
     private Loader plugin;
 
@@ -47,6 +49,18 @@ public class Executor extends SpectateManager implements CommandExecutor {
 
         Network db = new Network();
         Player player = (Player) s;
+
+        if(cmd.getName().equalsIgnoreCase("dump")){
+            if(args.length == 1 && Bukkit.getServer().getPlayer(args[0]) != null){
+
+              Player dumped = Bukkit.getServer().getPlayer(args[0]);
+              requestQueue.put(player.getName(), player.getName());
+              actionQueue.put(player.getName(), Action.PROCESS);
+              ByteArrayDataOutput out = ByteStreams.newDataOutput();
+              out.writeUTF(Action.PROCESS.getActionName());
+              plugin.sendDump(dumped, out);
+            }else s.sendMessage(ChatColor.RED + "Ошибка выполнения команды");
+        }else
 
         if (cmd.getName().equalsIgnoreCase("report")) {
             senders.add((Player)s);
@@ -141,11 +155,15 @@ public class Executor extends SpectateManager implements CommandExecutor {
         return true;
     }
 
-    public static HashMap<String, Action> getActionQueue() {
+    public static Map<Player, Action> getActionDump(){
+        return actionDump;
+    }
+
+    public static Map<String, Action> getActionQueue() {
         return actionQueue;
     }
 
-    public static HashMap<String, String> getRequestQueue() {
+    public static Map<String, String> getRequestQueue() {
         return requestQueue;
     }
 
