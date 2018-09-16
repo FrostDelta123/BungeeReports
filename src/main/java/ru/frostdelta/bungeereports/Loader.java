@@ -4,9 +4,12 @@ import com.avaje.ebean.EbeanServer;
 import com.google.common.io.ByteArrayDataOutput;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitScheduler;
 import ru.endlesscode.inspector.bukkit.plugin.PluginLifecycle;
+import ru.frostdelta.bungeereports.chat.ChatLogger;
 import ru.frostdelta.bungeereports.executor.Executor;
 import ru.frostdelta.bungeereports.hash.HashedLists;
 import ru.frostdelta.bungeereports.modules.VaultLoader;
@@ -14,16 +17,18 @@ import ru.frostdelta.bungeereports.pluginMessage.AntiCheat;
 import ru.frostdelta.bungeereports.pluginMessage.Dump;
 import ru.frostdelta.bungeereports.pluginMessage.PluginMessage;
 
+import java.io.File;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Loader extends PluginLifecycle {
+/**
+ *
+ * @author FrostDelta123
+ */
 
-    /**
-     *
-     * @author FrostDelta123
-     */
+public class Loader extends PluginLifecycle {
 
 
     Loader plugin = this;
@@ -45,13 +50,22 @@ public class Loader extends PluginLifecycle {
 
     public int rewardAmount;
     public int customRewardAmount;
-
+    private FileConfiguration log;
 
     @Override
     public void onEnable(){
 
 
         this.saveDefaultConfig();
+        File chatlog = new File(this.getDataFolder(), "chatlog.yml");
+        if(!chatlog.exists()){
+            try {
+                chatlog.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        log = YamlConfiguration.loadConfiguration(chatlog);
 
         vaultEnabled = getConfig().getBoolean("vault.enabled");
         rewardsEnabled = getConfig().getBoolean("reward.enabled");
@@ -126,7 +140,7 @@ public class Loader extends PluginLifecycle {
 
             this.getServer().getMessenger().registerOutgoingPluginChannel(this, "Dump");
             this.getServer().getMessenger().registerIncomingPluginChannel(this, "Dump", new Dump(this));
-        }
+        }else getLogger().info("Mod disabled");
 
         if(isVaultEnabled()){
 
@@ -141,6 +155,7 @@ public class Loader extends PluginLifecycle {
         }
 
         getServer().getPluginManager().registerEvents(new EventHandler(this), this);
+        getServer().getPluginManager().registerEvents(new ChatLogger(this), this);
         try {
             getCommand("report").setExecutor(executor);
             getCommand("getreports").setExecutor(executor);
@@ -155,6 +170,10 @@ public class Loader extends PluginLifecycle {
             e.printStackTrace();
         }
 
+    }
+
+    public FileConfiguration getLogConfig() {
+        return log;
     }
 
     public void autoUnban(){
