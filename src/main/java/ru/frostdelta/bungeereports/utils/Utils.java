@@ -2,7 +2,7 @@ package ru.frostdelta.bungeereports.utils;
 
 public class Utils {
 
-    //Потом будет enum, наверное
+    //Потом будет enum, наверное. Или нет
     public static String SEND_MOD_MESSAGE;// = config.getString("send-mod-message").replaceAll("'","");
     public static String DUMP_NOT_FOUND;// = config.getString("dump-not-found").replaceAll("'","");
     public static String DUMP_CREATED;// = config.getString("dump-created").replaceAll("'","");
