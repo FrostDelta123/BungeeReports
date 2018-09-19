@@ -9,8 +9,6 @@ import ru.frostdelta.bungeereports.Network;
 import ru.frostdelta.bungeereports.action.Action;
 import ru.frostdelta.bungeereports.executor.Executor;
 
-import java.io.File;
-import java.io.IOException;
 
 public class AntiCheat implements PluginMessageListener {
 

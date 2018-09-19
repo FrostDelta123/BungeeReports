@@ -6,10 +6,10 @@ import org.bukkit.SkullType;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 import ru.frostdelta.bungeereports.Loader;
 import ru.frostdelta.bungeereports.holders.UserHolder;
+import ru.frostdelta.bungeereports.utils.Utils;
 
 public class UserUI {
 
@@ -25,6 +25,7 @@ public class UserUI {
 
     public Inventory openGUI(Player p, int count, String[] playerList) {
 
+
         int slots = 9;
         while (count > slots) {
             slots = slots + 9;
@@ -33,7 +34,7 @@ public class UserUI {
             }
         }
 
-        Inventory inv = Bukkit.createInventory(new UserHolder(), slots, "Reports");
+        Inventory inv = Bukkit.createInventory(new UserHolder(), slots, Utils.REPORTS_INV_NAME);
 
                 int x = 0;
 

@@ -4,6 +4,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import ru.frostdelta.bungeereports.Loader;
 import ru.frostdelta.bungeereports.modules.VaultLoader;
+import ru.frostdelta.bungeereports.utils.Utils;
 
 public class GiveReward {
 
@@ -18,13 +19,11 @@ public class GiveReward {
 
     public void getReward(Player p){
 
-
-
         if(plugin.isVaultEnabled()){
 
             VaultLoader.economy.depositPlayer(p, plugin.getRewardAmount());
 
-            p.sendMessage(ChatColor.GREEN + "Вам была выдана награда в размере " + plugin.getRewardAmount() + " за корректное использование репорт-системы!");
+            p.sendMessage(Utils.REWARD_MESSAGE + plugin.getRewardAmount());
 
         }else plugin.getLogger().info("Vault выключен, выдача наград невозможна!");
 

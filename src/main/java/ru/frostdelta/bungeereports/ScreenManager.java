@@ -6,6 +6,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import ru.frostdelta.bungeereports.action.Action;
 import ru.frostdelta.bungeereports.executor.Executor;
+import ru.frostdelta.bungeereports.utils.Utils;
 
 public class ScreenManager {
 
@@ -26,11 +27,12 @@ public class ScreenManager {
             plugin.sendMessage(targetPlayer, out);
 
         } else {
-            player.sendMessage(ChatColor.RED + "&cИгрок " + targetPlayer + " оффлайн!");
+            player.sendMessage(ChatColor.RED + "&cPlayer " + targetPlayer + " оffline!");
         }
     }
 
     public void getScreenshot(String name, Player player){
+
         Network db = new Network();
         String screenshots = db.getScreenshots(name);
         if (!screenshots.isEmpty()) {
@@ -41,7 +43,7 @@ public class ScreenManager {
             plugin.sendMessage(player, out);
 
         } else {
-            player.sendMessage(ChatColor.RED + "&cДля начала сделай скрин экрана.");
+            player.sendMessage(Utils.SCREEN_CMMAND_ERROR);
         }
     }
 

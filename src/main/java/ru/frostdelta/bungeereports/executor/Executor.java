@@ -3,7 +3,6 @@ package ru.frostdelta.bungeereports.executor;
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -18,6 +17,7 @@ import ru.frostdelta.bungeereports.gui.GetReportsUI;
 import ru.frostdelta.bungeereports.hash.HashedLists;
 import ru.frostdelta.bungeereports.pluginMessage.GetPlayerCount;
 import ru.frostdelta.bungeereports.spectate.SpectateManager;
+import ru.frostdelta.bungeereports.utils.Utils;
 
 import java.io.File;
 import java.io.IOException;
@@ -28,7 +28,7 @@ import java.util.List;
 import java.util.Map;
 
 
-public class Executor extends SpectateManager implements CommandExecutor {
+public class Executor implements CommandExecutor {
 
     private static Map<String, Action> actionQueue = new HashMap<>();
     private static Map<String, String> requestQueue = new HashMap<>();
@@ -58,7 +58,7 @@ public class Executor extends SpectateManager implements CommandExecutor {
             OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(args[0]);
             File file = new File(plugin.getDataFolder().getAbsolutePath()+"/dump/"+offlinePlayer.getUniqueId().toString()+".txt");
             if(!file.exists()){
-                s.sendMessage(ChatColor.RED + "Dump not found!");
+                s.sendMessage(Utils.DUMP_NOT_FOUND);
                 return true;
             }
             ByteArrayDataOutput out = ByteStreams.newDataOutput();
@@ -85,9 +85,9 @@ public class Executor extends SpectateManager implements CommandExecutor {
               ByteArrayDataOutput out = ByteStreams.newDataOutput();
               out.writeUTF(Action.PROCESS.getActionName());
               plugin.sendDump(dumped, out);
-              s.sendMessage(ChatColor.GREEN + "Dump created");
+              s.sendMessage(Utils.DUMP_CREATED);
               return true;
-            }else s.sendMessage(ChatColor.RED + "Ошибка выполнения команды");
+            }else s.sendMessage(Utils.DUMP_COMMAND_ERROR);
         }else
 
         if (cmd.getName().equalsIgnoreCase("report")) {
@@ -135,7 +135,7 @@ public class Executor extends SpectateManager implements CommandExecutor {
                 plugin.sendMessage(player, out);
                 return true;
             } else {
-                sendMessage(player, "&cДля начала сделай скрин экрана.");
+                player.sendMessage(Utils.SCREEN_CMMAND_ERROR);
             }
         }else
 
@@ -146,11 +146,12 @@ public class Executor extends SpectateManager implements CommandExecutor {
 
             plugin.loadConfig();
 
-            s.sendMessage(ChatColor.GREEN + "Конфиг перезагружен!");
+            s.sendMessage(Utils.CONFIG_RELOADED);
             return true;
         }else
 
         if(s instanceof Player && plugin.isEnabled()) {
+            SpectateManager spectateManager = new SpectateManager(plugin);
             if (cmd.getName().equalsIgnoreCase("getreports")) {
 
                 GetReportsUI getReportsUI = new GetReportsUI(plugin);
@@ -165,17 +166,17 @@ public class Executor extends SpectateManager implements CommandExecutor {
             }else
 
             if(cmd.getName().equalsIgnoreCase("spectateoff")){
-                if(super.isSpectate((Player)s)){
-                    super.spectateOff((Player)s);
-                }else s.sendMessage(ChatColor.RED + "Ошибка. Вы ни за кем не наблюдаете!");
+                if(spectateManager.isSpectate((Player)s)){
+                    spectateManager.spectateOff((Player)s);
+                }else s.sendMessage(Utils.SPECTATE_ERROR);
                 return true;
             }else
 
             if(cmd.getName().equalsIgnoreCase("spectate") && args.length == 1 && plugin.isSpectateEnabled()){
 
                 if(plugin.getServer().getPlayer(args[0]) != null){
-                    super.setSpectate((Player)s, plugin.getServer().getPlayer(args[0]));
-                }else s.sendMessage(ChatColor.DARK_RED + "Игрок не найден!");
+                    spectateManager.setSpectate((Player)s, plugin.getServer().getPlayer(args[0]));
+                }else s.sendMessage(Utils.PLAYER_NOT_FOUND);
                 return true;
             }
 

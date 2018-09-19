@@ -29,8 +29,10 @@ public class ChatLogger implements Listener {
         if(getLeatestChatMessages().size() > plugin.getConfig().getInt("chat.limit")){
             getLeatestChatMessages().add(e.getPlayer().getName() + ": " + e.getMessage());
         }else {
-            getLeatestChatMessages().remove(0);
-            getLeatestChatMessages().add(e.getPlayer().getName() + ": " + e.getMessage());
+            if (!getLeatestChatMessages().isEmpty()) {
+                getLeatestChatMessages().remove(0);
+                getLeatestChatMessages().add(e.getPlayer().getName() + ": " + e.getMessage());
+            }
         }
         if(getChatLog().containsKey(player)){
             if(plugin.getConfig().getInt("chat.limit") > getChatLog().get(player).size()){

@@ -29,9 +29,9 @@ ban:
     - Example:10:ban
 
 #Данные для подключение к базе данных
-url: jdbc:mysql://localhost:3306/test
-username: test
-password: test
+url: 'jdbc:mysql://localhost:3306/test'
+username: 'test'
+password: 'test'
 
 #Лимит логов чата
 #ВНИМАНИЕ
@@ -109,3 +109,36 @@ customreward:
 limit:
   enabled: true
   limit: 10
+
+
+messages:
+  config-reload: 'Конфиг перезагружен!'
+  send-mod-message: 'Сообщение моду отпралвено'
+  dump-not-found: 'Dump not found!'
+  dump-created: 'Dump created!'
+  dump-command-error: 'Ошибка выполнения команды'
+  screen-command-error: 'Для начала сделай скрин экрана'
+  player-not-found: 'Игрок не найден!'
+  spectate-command-error: 'Ошибка. Вы ни за кем не наблюдаете!'
+  ban-type: 'Тип наказания: '
+  ban-time: 'Время наказания (в минутах): '
+  reject: 'Отклонить'
+  accept: 'Приянть'
+  report-sender: 'Репорт отправлен'
+  report-reason: 'Причина'
+  report-comment: 'Комментарий'
+  report-accept: 'Репорт принят'
+  report-reject: 'Репорт отклонён'
+  no-reports: 'В данный момент активных репортов нет!'
+  getreports-inv-name: 'GetReports'
+  punish-inv-name: 'Punish Menu'
+  reasons-inv-name: 'Reasons'
+  reports-inv-name: 'Reports'
+  spectate: 'Наблюдать'
+  reward-message: 'Вам была выдана награда за корректное использование репорт-системы в размере:'
+  spectate-toggle-off: 'Наблюдение выключено!'
+  spectate-player: 'Вы наблюдаете за игроком: '
+  ban-message: 'Вы забенены на сервере!'
+  mute-message: 'Вам запрещено писать в чат!'
+  chat-comment: 'Введите комментарий в чат!'
+  success-report: 'Репорт успешно отправлен!'

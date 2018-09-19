@@ -4,6 +4,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import ru.frostdelta.bungeereports.Loader;
 import ru.frostdelta.bungeereports.Network;
+import ru.frostdelta.bungeereports.utils.Utils;
 
 public class GiveCustomReward {
 
@@ -35,7 +36,7 @@ public class GiveCustomReward {
             IsUUID.getUUID(table, moneyCol, nameCol, player);
         }
 
-        Bukkit.getPlayer(player).sendMessage(ChatColor.GREEN + "Вам была выдана награда в размере " + plugin.getRewardAmount() + " за корректное использование репорт-системы!");
+        Bukkit.getPlayer(player).sendMessage(Utils.REWARD_MESSAGE + plugin.getRewardAmount());
 
     }
 

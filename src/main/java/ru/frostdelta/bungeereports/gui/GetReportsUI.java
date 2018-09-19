@@ -10,6 +10,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import ru.frostdelta.bungeereports.EventHandler;
 import ru.frostdelta.bungeereports.Loader;
 import ru.frostdelta.bungeereports.holders.GetReportsHolder;
+import ru.frostdelta.bungeereports.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -38,7 +39,7 @@ public class GetReportsUI {
                 }
             }
 
-            Inventory inv = Bukkit.createInventory(new GetReportsHolder(), slots, "GetReports");
+            Inventory inv = Bukkit.createInventory(new GetReportsHolder(), slots, Utils.GET_REPORTS_INV_NAME);
 
 
 
@@ -50,9 +51,9 @@ public class GetReportsUI {
 
                 ArrayList<String> lore = new ArrayList<String>();
 
-                lore.add("Репорт отправлен: " + senderList.get(x));
-                lore.add("Причина: " + reasonList.get(x));
-                lore.add("Комментарий: " + comment.get(x));
+                lore.add(Utils.REPORT_SENDER + senderList.get(x));
+                lore.add(Utils.REPORT_REASON + reasonList.get(x));
+                lore.add(Utils.REPORT_COMMENT + comment.get(x));
                 itemMeta.setLore(lore);
 
 
@@ -65,7 +66,7 @@ public class GetReportsUI {
             //Какой же это костыль, самому стыдно.
             EventHandler handler = new EventHandler(sender);
             p.openInventory(inv);
-        }else p.sendMessage(ChatColor.GREEN + "В данный момент активных репортов нет!");
+        }else p.sendMessage(Utils.NO_REPORTS);
 
     }
 

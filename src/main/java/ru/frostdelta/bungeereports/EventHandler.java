@@ -19,13 +19,14 @@ import ru.frostdelta.bungeereports.gui.ReasonsUI;
 import ru.frostdelta.bungeereports.hash.HashedLists;
 import ru.frostdelta.bungeereports.holders.*;
 import ru.frostdelta.bungeereports.spectate.SpectateManager;
+import ru.frostdelta.bungeereports.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class EventHandler extends SpectateManager implements Listener {
+public class EventHandler implements Listener {
 
     private Loader plugin;
     private int index;
@@ -57,11 +58,12 @@ public class EventHandler extends SpectateManager implements Listener {
 
     @org.bukkit.event.EventHandler(priority = EventPriority.LOW)
     public void playerDisconnect(PlayerQuitEvent e){
-        if(super.isTarget(e.getPlayer())){
-            Player player = (Player)super.getTarget().get(e.getPlayer());
-            super.spectateOff(player);
-            super.getTarget().remove(e.getPlayer());
-            player.sendMessage(ChatColor.RED + "Игрок вышел из игры!");
+        SpectateManager spectateManager = new SpectateManager(plugin);
+        if(spectateManager.isTarget(e.getPlayer())){
+            Player player = (Player)spectateManager.getTarget().get(e.getPlayer());
+            spectateManager.spectateOff(player);
+            spectateManager.getTarget().remove(e.getPlayer());
+            player.sendMessage(ChatColor.RED + "Player leave the game");
         }
         if(mutelist.contains(e.getPlayer())){
             mutelist.remove(e.getPlayer());
@@ -74,7 +76,7 @@ public class EventHandler extends SpectateManager implements Listener {
     public void checkBan(PlayerJoinEvent e){
         String type = network.checkBan(e.getPlayer().getName());
         if(type.equalsIgnoreCase("ban") || type.equalsIgnoreCase("tempban")){
-            e.getPlayer().kickPlayer(ChatColor.RED + "Вы забенены на сервере!");
+            e.getPlayer().kickPlayer(Utils.BAN_MESSAGE);
         }
         if(type.equalsIgnoreCase("mute")){
             mutelist.add(e.getPlayer());
@@ -93,7 +95,7 @@ public class EventHandler extends SpectateManager implements Listener {
         String player = e.getPlayer().getName();
         if (mutelist.contains(e.getPlayer())){
             e.setCancelled(true);
-            e.getPlayer().sendMessage(ChatColor.RED + "Вам запрещено писать в чат!");
+            e.getPlayer().sendMessage(Utils.MUTE_MESSAGE);
         }
        if(getComment().containsKey(player)){
            String reason = getComment().get(player);
@@ -102,7 +104,7 @@ public class EventHandler extends SpectateManager implements Listener {
            getComment().remove(player);
 
            HashedLists.loadReports();
-           e.getPlayer().sendMessage(ChatColor.GREEN + "Репорт успешно отправлен!");
+           e.getPlayer().sendMessage(Utils.SUCCESS_REPORT);
 
            e.setCancelled(true);
        }
@@ -119,11 +121,11 @@ public class EventHandler extends SpectateManager implements Listener {
 
             if(e.getInventory().getHolder() instanceof BanReasonsHolder && !e.getCurrentItem().getType().equals(Material.AIR)){
 
-                if(e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase("Отклонить")){
+                if(e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase(Utils.REJECT)){
                     update.updateReport(getBan().get(p.getName()), e.getInventory().getName(), "reject");
                     getBan().remove(p.getName());
                     p.getOpenInventory().close();
-                    p.sendMessage(ChatColor.RED + "Репорт отклонён!");
+                    p.sendMessage(Utils.REPORT_REJECT);
                     HashedLists.changeCount(index);
                     e.setCancelled(true);
                     return;
@@ -134,14 +136,14 @@ public class EventHandler extends SpectateManager implements Listener {
                 time += System.currentTimeMillis()/1000;
                 network.addBan(getBan().get(p.getName()), System.currentTimeMillis()/1000,time, type);
                 if(Bukkit.getPlayer(getBan().get(p.getName())) != null && type.equals("ban") || type.equals("tempban")){
-                    Bukkit.getPlayer(getBan().get(p.getName())).kickPlayer(ChatColor.RED + "Вы забенены на сервере!");
+                    Bukkit.getPlayer(getBan().get(p.getName())).kickPlayer(Utils.BAN_MESSAGE);
                 }
                 if((Bukkit.getPlayer(getBan().get(p.getName())) != null && type.equals("mute"))){
                     mutelist.add((Bukkit.getPlayer(getBan().get(p.getName()))));
                 }
                 update.updateReport(getBan().get(p.getName()), e.getInventory().getName(), "accept");
                 p.getOpenInventory().close();
-                p.sendMessage(ChatColor.GREEN + "Репорт принят");
+                p.sendMessage(Utils.REPORT_ACCEPT);
                 HashedLists.changeCount(index);
                 getBan().remove(p.getName());
 
@@ -150,26 +152,26 @@ public class EventHandler extends SpectateManager implements Listener {
 
             if (e.getInventory().getHolder() instanceof PunishHolder && !e.getCurrentItem().getType().equals(Material.AIR)) {
                 String s = p.getOpenInventory().getItem(4).getItemMeta().getDisplayName();
-               
-                switch(e.getCurrentItem().getItemMeta().getDisplayName()){
-                    case "Принять":
+                SpectateManager sp = new SpectateManager(plugin);
+                switch(e.getSlot()){
+                    case 2:
                         update.updateReport(getBan().get(p.getName()), s, "accept");
                         getBan().remove(p.getName());
                         p.getOpenInventory().close();
-                        p.sendMessage(ChatColor.GREEN + "Репорт принят");
+                        p.sendMessage(Utils.REPORT_ACCEPT);
                         HashedLists.changeCount(index);
                         break;
-                    case "Отклонить":
+                    case 6:
                         update.updateReport(getBan().get(p.getName()), s, "reject");
                         getBan().remove(p.getName());
                         p.getOpenInventory().close();
-                        p.sendMessage(ChatColor.RED + "Репорт отклонён!");
+                        p.sendMessage(Utils.REPORT_REJECT);
                         HashedLists.changeCount(index);
                         break;
-                    case "Наблюдать":
-                        if(Bukkit.getServer().getPlayer(getBan().get(p.getName())) != null && !isSpectate(p)){
+                    case 8:
+                        if(Bukkit.getServer().getPlayer(getBan().get(p.getName())) != null && !sp.isSpectate(p)){
                             Player target = Bukkit.getServer().getPlayer(getBan().get(p.getName()));
-                            setSpectate(p,target);
+                            sp.setSpectate(p,target);
                             p.getOpenInventory().close();
                         }
                         break;
@@ -227,12 +229,12 @@ public class EventHandler extends SpectateManager implements Listener {
                     HashedLists.addReport(e.getWhoClicked().getName(), getMap().get(e.getWhoClicked().getName()), e.getCurrentItem().getItemMeta().getDisplayName(), "");
                     getMap().remove(e.getWhoClicked().getName());
                     e.getWhoClicked().getOpenInventory().close();
-                    p.sendMessage(ChatColor.GREEN + "Репорт успешно отправлен!");
+                    p.sendMessage(Utils.SUCCESS_REPORT);
 
                 } else {
                     getComment().put(e.getWhoClicked().getName(), e.getCurrentItem().getItemMeta().getDisplayName());
                     e.getWhoClicked().getOpenInventory().close();
-                    e.getWhoClicked().sendMessage(ChatColor.RED + "Введите комментарий в чат!");
+                    e.getWhoClicked().sendMessage(Utils.CHAT_COMMENT);
                 }
 
                 e.setCancelled(true);

@@ -9,6 +9,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import ru.frostdelta.bungeereports.Loader;
 import ru.frostdelta.bungeereports.ReasonAPI;
 import ru.frostdelta.bungeereports.holders.BanReasonsHolder;
+import ru.frostdelta.bungeereports.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -53,8 +54,8 @@ public class BanReasons {
             getAPI().put(list.get(0), new ReasonAPI(list.get(0), Integer.parseInt(list.get(1)), list.get(2)));
             itemMeta.setDisplayName(list.get(0));
             ArrayList<String> lore = new ArrayList<String>();
-            lore.add("Время наказания (в минутах): " + getAPI().get(list.get(0)).getTime());
-            lore.add("Тип наказания: " + getAPI().get(list.get(0)).getType());
+            lore.add(Utils.PUNISH_TIME + getAPI().get(list.get(0)).getTime());
+            lore.add(Utils.PUNISH_TYPE  + getAPI().get(list.get(0)).getType());
             itemMeta.setLore(lore);
             banButton.setItemMeta(itemMeta);
             inv.setItem(x, banButton);
@@ -63,7 +64,7 @@ public class BanReasons {
 
         ItemStack rejectButton = new ItemStack(Material.REDSTONE_BLOCK);
         ItemMeta meta = rejectButton.getItemMeta();
-        meta.setDisplayName("Отклонить");
+        meta.setDisplayName(Utils.REJECT);
         rejectButton.setItemMeta(meta);
 
         inv.setItem(x++, rejectButton);
