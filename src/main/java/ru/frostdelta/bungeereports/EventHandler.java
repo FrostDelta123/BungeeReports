@@ -12,6 +12,7 @@ import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import ru.frostdelta.bungeereports.chat.PasteBinAPI;
 import ru.frostdelta.bungeereports.executor.Executor;
 import ru.frostdelta.bungeereports.gui.BanReasons;
 import ru.frostdelta.bungeereports.gui.PunishUI;
@@ -39,6 +40,7 @@ public class EventHandler implements Listener {
 
     private final Network network = new Network();
     private final UpdateReport update = new UpdateReport();
+    private final SpectateManager spectateManager = new SpectateManager(plugin);
 
     private Map<String, String> map = new HashMap<>();
     private Map<String, String> ban = new HashMap<>();
@@ -58,7 +60,6 @@ public class EventHandler implements Listener {
 
     @org.bukkit.event.EventHandler(priority = EventPriority.LOW)
     public void playerDisconnect(PlayerQuitEvent e){
-        SpectateManager spectateManager = new SpectateManager(plugin);
         if(spectateManager.isTarget(e.getPlayer())){
             Player player = (Player)spectateManager.getTarget().get(e.getPlayer());
             spectateManager.spectateOff(player);

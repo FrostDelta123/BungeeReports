@@ -10,6 +10,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitScheduler;
 import ru.endlesscode.inspector.bukkit.plugin.PluginLifecycle;
 import ru.frostdelta.bungeereports.chat.ChatLogger;
+import ru.frostdelta.bungeereports.chat.PasteBinAPI;
 import ru.frostdelta.bungeereports.executor.Executor;
 import ru.frostdelta.bungeereports.hash.HashedLists;
 import ru.frostdelta.bungeereports.modules.VaultLoader;
