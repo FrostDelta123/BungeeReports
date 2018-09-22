@@ -3,14 +3,12 @@ package ru.frostdelta.bungeereports;
 import com.avaje.ebean.EbeanServer;
 import com.google.common.io.ByteArrayDataOutput;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitScheduler;
 import ru.endlesscode.inspector.bukkit.plugin.PluginLifecycle;
 import ru.frostdelta.bungeereports.chat.ChatLogger;
-import ru.frostdelta.bungeereports.chat.PasteBinAPI;
 import ru.frostdelta.bungeereports.executor.Executor;
 import ru.frostdelta.bungeereports.hash.HashedLists;
 import ru.frostdelta.bungeereports.modules.VaultLoader;
@@ -34,7 +32,7 @@ public class Loader extends PluginLifecycle {
 
     Utils Utils;
     Loader plugin = this;
-    Network db = new Network();
+    Network db = new Network(this);
     private boolean vaultEnabled;
     private boolean rewardsEnabled;
     private boolean customEnabled;
@@ -166,6 +164,7 @@ public class Loader extends PluginLifecycle {
             getCommand("getscreens").setExecutor(executor);
             getCommand("dump").setExecutor(executor);
             getCommand("getdump").setExecutor(executor);
+            getCommand("getlogs").setExecutor(executor);
         }catch (NullPointerException e){
             e.printStackTrace();
         }

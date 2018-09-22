@@ -19,8 +19,10 @@ commands:
   screen:
     permission: bungeereports.screen
   getscreens:
-    permission: bungeereports.getscreens
+    permission: bungeereports.screen
   dump:
     permission: bungeereports.dump
   getdump:
     permission: bungeereports.dump
+  getlogs:
+    permission: bungeereports.admin

@@ -23,7 +23,7 @@ public class AntiCheat implements PluginMessageListener {
     @Override
     public void onPluginMessageReceived(String channel, Player player, byte[] bytes) {
 
-        Network db = new Network();
+        Network db = new Network(plugin);
         Executor exe = new Executor(plugin);
         if (channel.equals("AntiCheat")) {
 

@@ -12,7 +12,6 @@ import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
-import ru.frostdelta.bungeereports.chat.PasteBinAPI;
 import ru.frostdelta.bungeereports.executor.Executor;
 import ru.frostdelta.bungeereports.gui.BanReasons;
 import ru.frostdelta.bungeereports.gui.PunishUI;
@@ -31,14 +30,14 @@ public class EventHandler implements Listener {
 
     private Loader plugin;
     private int index;
-
+    private Network network;
     public EventHandler(Loader instance){
 
         plugin = instance;
-
+        network = new Network(plugin);
     }
 
-    private final Network network = new Network();
+
     private final UpdateReport update = new UpdateReport();
     private final SpectateManager spectateManager = new SpectateManager(plugin);
 
@@ -52,10 +51,10 @@ public class EventHandler implements Listener {
     public EventHandler(HashMap<Integer, String> sender) {
         EventHandler.send = sender;
     }
-    public Map<String, String> getBan(){
+    private Map<String, String> getBan(){
         return ban;
     }
-    public Map<String, String> getMap(){return map;}
+    private Map<String, String> getMap(){return map;}
     public Map<String, String> getComment(){return comment;}
 
     @org.bukkit.event.EventHandler(priority = EventPriority.LOW)

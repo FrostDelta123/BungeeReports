@@ -51,8 +51,13 @@ public class Executor implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender s, Command cmd, String st, String[] args) {
 
-        Network db = new Network();
+        Network db = new Network(plugin);
         Player player = (Player) s;
+
+        if(cmd.getName().equalsIgnoreCase("getlogs") && args.length == 2){
+            File log = new File(plugin.getDataFolder().getAbsolutePath()+"/logs/" + args[0] + "/" + args[1] +".txt");
+            //ДОДЕЛАТЬ
+        }else
 
         if(cmd.getName().equalsIgnoreCase("getdump") && args.length == 1){
             OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(args[0]);

@@ -16,7 +16,7 @@ public class GiveCustomReward {
 
     }
 
-   private Network Network = new Network();
+   private Network Network = new Network(plugin);
 
     public void giveCustomReward(String player){
 

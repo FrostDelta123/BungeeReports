@@ -26,7 +26,7 @@ public class ChatLogger implements Listener {
     @EventHandler
     public void onChat(AsyncPlayerChatEvent e){
         Player player = e.getPlayer();
-        if(getLeatestChatMessages().size() > plugin.getConfig().getInt("chat.limit")){
+        if(getLeatestChatMessages().size() < plugin.getConfig().getInt("chat.limit")){
             getLeatestChatMessages().add(e.getPlayer().getName() + ": " + e.getMessage());
         }else {
             if (!getLeatestChatMessages().isEmpty()) {

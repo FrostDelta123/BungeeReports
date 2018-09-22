@@ -1,5 +1,11 @@
 package ru.frostdelta.bungeereports;
 
+import org.bukkit.Bukkit;
+import ru.frostdelta.bungeereports.chat.ChatLogger;
+
+import java.io.File;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.sql.Statement;
 import java.sql.ResultSet;
 import java.sql.Connection;
@@ -14,6 +20,15 @@ public class Network {
     public String url, username, password;
     private static HashMap<String, PreparedStatement> preparedStatements = new HashMap<>();
     private Connection connection;
+
+    Loader plugin;
+    public Network(Loader instance){
+        plugin = instance;
+    }
+
+    public Network() {
+
+    }
 
     public void openConnection() throws SQLException, ClassNotFoundException {
         if (connection != null && !connection.isClosed()) {
@@ -239,7 +254,31 @@ public class Network {
             addReport.setString(4, comment);
             addReport.setString(5, "no");
             addReport.executeUpdate();
+            if(plugin.getConfig().getBoolean("chat.log")){
+                File playerFolder = new File(plugin.getDataFolder().getAbsolutePath()+"/logs/" + player);
+                if (!playerFolder.exists()) {
+                    playerFolder.mkdirs();
+                }
+                File log = new File(plugin.getDataFolder().getAbsolutePath()+"/logs/" + player + "/" + sender +".txt");
+                PrintWriter pw = new PrintWriter(log);
+                pw.println(player + "'s messages:");
+                if(!ChatLogger.getChatLog().get(Bukkit.getOfflinePlayer(player)).isEmpty()){
+                    pw.println("Empty log!");
+                    pw.close();
+                    return;
+                }
+                for(String var : ChatLogger.getChatLog().get(Bukkit.getOfflinePlayer(player))){
+                    pw.println(var);
+                }
+                pw.println("General chat messages:");
+                for(String var : ChatLogger.getLeatestChatMessages()){
+                    pw.println(var);
+                }
+                pw.close();
+            }
         } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
