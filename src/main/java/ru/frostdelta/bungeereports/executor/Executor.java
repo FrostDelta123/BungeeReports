@@ -19,8 +19,7 @@ import ru.frostdelta.bungeereports.pluginMessage.GetPlayerCount;
 import ru.frostdelta.bungeereports.spectate.SpectateManager;
 import ru.frostdelta.bungeereports.utils.Utils;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -55,8 +54,22 @@ public class Executor implements CommandExecutor {
         Player player = (Player) s;
 
         if(cmd.getName().equalsIgnoreCase("getlogs") && args.length == 2){
-            File log = new File(plugin.getDataFolder().getAbsolutePath()+"/logs/" + args[0] + "/" + args[1] +".txt");
-            //ДОДЕЛАТЬ
+            try {
+                File log = new File(plugin.getDataFolder().getAbsolutePath() + "/logs/" + args[0] + "/" + args[1] + ".txt");
+                FileInputStream fstream = new FileInputStream(log);
+                BufferedReader br = new BufferedReader(new InputStreamReader(fstream));
+                String strLine;
+                while ((strLine = br.readLine()) != null){
+                    s.sendMessage(strLine);
+                }
+                br.close();
+                log.delete();
+            }catch (FileNotFoundException e){
+                e.printStackTrace();
+            }
+            catch (IOException ex){
+                ex.printStackTrace();
+            }
         }else
 
         if(cmd.getName().equalsIgnoreCase("getdump") && args.length == 1){
