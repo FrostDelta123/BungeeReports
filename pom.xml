@@ -7,7 +7,7 @@
     <groupId>BungeeReports</groupId>
     <packaging>jar</packaging>
     <artifactId>BungeeReports</artifactId>
-    <version>4.2</version>
+    <version>4.3</version>
     <build>
         <plugins>
             <plugin>
