@@ -1,6 +1,6 @@
 name: BungeeReports
 main: ru.frostdelta.bungeereports.TrackedLoader
-version: 4.3
+version: 4.4
 authors: [FrostDelta123]
 description:
 depend:
