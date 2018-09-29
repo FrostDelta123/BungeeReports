@@ -10,11 +10,12 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 import java.util.stream.Collectors;
 
 public class PasteBinAPI {
 
-    public static String post(String input) throws IOException{
+    public static String post(List<String> input) throws IOException{
 
         Gson gson = new Gson();
         HttpURLConnection connection = (HttpURLConnection) new URL("https://hastebin.com/documents").openConnection();
@@ -28,7 +29,9 @@ public class PasteBinAPI {
         connection.connect();
         try (DataOutputStream dos = new DataOutputStream(connection.getOutputStream())){
 
-            dos.write(input.getBytes(StandardCharsets.UTF_8));
+            for(String in : input) {
+                dos.write(in.getBytes(StandardCharsets.UTF_8));
+            }
             dos.flush();
         }
 

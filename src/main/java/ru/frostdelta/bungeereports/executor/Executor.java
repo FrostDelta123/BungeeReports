@@ -13,6 +13,7 @@ import ru.frostdelta.bungeereports.Loader;
 import ru.frostdelta.bungeereports.Network;
 import ru.frostdelta.bungeereports.NonBungee;
 import ru.frostdelta.bungeereports.action.Action;
+import ru.frostdelta.bungeereports.chat.PasteBinAPI;
 import ru.frostdelta.bungeereports.gui.GetReportsUI;
 import ru.frostdelta.bungeereports.hash.HashedLists;
 import ru.frostdelta.bungeereports.pluginMessage.GetPlayerCount;
@@ -48,7 +49,7 @@ public class Executor implements CommandExecutor {
     }
 
     @Override
-    public boolean onCommand(CommandSender s, Command cmd, String st, String[] args) {
+    public boolean onCommand(CommandSender s, Command cmd, String st, String[] args){
 
         Network db = new Network(plugin);
         Player player = (Player) s;
@@ -73,24 +74,46 @@ public class Executor implements CommandExecutor {
         }else
 
         if(cmd.getName().equalsIgnoreCase("getdump") && args.length == 1){
-            OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(args[0]);
-            File file = new File(plugin.getDataFolder().getAbsolutePath()+"/dump/"+offlinePlayer.getUniqueId().toString()+".txt");
-            if(!file.exists()){
-                s.sendMessage(Utils.DUMP_NOT_FOUND);
-                return true;
-            }
-            ByteArrayDataOutput out = ByteStreams.newDataOutput();
-            out.writeUTF(Action.DUMPS.getActionName());
-            byte[] fileContent = new byte[0];
-            try {
-                fileContent = Files.readAllBytes(file.toPath());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            out.writeUTF(file.getName());
-            out.write(fileContent);
-            plugin.sendDump(player, out);
-            file.delete();
+
+            if(plugin.getConfig().getString("mod.dump-type").equalsIgnoreCase("download")) {
+                OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(args[0]);
+                File file = new File(plugin.getDataFolder().getAbsolutePath() + "/dump/" + offlinePlayer.getUniqueId().toString() + ".txt");
+                if (!file.exists()) {
+                    s.sendMessage(Utils.DUMP_NOT_FOUND);
+                    return true;
+                }
+                ByteArrayDataOutput out = ByteStreams.newDataOutput();
+                out.writeUTF(Action.DUMPS.getActionName());
+                byte[] fileContent = new byte[0];
+                try {
+                    fileContent = Files.readAllBytes(file.toPath());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                out.writeUTF(file.getName());
+                out.write(fileContent);
+                plugin.sendDump(player, out);
+                file.delete();
+            }else
+                if(plugin.getConfig().getString("mod.dump-type").equalsIgnoreCase("haste")){
+                    OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(args[0]);
+                    List<String> dumpList = new ArrayList<String>();
+                    try {
+                        FileInputStream fstream = new FileInputStream(plugin.getDataFolder().getAbsolutePath() + "/dump/" + offlinePlayer.getUniqueId().toString() + ".txt");
+                        BufferedReader br = new BufferedReader(new InputStreamReader(fstream));
+                        String strLine;
+                        while ((strLine = br.readLine()) != null){
+                           dumpList.add(strLine);
+                        }
+                        s.sendMessage(PasteBinAPI.post(dumpList));
+                    } catch (FileNotFoundException e) {
+                        s.sendMessage(Utils.DUMP_NOT_FOUND);
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+                }
             return true;
         }else
 
