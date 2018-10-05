@@ -1,7 +1,5 @@
 package ru.frostdelta.bungeereports;
 
-import com.sun.istack.internal.NotNull;
-
 
 public class Report {
 
@@ -19,22 +17,18 @@ public class Report {
         this.admin = admin;
     }
 
-    @NotNull
     public String getDescription() {
         return description;
     }
 
-    @NotNull
     public String getPlayer() {
         return player;
     }
 
-    @NotNull
     public String getReason() {
         return reason;
     }
 
-    @NotNull
     public String getSender() {
         return sender;
     }
@@ -43,7 +37,7 @@ public class Report {
         this.description = description;
     }
 
-    public void setPlayer(@NotNull String player) {
+    public void setPlayer(String player) {
         this.player = player;
     }
 
@@ -51,7 +45,7 @@ public class Report {
         this.reason = reason;
     }
 
-    public void setSender(@NotNull String sender) {
+    public void setSender(String sender) {
         this.sender = sender;
     }
 

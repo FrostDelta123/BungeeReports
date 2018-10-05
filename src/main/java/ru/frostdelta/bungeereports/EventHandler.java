@@ -208,7 +208,7 @@ public class EventHandler implements Listener {
                     Report curentReport = new Report();
                     curentReport.setSender(e.getWhoClicked().getName());
                     curentReport.setPlayer(e.getCurrentItem().getItemMeta().getDisplayName());
-                    
+
                     p.getOpenInventory().close();
                     ReasonsUI.openGUI(p);
                     getReports().put((Player)e.getWhoClicked(),curentReport);

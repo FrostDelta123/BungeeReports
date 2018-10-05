@@ -59,7 +59,7 @@
             <groupId>ru.endlesscode.inspector</groupId>
             <artifactId>inspector-bukkit</artifactId>
             <version>0.3.2</version>
-            <scope>provided</scope>
+            <scope>compile</scope>
         </dependency>
 
         <dependency>
