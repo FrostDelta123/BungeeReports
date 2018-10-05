@@ -28,39 +28,26 @@ import java.util.Map;
 
 public class EventHandler implements Listener {
 
-    private Loader plugin;
-    private int index;
-    private Network network;
+
     public EventHandler(Loader instance){
 
         plugin = instance;
         network = new Network(plugin);
     }
 
-
+    private Loader plugin;
+    private int index;
+    private Network network;
     private final UpdateReport update = new UpdateReport();
     private final SpectateManager spectateManager = new SpectateManager(plugin);
-
-    //private Map<String, String> map = new HashMap<>();
-    //private Map<String, String> ban = new HashMap<>();
-    //private Map<String, String> comment = new HashMap<>();
     private List<Player> mutelist = new ArrayList<Player>();
     private Map<Player, Report> reports = new HashMap<Player, Report>();
-
     private static Map<Integer, String> send = new HashMap<>();
 
-    public Map<Player, Report> getReports() {
-        return reports;
-    }
 
     public EventHandler(HashMap<Integer, String> sender) {
         EventHandler.send = sender;
     }
-    //private Map<String, String> getBan(){
-     //   return ban;
-   // }
-    //private Map<String, String> getMap(){return map;}
-    //public Map<String, String> getComment(){return comment;}
 
     @org.bukkit.event.EventHandler(priority = EventPriority.LOW)
     public void playerDisconnect(PlayerQuitEvent e){
@@ -114,6 +101,9 @@ public class EventHandler implements Listener {
        }
     }
 
+    public Map<Player, Report> getReports() {
+        return reports;
+    }
 
     @org.bukkit.event.EventHandler
     public void onInventoryClick(InventoryClickEvent e){
@@ -218,8 +208,7 @@ public class EventHandler implements Listener {
                     Report curentReport = new Report();
                     curentReport.setSender(e.getWhoClicked().getName());
                     curentReport.setPlayer(e.getCurrentItem().getItemMeta().getDisplayName());
-
-                    //getMap().put(e.getWhoClicked().getName(), e.getCurrentItem().getItemMeta().getDisplayName());
+                    
                     p.getOpenInventory().close();
                     ReasonsUI.openGUI(p);
                     getReports().put((Player)e.getWhoClicked(),curentReport);
