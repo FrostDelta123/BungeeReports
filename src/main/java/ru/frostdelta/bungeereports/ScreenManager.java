@@ -32,7 +32,6 @@ public class ScreenManager {
     }
 
     public void getScreenshot(String name, Player player){
-
         Network db = new Network();
         String screenshots = db.getScreenshots(name);
         if (!screenshots.isEmpty()) {

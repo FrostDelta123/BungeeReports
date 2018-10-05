@@ -41,21 +41,26 @@ public class EventHandler implements Listener {
     private final UpdateReport update = new UpdateReport();
     private final SpectateManager spectateManager = new SpectateManager(plugin);
 
-    private Map<String, String> map = new HashMap<>();
-    private Map<String, String> ban = new HashMap<>();
-    private Map<String, String> comment = new HashMap<>();
+    //private Map<String, String> map = new HashMap<>();
+    //private Map<String, String> ban = new HashMap<>();
+    //private Map<String, String> comment = new HashMap<>();
     private List<Player> mutelist = new ArrayList<Player>();
+    private Map<Player, Report> reports = new HashMap<Player, Report>();
 
     private static Map<Integer, String> send = new HashMap<>();
+
+    public Map<Player, Report> getReports() {
+        return reports;
+    }
 
     public EventHandler(HashMap<Integer, String> sender) {
         EventHandler.send = sender;
     }
-    private Map<String, String> getBan(){
-        return ban;
-    }
-    private Map<String, String> getMap(){return map;}
-    public Map<String, String> getComment(){return comment;}
+    //private Map<String, String> getBan(){
+     //   return ban;
+   // }
+    //private Map<String, String> getMap(){return map;}
+    //public Map<String, String> getComment(){return comment;}
 
     @org.bukkit.event.EventHandler(priority = EventPriority.LOW)
     public void playerDisconnect(PlayerQuitEvent e){
@@ -92,16 +97,15 @@ public class EventHandler implements Listener {
 
     @org.bukkit.event.EventHandler
     public void asyncChatEvent(AsyncPlayerChatEvent e){
+        Report report = getReports().get(e.getPlayer());
         String player = e.getPlayer().getName();
         if (mutelist.contains(e.getPlayer())){
             e.setCancelled(true);
             e.getPlayer().sendMessage(Utils.MUTE_MESSAGE);
         }
-       if(getComment().containsKey(player)){
-           String reason = getComment().get(player);
-           network.addReport(player, getMap().get(player),reason, e.getMessage());
-           getMap().remove(player);
-           getComment().remove(player);
+       if(report.getSender().equalsIgnoreCase(player)){
+           String reason = report.getReason();
+           network.addReport(player, report.getPlayer(),reason, e.getMessage());
 
            HashedLists.loadReports();
            e.getPlayer().sendMessage(Utils.SUCCESS_REPORT);
@@ -122,8 +126,9 @@ public class EventHandler implements Listener {
             if(e.getInventory().getHolder() instanceof BanReasonsHolder && !e.getCurrentItem().getType().equals(Material.AIR)){
 
                 if(e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase(Utils.REJECT)){
-                    update.updateReport(getBan().get(p.getName()), e.getInventory().getName(), "reject");
-                    getBan().remove(p.getName());
+                    Report currentReport = getReports().get((Player)e.getWhoClicked());
+                    update.updateReport(currentReport.getPlayer(), e.getInventory().getName(), "reject");
+                    getReports().remove((Player)e.getWhoClicked());
                     p.getOpenInventory().close();
                     p.sendMessage(Utils.REPORT_REJECT);
                     HashedLists.changeCount(index);
@@ -134,18 +139,19 @@ public class EventHandler implements Listener {
                 long time = BanReasons.getAPI().get(e.getCurrentItem().getItemMeta().getDisplayName()).getTime() * 60;
                 String type = BanReasons.getAPI().get(e.getCurrentItem().getItemMeta().getDisplayName()).getType();
                 time += System.currentTimeMillis()/1000;
-                network.addBan(getBan().get(p.getName()), System.currentTimeMillis()/1000,time, type);
-                if(Bukkit.getPlayer(getBan().get(p.getName())) != null && type.equals("ban") || type.equals("tempban")){
-                    Bukkit.getPlayer(getBan().get(p.getName())).kickPlayer(Utils.BAN_MESSAGE);
+                Report report = getReports().get((Player)e.getWhoClicked());
+                network.addBan(report.getPlayer(), System.currentTimeMillis()/1000,time, type);
+                if(Bukkit.getPlayer(report.getPlayer()) != null && type.equals("ban") || type.equals("tempban")){
+                    Bukkit.getPlayer(report.getPlayer()).kickPlayer(Utils.BAN_MESSAGE);
                 }
-                if((Bukkit.getPlayer(getBan().get(p.getName())) != null && type.equals("mute"))){
-                    mutelist.add((Bukkit.getPlayer(getBan().get(p.getName()))));
+                if((Bukkit.getPlayer(report.getPlayer()) != null && type.equals("mute"))){
+                    mutelist.add((Bukkit.getPlayer(report.getPlayer())));
                 }
-                update.updateReport(getBan().get(p.getName()), e.getInventory().getName(), "accept");
+                update.updateReport(report.getPlayer(), e.getInventory().getName(), "accept");
                 p.getOpenInventory().close();
                 p.sendMessage(Utils.REPORT_ACCEPT);
                 HashedLists.changeCount(index);
-                getBan().remove(p.getName());
+                getReports().remove(p);
 
                 e.setCancelled(true);
             }else
@@ -153,24 +159,25 @@ public class EventHandler implements Listener {
             if (e.getInventory().getHolder() instanceof PunishHolder && !e.getCurrentItem().getType().equals(Material.AIR)) {
                 String s = p.getOpenInventory().getItem(4).getItemMeta().getDisplayName();
                 SpectateManager sp = new SpectateManager(plugin);
+                Report rep = getReports().get((Player)e.getWhoClicked());
                 switch(e.getSlot()){
                     case 2:
-                        update.updateReport(getBan().get(p.getName()), s, "accept");
-                        getBan().remove(p.getName());
+                        update.updateReport(rep.getPlayer(), s, "accept");
+                        getReports().remove((Player)e.getWhoClicked());
                         p.getOpenInventory().close();
                         p.sendMessage(Utils.REPORT_ACCEPT);
                         HashedLists.changeCount(index);
                         break;
                     case 6:
-                        update.updateReport(getBan().get(p.getName()), s, "reject");
-                        getBan().remove(p.getName());
+                        update.updateReport(rep.getPlayer(), s, "reject");
+                        getReports().remove((Player)e.getWhoClicked());
                         p.getOpenInventory().close();
                         p.sendMessage(Utils.REPORT_REJECT);
                         HashedLists.changeCount(index);
                         break;
                     case 8:
-                        if(Bukkit.getServer().getPlayer(getBan().get(p.getName())) != null && !sp.isSpectate(p)){
-                            Player target = Bukkit.getServer().getPlayer(getBan().get(p.getName()));
+                        if(Bukkit.getServer().getPlayer(rep.getPlayer()) != null && !sp.isSpectate(p)){
+                            Player target = Bukkit.getServer().getPlayer(rep.getPlayer());
                             sp.setSpectate(p,target);
                             p.getOpenInventory().close();
                         }
@@ -184,11 +191,14 @@ public class EventHandler implements Listener {
 
                 PunishUI PunishUI = new PunishUI(plugin);
                 BanReasons banReasons = new BanReasons(plugin);
+                Report rp = new Report();
                 String s = send.get(e.getSlot());
                 if(plugin.isModUsed() && plugin.isModEnabled()) {
                     screenManager.getScreenshot(e.getCurrentItem().getItemMeta().getDisplayName(), p);
                 }
-                getBan().put(e.getWhoClicked().getName(), e.getCurrentItem().getItemMeta().getDisplayName());
+                rp.setAdmin(e.getWhoClicked().getName());
+                rp.setPlayer(e.getCurrentItem().getItemMeta().getDisplayName());
+                getReports().put((Player)e.getWhoClicked(), rp);
 
                 if(!plugin.isBanSystemUsed()) {
                     PunishUI.openGUI(e.getCurrentItem().getItemMeta().getDisplayName(), p, s);
@@ -205,10 +215,14 @@ public class EventHandler implements Listener {
                 if (!plugin.getWhitelist().contains(e.getCurrentItem().getItemMeta().getDisplayName())) {
 
                     ReasonsUI ReasonsUI = new ReasonsUI(plugin);
-                    getMap().put(e.getWhoClicked().getName(), e.getCurrentItem().getItemMeta().getDisplayName());
+                    Report curentReport = new Report();
+                    curentReport.setSender(e.getWhoClicked().getName());
+                    curentReport.setPlayer(e.getCurrentItem().getItemMeta().getDisplayName());
+
+                    //getMap().put(e.getWhoClicked().getName(), e.getCurrentItem().getItemMeta().getDisplayName());
                     p.getOpenInventory().close();
                     ReasonsUI.openGUI(p);
-
+                    getReports().put((Player)e.getWhoClicked(),curentReport);
                     e.setCancelled(true);
                 } else {
                     p.getOpenInventory().close();
@@ -219,20 +233,20 @@ public class EventHandler implements Listener {
 
             if (e.getInventory().getHolder() instanceof ReasonHolder && !e.getCurrentItem().getType().equals(Material.AIR)) {
 
+                Report report = getReports().get((Player)e.getWhoClicked());
                 if (!plugin.getConfig().getBoolean("comments")) {
 
-                    //Ох тут соснуть можно, исправлю
                     if(plugin.isModUsed() && plugin.isModEnabled()) {
-                        screenManager.addScreenshot(Bukkit.getPlayer(getMap().get(e.getWhoClicked().getName())), p);
+                        screenManager.addScreenshot(Bukkit.getPlayer(report.getPlayer()), p);
                     }
-                    network.addReport(e.getWhoClicked().getName(), getMap().get(e.getWhoClicked().getName()), e.getCurrentItem().getItemMeta().getDisplayName(), "");
-                    HashedLists.addReport(e.getWhoClicked().getName(), getMap().get(e.getWhoClicked().getName()), e.getCurrentItem().getItemMeta().getDisplayName(), "");
-                    getMap().remove(e.getWhoClicked().getName());
+                    network.addReport(e.getWhoClicked().getName(), report.getPlayer(), e.getCurrentItem().getItemMeta().getDisplayName(), "");
+                    HashedLists.addReport(e.getWhoClicked().getName(), report.getPlayer(), e.getCurrentItem().getItemMeta().getDisplayName(), "");
+                    getReports().remove((Player)e.getWhoClicked());
                     e.getWhoClicked().getOpenInventory().close();
                     p.sendMessage(Utils.SUCCESS_REPORT);
 
                 } else {
-                    getComment().put(e.getWhoClicked().getName(), e.getCurrentItem().getItemMeta().getDisplayName());
+                    report.setReason(e.getCurrentItem().getItemMeta().getDisplayName());
                     e.getWhoClicked().getOpenInventory().close();
                     e.getWhoClicked().sendMessage(Utils.CHAT_COMMENT);
                 }
