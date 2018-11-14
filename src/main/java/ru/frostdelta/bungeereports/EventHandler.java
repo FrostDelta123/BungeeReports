@@ -28,7 +28,6 @@ import java.util.Map;
 
 public class EventHandler implements Listener {
 
-
     public EventHandler(Loader instance){
 
         plugin = instance;
@@ -110,7 +109,6 @@ public class EventHandler implements Listener {
 
         ScreenManager screenManager = new ScreenManager(plugin);
         Player p = (Player) e.getWhoClicked();
-
         if(e.getSlotType() != InventoryType.SlotType.OUTSIDE && e.getSlotType() == InventoryType.SlotType.CONTAINER) {
 
             if(e.getInventory().getHolder() instanceof BanReasonsHolder && !e.getCurrentItem().getType().equals(Material.AIR)){
