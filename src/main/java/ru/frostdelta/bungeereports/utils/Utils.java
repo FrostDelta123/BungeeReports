@@ -33,5 +33,6 @@ public class Utils {
     public static String MUTE_MESSAGE;// = config.getString("mute-message").replaceAll("'","");
     public static String CHAT_COMMENT;// = config.getString("chat-comment").replaceAll("'","");
     public static String SUCCESS_REPORT;// = config.getString("success-report").replaceAll("'","");
+    public static String REPORT_UNSUCCESS;
 
 }

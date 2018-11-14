@@ -214,7 +214,7 @@ public class EventHandler implements Listener {
                 } else {
                     p.getOpenInventory().close();
                     e.setCancelled(true);
-                    p.sendMessage(ChatColor.RED + "На данного игрока невозможно отправить жалобу!");
+                    p.sendMessage(ChatColor.RED + Utils.REPORT_UNSUCCESS);
                 }
             }
 

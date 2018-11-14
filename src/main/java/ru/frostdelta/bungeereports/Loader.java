@@ -191,7 +191,7 @@ public class Loader extends PluginLifecycle {
         return null;
     }
 
-    public void loadMessages(){
+    private void loadMessages(){
         FileConfiguration config = this.getConfig();
 
         Utils.SEND_MOD_MESSAGE = config.getString("messages.send-mod-message").replaceAll("'","");
@@ -224,6 +224,7 @@ public class Loader extends PluginLifecycle {
         Utils.MUTE_MESSAGE = config.getString("messages.mute-message").replaceAll("'","");
         Utils.CHAT_COMMENT = config.getString("messages.chat-comment").replaceAll("'","");
         Utils.SUCCESS_REPORT = config.getString("messages.success-report").replaceAll("'","");
+        Utils.REPORT_UNSUCCESS = config.getString("report-unsuccess").replaceAll("'","");
     }
 
     public void loadConfig(){

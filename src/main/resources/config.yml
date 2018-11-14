@@ -133,6 +133,7 @@ messages:
   report-comment: 'Комментарий'
   report-accept: 'Репорт принят'
   report-reject: 'Репорт отклонён'
+  report-unsuccess: 'На данного игрока невозможно отправить жалобу!'
   no-reports: 'В данный момент активных репортов нет!'
   getreports-inv-name: 'GetReports'
   punish-inv-name: 'Punish Menu'
