@@ -24,7 +24,7 @@ public class GiveCustomReward {
             Network.customReward(table, moneyCol, nameCol, plugin.getCustomRewardAmount(), player, url,username, password);
 
         }else {
-            IsUUID IsUUID = new IsUUID(plugin);
+            IsUUID IsUUID = new IsUUID();
             IsUUID.getUUID(table, moneyCol, nameCol, player);
         }
 

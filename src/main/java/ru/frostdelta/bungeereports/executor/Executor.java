@@ -126,9 +126,9 @@ public class Executor implements CommandExecutor {
 
         if (cmd.getName().equalsIgnoreCase("report")) {
             senders.add((Player)s);
-            GetPlayerCount getPlayerCount = new GetPlayerCount(plugin);
-            NonBungee nonBungee = new NonBungee(plugin);
-            CanReport canReport = new CanReport(plugin);
+            GetPlayerCount getPlayerCount = new GetPlayerCount();
+            NonBungee nonBungee = new NonBungee();
+            CanReport canReport = new CanReport();
 
             canReport.needReward(s.getName());
 
@@ -185,7 +185,7 @@ public class Executor implements CommandExecutor {
         }else
 
         if(s instanceof Player && plugin.isEnabled()) {
-            SpectateManager spectateManager = new SpectateManager(plugin);
+            SpectateManager spectateManager = new SpectateManager();
             if (cmd.getName().equalsIgnoreCase("getreports")) {
 
                 GetReportsUI getReportsUI = new GetReportsUI(plugin);
