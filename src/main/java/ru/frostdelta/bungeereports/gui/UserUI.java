@@ -7,21 +7,10 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
-import ru.frostdelta.bungeereports.Loader;
 import ru.frostdelta.bungeereports.holders.UserHolder;
 import ru.frostdelta.bungeereports.utils.Utils;
 
 public class UserUI {
-
-
-    private Loader plugin;
-
-    public UserUI(Loader instance){
-
-        plugin = instance;
-
-    }
-
 
     public Inventory openGUI(Player p, int count, String[] playerList) {
 

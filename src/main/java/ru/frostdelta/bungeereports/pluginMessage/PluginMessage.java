@@ -11,19 +11,12 @@ import ru.frostdelta.bungeereports.gui.UserUI;
 
 public class PluginMessage implements PluginMessageListener {
 
-    private Loader plugin;
     private int players;
 
-    public PluginMessage(Loader instance){
-
-        plugin = instance;
-
-    }
-
-
-    private final UserUI UserUI = new UserUI(plugin);
+    private final UserUI UserUI = new UserUI();
 
     public void sendMessage(Player player){
+        Loader plugin = Loader.inst();
         if(!plugin.isEnabled()) return;
         ByteArrayDataOutput out = ByteStreams.newDataOutput();
 
@@ -36,6 +29,7 @@ public class PluginMessage implements PluginMessageListener {
 
     @Override
     public void onPluginMessageReceived(String channel, Player player, byte[] message) {
+        Loader plugin = Loader.inst();
         if (!channel.equals("BungeeCord") || !plugin.isEnabled()) {
             return;
         }

@@ -31,14 +31,14 @@ public class EventHandler implements Listener {
     public EventHandler(Loader instance){
 
         plugin = instance;
-        network = new Network(plugin);
+        network = new Network();
     }
 
     private Loader plugin;
     private int index;
     private Network network;
     private final UpdateReport update = new UpdateReport();
-    private final SpectateManager spectateManager = new SpectateManager(plugin);
+    private final SpectateManager spectateManager = new SpectateManager();
     private List<Player> mutelist = new ArrayList<Player>();
     private Map<Player, Report> reports = new HashMap<Player, Report>();
     private static Map<Integer, String> send = new HashMap<>();
@@ -107,7 +107,7 @@ public class EventHandler implements Listener {
     @org.bukkit.event.EventHandler
     public void onInventoryClick(InventoryClickEvent e){
 
-        ScreenManager screenManager = new ScreenManager(plugin);
+        ScreenManager screenManager = new ScreenManager();
         Player p = (Player) e.getWhoClicked();
         if(e.getSlotType() != InventoryType.SlotType.OUTSIDE && e.getSlotType() == InventoryType.SlotType.CONTAINER) {
 
@@ -146,7 +146,7 @@ public class EventHandler implements Listener {
 
             if (e.getInventory().getHolder() instanceof PunishHolder && !e.getCurrentItem().getType().equals(Material.AIR)) {
                 String s = p.getOpenInventory().getItem(4).getItemMeta().getDisplayName();
-                SpectateManager sp = new SpectateManager(plugin);
+                SpectateManager sp = new SpectateManager();
                 Report rep = getReports().get((Player)e.getWhoClicked());
                 switch(e.getSlot()){
                     case 2:
@@ -177,8 +177,8 @@ public class EventHandler implements Listener {
 
             if (e.getInventory().getHolder() instanceof GetReportsHolder && !e.getCurrentItem().getType().equals(Material.AIR)) {
 
-                PunishUI PunishUI = new PunishUI(plugin);
-                BanReasons banReasons = new BanReasons(plugin);
+                PunishUI PunishUI = new PunishUI();
+                BanReasons banReasons = new BanReasons();
                 Report rp = new Report();
                 String s = send.get(e.getSlot());
                 if(plugin.isModUsed() && plugin.isModEnabled()) {

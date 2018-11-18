@@ -5,7 +5,7 @@ public class UpdateReport {
 
 
 
-    Network Network = new Network();
+    private Network Network = new Network();
 
     public void updateReport(String player, String sender, String solved){
 

@@ -12,19 +12,12 @@ import ru.frostdelta.bungeereports.executor.Executor;
 
 public class AntiCheat implements PluginMessageListener {
 
-    private Loader plugin;
-
-    public AntiCheat(Loader instance){
-
-        plugin = instance;
-
-    }
-
     @Override
     public void onPluginMessageReceived(String channel, Player player, byte[] bytes) {
 
-        Network db = new Network(plugin);
-        Executor exe = new Executor(plugin);
+        Loader plugin = Loader.inst();
+        Network db = new Network();
+        Executor exe = new Executor();
         if (channel.equals("AntiCheat")) {
 
             ByteArrayDataInput in = ByteStreams.newDataInput(bytes);

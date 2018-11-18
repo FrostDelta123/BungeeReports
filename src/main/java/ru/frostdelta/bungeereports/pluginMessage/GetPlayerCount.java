@@ -7,16 +7,9 @@ import ru.frostdelta.bungeereports.Loader;
 
 public class GetPlayerCount {
 
-    private Loader plugin;
-
-    public GetPlayerCount(Loader instance){
-
-        plugin = instance;
-
-    }
-
     public void sendMessage(Player player){
 
+        Loader plugin = Loader.inst();
         if(!plugin.isEnabled()){
             return;
         }

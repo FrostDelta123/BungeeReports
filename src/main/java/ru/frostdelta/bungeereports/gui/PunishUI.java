@@ -6,23 +6,12 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import ru.frostdelta.bungeereports.EventHandler;
-import ru.frostdelta.bungeereports.Loader;
 import ru.frostdelta.bungeereports.holders.PunishHolder;
 import ru.frostdelta.bungeereports.utils.Utils;
 
 import java.util.Collections;
 
 public class PunishUI {
-
-    private Loader plugin;
-
-    public PunishUI(Loader instance){
-
-        plugin = instance;
-
-    }
-
 
     public void openGUI(String player, Player moder, String sender) {
 

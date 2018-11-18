@@ -10,13 +10,9 @@ import ru.frostdelta.bungeereports.utils.Utils;
 
 public class ScreenManager {
 
-    Loader plugin;
-    public ScreenManager(Loader instance){
-        plugin = instance;
-    }
-
     public void addScreenshot(Player targetPlayer, Player player){
 
+        Loader plugin = Loader.inst();
         if (targetPlayer.isOnline()) {
 
             Executor.getRequestQueue().put(targetPlayer.getName(), player.getName());
@@ -32,6 +28,7 @@ public class ScreenManager {
     }
 
     public void getScreenshot(String name, Player player){
+        Loader plugin = Loader.inst();
         Network db = new Network();
         String screenshots = db.getScreenshots(name);
         if (!screenshots.isEmpty()) {

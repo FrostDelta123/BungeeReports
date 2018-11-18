@@ -9,18 +9,12 @@ import java.util.List;
 
 public class NonBungee {
 
-    private Loader plugin;
-
-    public NonBungee(Loader instance){
-
-        plugin = instance;
-
-    }
-
-    private UserUI UserUI = new UserUI(plugin);
+    private UserUI UserUI = new UserUI();
 
     public void getNonBungeePlayerlist(Player player){
 
+
+        Loader plugin = Loader.inst();
         List<String> players = new ArrayList<String>();
 
         for(Player p : plugin.getServer().getOnlinePlayers()){

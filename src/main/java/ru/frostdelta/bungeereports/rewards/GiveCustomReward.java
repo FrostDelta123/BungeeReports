@@ -1,24 +1,16 @@
 package ru.frostdelta.bungeereports.rewards;
 
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import ru.frostdelta.bungeereports.Loader;
 import ru.frostdelta.bungeereports.Network;
 import ru.frostdelta.bungeereports.utils.Utils;
 
 public class GiveCustomReward {
 
-    private Loader plugin;
-
-    public GiveCustomReward(Loader instance){
-
-        plugin = instance;
-
-    }
-
-   private Network Network = new Network(plugin);
-
     public void giveCustomReward(String player){
+
+        Loader plugin = Loader.inst();
+        Network Network = new Network();
 
         String table = plugin.getConfig().getString("customreward.table");
         String nameCol = plugin.getConfig().getString("customreward.namecoloumn");

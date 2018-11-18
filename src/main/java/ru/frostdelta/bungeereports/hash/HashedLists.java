@@ -1,11 +1,8 @@
 package ru.frostdelta.bungeereports.hash;
 
-import org.bukkit.Bukkit;
-import ru.frostdelta.bungeereports.Loader;
 import ru.frostdelta.bungeereports.Network;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class HashedLists {
 

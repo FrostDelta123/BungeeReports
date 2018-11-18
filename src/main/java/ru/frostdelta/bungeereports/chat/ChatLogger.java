@@ -12,19 +12,13 @@ import java.util.List;
 import java.util.Map;
 
 public class ChatLogger implements Listener {
-    Loader plugin;
-
-    public ChatLogger(Loader instance){
-
-        plugin = instance;
-
-    }
 
     private static Map<Player, ArrayList<String>> chatLog = new HashMap<Player, ArrayList<String>>();
     private static List<String> allChatMessages = new ArrayList<String>();
 
     @EventHandler
     public void onChat(AsyncPlayerChatEvent e){
+        Loader plugin = Loader.inst();
         Player player = e.getPlayer();
         if(getLeatestChatMessages().size() < plugin.getConfig().getInt("chat.limit")){
             getLeatestChatMessages().add(e.getPlayer().getName() + ": " + e.getMessage());

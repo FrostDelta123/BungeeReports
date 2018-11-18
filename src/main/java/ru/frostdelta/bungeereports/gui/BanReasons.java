@@ -19,17 +19,11 @@ import java.util.Map;
 
 public class BanReasons {
 
-    private Loader plugin;
-
-    public BanReasons(Loader instance){
-
-        plugin = instance;
-
-    }
-
     private static Map<String, ReasonAPI> reasonAPIMap = new HashMap<String, ReasonAPI>();
 
     public void openGUI(Player moder, String sender) {
+
+        Loader plugin = Loader.inst();
 
         ItemStack banButton = new ItemStack(Material.EYE_OF_ENDER);
         ItemMeta itemMeta = banButton.getItemMeta();

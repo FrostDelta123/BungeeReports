@@ -6,21 +6,11 @@ import ru.frostdelta.bungeereports.rewards.GiveReward;
 
 public class CanReport {
 
-
-
-    private Loader plugin;
     private Network Network = new Network();
-
-
-
-    public CanReport(Loader instance){
-
-        plugin = instance;
-
-    }
 
     public void needReward(String player){
 
+        Loader plugin = Loader.inst();
         int reportCount = Network.playerReports(player, "accept");
 
         int customReportsNeed = plugin.getConfig().getInt("customreward.reportsneed");
@@ -29,14 +19,14 @@ public class CanReport {
 
 
             if(plugin.isRewardsEnabled() && reportCount >= reportsneed){
-                GiveReward GiveReward = new GiveReward(plugin);
+                GiveReward GiveReward = new GiveReward();
 
                 GiveReward.getReward(Bukkit.getPlayer(player));
                 Network.purge(player, "accept");
             }else {
 
                 if(plugin.isCustomEnabled() && reportCount >= customReportsNeed) {
-                    GiveCustomReward GiveCustomReward = new GiveCustomReward(plugin);
+                    GiveCustomReward GiveCustomReward = new GiveCustomReward();
 
                     GiveCustomReward.giveCustomReward(player);
                     Network.purge(player, "accept");
@@ -47,7 +37,7 @@ public class CanReport {
 
 
     public boolean limit(String player){
-
+        Loader plugin = Loader.inst();
         return Network.playerReports(player, "no") >= plugin.getConfig().getInt("limit.limit");
     }
 

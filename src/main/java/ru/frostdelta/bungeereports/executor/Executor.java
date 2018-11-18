@@ -34,14 +34,6 @@ public class Executor implements CommandExecutor {
     private static Map<String, String> requestQueue = new HashMap<>();
     private static Map<Player, Action> actionDump = new HashMap<>();
 
-    private Loader plugin;
-
-
-    public Executor(Loader instance){
-
-        plugin = instance;
-
-    }
     public boolean bungee;
     private static List<Player> senders = new ArrayList<>();
     private boolean isBungee(){
@@ -51,7 +43,8 @@ public class Executor implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender s, Command cmd, String st, String[] args){
 
-        Network db = new Network(plugin);
+        Loader plugin = Loader.inst();
+        Network db = new Network();
         Player player = (Player) s;
 
         if(cmd.getName().equalsIgnoreCase("getlogs") && args.length == 2){

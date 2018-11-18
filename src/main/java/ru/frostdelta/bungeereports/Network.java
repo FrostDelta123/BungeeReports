@@ -6,12 +6,7 @@ import ru.frostdelta.bungeereports.chat.ChatLogger;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.Statement;
-import java.sql.ResultSet;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -20,11 +15,6 @@ public class Network {
     public String url, username, password;
     private static HashMap<String, PreparedStatement> preparedStatements = new HashMap<>();
     private Connection connection;
-
-    Loader plugin;
-    public Network(Loader instance){
-        plugin = instance;
-    }
 
     public Network() {
 
@@ -247,6 +237,7 @@ public class Network {
 
     public void addReport(String sender, String player, String reason, String comment) {
         try {
+            Loader plugin = Loader.inst();
             PreparedStatement addReport = preparedStatements.get("addReport");
             addReport.setString(1, sender);
             addReport.setString(2, player);

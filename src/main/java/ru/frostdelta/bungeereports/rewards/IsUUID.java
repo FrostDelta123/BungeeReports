@@ -8,17 +8,10 @@ import java.util.UUID;
 
 public class IsUUID {
 
-    private Loader plugin;
-
-    public IsUUID(Loader instance){
-
-        plugin = instance;
-
-    }
-
     private final Network Network = new Network();
 
     public void getUUID(String table, String money, String playerCol, String player) {
+        Loader plugin = Loader.inst();
 
         UUID uuid = Bukkit.getPlayer(player).getUniqueId();
 

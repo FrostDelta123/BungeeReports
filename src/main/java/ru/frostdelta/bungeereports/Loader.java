@@ -32,7 +32,7 @@ public class Loader extends PluginLifecycle {
 
     Utils Utils;
     Loader plugin = this;
-    Network db = new Network(this);
+    Network db = new Network();
     private boolean vaultEnabled;
     private boolean rewardsEnabled;
     private boolean customEnabled;
@@ -45,10 +45,20 @@ public class Loader extends PluginLifecycle {
     private boolean isModUsed;
     private boolean banSystemUsed;
     private List<String> whitelist = new ArrayList<String>();
+    private static Loader inst;
 
     public int rewardAmount;
     public int customRewardAmount;
     private FileConfiguration log;
+
+    public Loader(){
+        final Loader plugin = inst = this;
+    }
+
+
+    public static Loader inst() {
+        return inst;
+    }
 
     @Override
     public void onEnable(){
@@ -63,7 +73,7 @@ public class Loader extends PluginLifecycle {
             }
         }
         log = YamlConfiguration.loadConfiguration(chatlog);
-        Executor executor = new Executor(this);
+        Executor executor = new Executor();
         vaultEnabled = getConfig().getBoolean("vault.enabled");
         rewardsEnabled = getConfig().getBoolean("reward.enabled");
         customEnabled = getConfig().getBoolean("customreward.enabled");
@@ -128,16 +138,16 @@ public class Loader extends PluginLifecycle {
 
         if(isBungee()) {
             this.getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
-            this.getServer().getMessenger().registerIncomingPluginChannel(this, "BungeeCord", new PluginMessage(this));
+            this.getServer().getMessenger().registerIncomingPluginChannel(this, "BungeeCord", new PluginMessage());
 
         }else getLogger().info("BungeeCord disabled");
 
         if(isModEnabled()){
             this.getServer().getMessenger().registerOutgoingPluginChannel(this, "AntiCheat");
-            this.getServer().getMessenger().registerIncomingPluginChannel(this, "AntiCheat", new AntiCheat(this));
+            this.getServer().getMessenger().registerIncomingPluginChannel(this, "AntiCheat", new AntiCheat());
 
             this.getServer().getMessenger().registerOutgoingPluginChannel(this, "Dump");
-            this.getServer().getMessenger().registerIncomingPluginChannel(this, "Dump", new Dump(this));
+            this.getServer().getMessenger().registerIncomingPluginChannel(this, "Dump", new Dump());
         }else getLogger().info("Mod disabled");
 
         if(isVaultEnabled()){
@@ -153,7 +163,7 @@ public class Loader extends PluginLifecycle {
         }
 
         getServer().getPluginManager().registerEvents(new EventHandler(this), this);
-        getServer().getPluginManager().registerEvents(new ChatLogger(this), this);
+        getServer().getPluginManager().registerEvents(new ChatLogger(), this);
         try {
             getCommand("report").setExecutor(executor);
             getCommand("getreports").setExecutor(executor);
@@ -229,7 +239,7 @@ public class Loader extends PluginLifecycle {
 
     public void loadConfig(){
 
-        Executor executor = new Executor(this);
+        Executor executor = new Executor();
         vaultEnabled = getConfig().getBoolean("vault.enabled");
         rewardsEnabled = getConfig().getBoolean("reward.enabled");
         customEnabled = getConfig().getBoolean("customreward.enabled");

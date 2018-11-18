@@ -4,19 +4,12 @@ import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
-import ru.frostdelta.bungeereports.Loader;
-import ru.frostdelta.bungeereports.ScreenManager;
 import ru.frostdelta.bungeereports.utils.Utils;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class SpectateManager {
-
-    Loader plugin;
-    public SpectateManager(Loader instance){
-        plugin = instance;
-    }
 
     private Map<Entity, Player> targetMap = new HashMap<Entity, Player>();
 
