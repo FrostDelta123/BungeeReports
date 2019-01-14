@@ -2,6 +2,7 @@ package ru.frostdelta.bungeereports.chat;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import ru.frostdelta.bungeereports.Loader;
@@ -16,7 +17,7 @@ public class ChatLogger implements Listener {
     private static Map<Player, ArrayList<String>> chatLog = new HashMap<Player, ArrayList<String>>();
     private static List<String> allChatMessages = new ArrayList<String>();
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.LOWEST)
     public void onChat(AsyncPlayerChatEvent e){
         Loader plugin = Loader.inst();
         Player player = e.getPlayer();

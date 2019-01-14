@@ -16,8 +16,6 @@ public class CanReport {
         int customReportsNeed = plugin.getConfig().getInt("customreward.reportsneed");
         int reportsneed = plugin.getConfig().getInt("reward.reportsneed");
 
-
-
             if(plugin.isRewardsEnabled() && reportCount >= reportsneed){
                 GiveReward GiveReward = new GiveReward();
 

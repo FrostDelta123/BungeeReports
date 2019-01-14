@@ -28,6 +28,7 @@ public class PluginMessage implements PluginMessageListener {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public void onPluginMessageReceived(String channel, Player player, byte[] message) {
         Loader plugin = Loader.inst();
         if (!channel.equals("BungeeCord") || !plugin.isEnabled()) {
@@ -56,7 +57,6 @@ public class PluginMessage implements PluginMessageListener {
             if(player.hasPermission("bungeereports.player") && Executor.getSenders().contains(player)){
                 player.openInventory(UserUI.openGUI(player, players, playerList));
                 Executor.getSenders().remove(players);
-                return;
             }
         }
 

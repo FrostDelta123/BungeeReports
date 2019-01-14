@@ -30,9 +30,9 @@ import java.util.List;
 
 public class Loader extends PluginLifecycle {
 
-    Utils Utils;
-    Loader plugin = this;
-    Network db = new Network();
+    private Utils Utils;
+    private Loader plugin = this;
+    private Network db = new Network();
     private boolean vaultEnabled;
     private boolean rewardsEnabled;
     private boolean customEnabled;
@@ -47,13 +47,9 @@ public class Loader extends PluginLifecycle {
     private List<String> whitelist = new ArrayList<String>();
     private static Loader inst;
 
-    public int rewardAmount;
-    public int customRewardAmount;
+    private int rewardAmount;
+    private int customRewardAmount;
     private FileConfiguration log;
-
-    public Loader(){
-        final Loader plugin = inst = this;
-    }
 
 
     public static Loader inst() {
@@ -62,7 +58,7 @@ public class Loader extends PluginLifecycle {
 
     @Override
     public void onEnable(){
-
+        inst = this;
         this.saveDefaultConfig();
         File chatlog = new File(this.getDataFolder(), "chatlog.yml");
         if(!chatlog.exists()){
@@ -93,25 +89,7 @@ public class Loader extends PluginLifecycle {
         isModUsed = getConfig().getBoolean("mod.use");
         banSystemUsed = getConfig().getBoolean("ban.enabled");
         this.loadMessages();
-        //utils.loadMessages();
-        /*try {
-            db.openConnection();
-        } catch (SQLException e) {
-            getLogger().severe("ERROR! Cant load SQL, check config!");
-            getLogger().severe("PLUGIN DISABLED");
-            getLogger().severe("Set debug to true in config.yml");
 
-            if(isDebugEnabled()){
-                e.printStackTrace();
-            }
-            plugin.setEnabled(false);
-            return;
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-        db.createDB();
-        HashedLists.loadReports();
-*/
         Bukkit.getScheduler().runTaskAsynchronously(this, new Runnable() {
             @Override
             public void run() {
@@ -129,7 +107,6 @@ public class Loader extends PluginLifecycle {
                         e.printStackTrace();
                     }
                     plugin.setEnabled(false);
-                    return;
                 } catch (ClassNotFoundException e) {
                     e.printStackTrace();
                 }
