@@ -128,11 +128,7 @@ public class Loader extends PluginLifecycle {
         }else getLogger().info("Mod disabled");
 
         if(isVaultEnabled()){
-
-            VaultLoader VaultLoader = new VaultLoader();
-            VaultLoader.setupChat();
             VaultLoader.setupEconomy();
-            VaultLoader.setupPermissions();
 
         }else {
             getLogger().info("Vault disabled!");
