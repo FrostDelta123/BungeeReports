@@ -7,34 +7,45 @@
     <groupId>BungeeReports</groupId>
     <packaging>jar</packaging>
     <artifactId>BungeeReports</artifactId>
-    <version>4.4.2</version>
+    <version>4.4.3</version>
+
     <build>
+        <defaultGoal>clean package</defaultGoal>
         <plugins>
-            <plugin>
-                <artifactId>maven-assembly-plugin</artifactId>
-                <configuration>
-                    <archive>
-                        <manifest>
-                            <mainClass>ru.frostdelta.bungeereports.Loader</mainClass>
-                        </manifest>
-                    </archive>
-                    <descriptorRefs>
-                        <descriptorRef>jar-with-dependencies</descriptorRef>
-                    </descriptorRefs>
-                </configuration>
-                <groupId>org.apache.maven.plugins</groupId>
-            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.7.0</version>
                 <configuration>
-                    <source>8</source>
-                    <target>8</target>
+                    <source>1.8</source>
+                    <target>1.8</target>
                 </configuration>
             </plugin>
-
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>3.1.0</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <minimizeJar>true</minimizeJar>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
     </build>
+
 
     <repositories>
         <repository>
@@ -54,12 +65,6 @@
             <artifactId>VaultAPI</artifactId>
             <version>1.6</version>
             <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>ru.endlesscode.inspector</groupId>
-            <artifactId>inspector-bukkit</artifactId>
-            <version>0.3.2</version>
-            <scope>compile</scope>
         </dependency>
 
         <dependency>

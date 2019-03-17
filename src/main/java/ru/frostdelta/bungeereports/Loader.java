@@ -1,13 +1,12 @@
 package ru.frostdelta.bungeereports;
 
-import com.avaje.ebean.EbeanServer;
 import com.google.common.io.ByteArrayDataOutput;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitScheduler;
-import ru.endlesscode.inspector.bukkit.plugin.PluginLifecycle;
 import ru.frostdelta.bungeereports.chat.ChatLogger;
 import ru.frostdelta.bungeereports.executor.Executor;
 import ru.frostdelta.bungeereports.hash.HashedLists;
@@ -28,7 +27,7 @@ import java.util.List;
  * @author FrostDelta123
  */
 
-public class Loader extends PluginLifecycle {
+public class Loader extends JavaPlugin {
 
     private Utils Utils;
     private Loader plugin = this;
@@ -84,7 +83,7 @@ public class Loader extends PluginLifecycle {
         db.username = getConfig().getString("username");
         db.password = getConfig().getString("password");
         bungee = getConfig().getBoolean("bungee.enabled");
-        executor.bungee = getConfig().getBoolean("bungee.enabled");
+        new Executor().bungee = getConfig().getBoolean("bungee.enabled");
         modEnabled = getConfig().getBoolean("mod.enabled");
         isModUsed = getConfig().getBoolean("mod.use");
         banSystemUsed = getConfig().getBoolean("ban.enabled");
@@ -167,11 +166,6 @@ public class Loader extends PluginLifecycle {
                 db.autoUnban(time);
             }
         }, 0L, 1200L);
-    }
-
-    @Override
-    public EbeanServer getDatabase() {
-        return null;
     }
 
     private void loadMessages(){
