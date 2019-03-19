@@ -1,6 +1,6 @@
 name: BungeeReports
 main: ru.frostdelta.bungeereports.Loader
-version: 4.4.3
+version: 4.4.4
 authors: [FrostDelta123]
 description:
 commands:
