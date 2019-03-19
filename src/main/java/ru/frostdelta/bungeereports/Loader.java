@@ -201,7 +201,7 @@ public class Loader extends JavaPlugin {
         Utils.MUTE_MESSAGE = config.getString("messages.mute-message").replaceAll("'","");
         Utils.CHAT_COMMENT = config.getString("messages.chat-comment").replaceAll("'","");
         Utils.SUCCESS_REPORT = config.getString("messages.success-report").replaceAll("'","");
-        Utils.REPORT_UNSUCCESS = config.getString("report-unsuccess").replaceAll("'","");
+        Utils.REPORT_UNSUCCESS = config.getString("messages.report-unsuccess").replaceAll("'","");
     }
 
     public void loadConfig(){
