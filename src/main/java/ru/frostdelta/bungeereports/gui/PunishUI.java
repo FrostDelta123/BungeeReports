@@ -4,6 +4,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import ru.frostdelta.bungeereports.holders.PunishHolder;
@@ -11,7 +12,7 @@ import ru.frostdelta.bungeereports.utils.Utils;
 
 import java.util.Collections;
 
-public class PunishUI {
+public class PunishUI implements InventoryHolder {
 
     public void openGUI(String player, Player moder, String sender) {
 
@@ -53,5 +54,8 @@ public class PunishUI {
     }
 
 
-
+    @Override
+    public Inventory getInventory() {
+        return null;
+    }
 }

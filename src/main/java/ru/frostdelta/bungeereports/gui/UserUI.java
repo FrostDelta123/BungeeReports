@@ -5,12 +5,13 @@ import org.bukkit.Material;
 import org.bukkit.SkullType;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
 import ru.frostdelta.bungeereports.holders.UserHolder;
 import ru.frostdelta.bungeereports.utils.Utils;
 
-public class UserUI {
+public class UserUI implements InventoryHolder {
 
     public Inventory openGUI(Player p, int count, String[] playerList) {
 
@@ -43,4 +44,8 @@ public class UserUI {
         return inv;
     }
 
+    @Override
+    public Inventory getInventory() {
+        return null;
+    }
 }

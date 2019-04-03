@@ -4,11 +4,11 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import ru.frostdelta.bungeereports.Loader;
 import ru.frostdelta.bungeereports.ReasonAPI;
-import ru.frostdelta.bungeereports.holders.BanReasonsHolder;
 import ru.frostdelta.bungeereports.utils.Utils;
 
 import java.util.ArrayList;
@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Map;
 
 
-public class BanReasons {
+public class BanReasons implements InventoryHolder {
 
     private static Map<String, ReasonAPI> reasonAPIMap = new HashMap<String, ReasonAPI>();
 
@@ -37,7 +37,7 @@ public class BanReasons {
             }
         }
 
-        Inventory inv = Bukkit.createInventory(new BanReasonsHolder(), slots, sender);
+        Inventory inv = Bukkit.createInventory(this, slots, sender);
 
         int x = 0;
         for(String name : plugin.getConfig().getStringList("ban.reasons")){
@@ -70,4 +70,8 @@ public class BanReasons {
         return reasonAPIMap;
     }
 
+    @Override
+    public Inventory getInventory() {
+        return null;
+    }
 }

@@ -4,6 +4,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import ru.frostdelta.bungeereports.EventHandler;
@@ -14,7 +15,7 @@ import ru.frostdelta.bungeereports.utils.Utils;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class GetReportsUI {
+public class GetReportsUI implements InventoryHolder {
 
     private Loader plugin;
 
@@ -69,4 +70,8 @@ public class GetReportsUI {
 
     }
 
+    @Override
+    public Inventory getInventory() {
+        return null;
+    }
 }

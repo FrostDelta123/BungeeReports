@@ -4,6 +4,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import ru.frostdelta.bungeereports.Loader;
@@ -12,22 +13,17 @@ import ru.frostdelta.bungeereports.utils.Utils;
 
 import java.util.List;
 
-public class ReasonsUI {
+public class ReasonsUI implements InventoryHolder {
 
     private Loader plugin;
 
     public ReasonsUI(Loader instance){
-
         plugin = instance;
-
     }
 
 
     public void openGUI(Player p) {
-
         List<String> reasons = plugin.getConfig().getStringList("reasons");
-
-
         int slots = 9;
         while (reasons.size() > slots) {
             slots = slots + 9;
@@ -35,11 +31,8 @@ public class ReasonsUI {
                 break;
             }
         }
-
         Inventory inv = Bukkit.createInventory(new ReasonHolder(), slots, Utils.REASONS_INV_NAME);
-
         int x = 0;
-
         for (String reason : reasons) {
 
             ItemStack skull = new ItemStack(Material.SKULL_ITEM);
@@ -48,13 +41,14 @@ public class ReasonsUI {
             itemMeta.setDisplayName(reason);
             skull.setItemMeta(itemMeta);
             inv.setItem(x, skull);
-
             x++;
         }
-
-
         p.openInventory(inv);
 
     }
 
+    @Override
+    public Inventory getInventory() {
+        return null;
+    }
 }

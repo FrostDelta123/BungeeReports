@@ -13,11 +13,8 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import ru.frostdelta.bungeereports.executor.Executor;
-import ru.frostdelta.bungeereports.gui.BanReasons;
-import ru.frostdelta.bungeereports.gui.PunishUI;
-import ru.frostdelta.bungeereports.gui.ReasonsUI;
+import ru.frostdelta.bungeereports.gui.*;
 import ru.frostdelta.bungeereports.hash.HashedLists;
-import ru.frostdelta.bungeereports.holders.*;
 import ru.frostdelta.bungeereports.spectate.SpectateManager;
 import ru.frostdelta.bungeereports.utils.Utils;
 
@@ -111,7 +108,7 @@ public class EventHandler implements Listener {
         Player p = (Player) e.getWhoClicked();
         if(e.getSlotType() != InventoryType.SlotType.OUTSIDE && e.getSlotType() == InventoryType.SlotType.CONTAINER) {
 
-            if(e.getInventory().getHolder() instanceof BanReasonsHolder && !e.getCurrentItem().getType().equals(Material.AIR)){
+            if(e.getInventory().getHolder() instanceof BanReasons && !e.getCurrentItem().getType().equals(Material.AIR)){
 
                 if(e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase(Utils.REJECT)){
                     Report currentReport = getReports().get((Player)e.getWhoClicked());
@@ -144,7 +141,7 @@ public class EventHandler implements Listener {
                 e.setCancelled(true);
             }else
 
-            if (e.getInventory().getHolder() instanceof PunishHolder && !e.getCurrentItem().getType().equals(Material.AIR)) {
+            if (e.getInventory().getHolder() instanceof PunishUI && !e.getCurrentItem().getType().equals(Material.AIR)) {
                 String s = p.getOpenInventory().getItem(4).getItemMeta().getDisplayName();
                 SpectateManager sp = new SpectateManager();
                 Report rep = getReports().get((Player)e.getWhoClicked());
@@ -175,7 +172,7 @@ public class EventHandler implements Listener {
                 e.setCancelled(true);
             }
 
-            if (e.getInventory().getHolder() instanceof GetReportsHolder && !e.getCurrentItem().getType().equals(Material.AIR)) {
+            if (e.getInventory().getHolder() instanceof GetReportsUI && !e.getCurrentItem().getType().equals(Material.AIR)) {
 
                 PunishUI PunishUI = new PunishUI();
                 BanReasons banReasons = new BanReasons();
@@ -198,7 +195,7 @@ public class EventHandler implements Listener {
                 e.setCancelled(true);
             }
 
-            if (e.getInventory().getHolder() instanceof UserHolder && !e.getCurrentItem().getType().equals(Material.AIR)) {
+            if (e.getInventory().getHolder() instanceof UserUI && !e.getCurrentItem().getType().equals(Material.AIR)) {
 
                 if (!plugin.getWhitelist().contains(e.getCurrentItem().getItemMeta().getDisplayName())) {
 
@@ -218,7 +215,7 @@ public class EventHandler implements Listener {
                 }
             }
 
-            if (e.getInventory().getHolder() instanceof ReasonHolder && !e.getCurrentItem().getType().equals(Material.AIR)) {
+            if (e.getInventory().getHolder() instanceof ReasonsUI && !e.getCurrentItem().getType().equals(Material.AIR)) {
 
                 Report report = getReports().get((Player)e.getWhoClicked());
                 if (!plugin.getConfig().getBoolean("comments")) {
