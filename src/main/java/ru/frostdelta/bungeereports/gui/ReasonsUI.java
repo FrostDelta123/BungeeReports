@@ -8,7 +8,6 @@ import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import ru.frostdelta.bungeereports.Loader;
-import ru.frostdelta.bungeereports.holders.ReasonHolder;
 import ru.frostdelta.bungeereports.utils.Utils;
 
 import java.util.List;
@@ -31,7 +30,7 @@ public class ReasonsUI implements InventoryHolder {
                 break;
             }
         }
-        Inventory inv = Bukkit.createInventory(new ReasonHolder(), slots, Utils.REASONS_INV_NAME);
+        Inventory inv = Bukkit.createInventory(this, slots, Utils.REASONS_INV_NAME);
         int x = 0;
         for (String reason : reasons) {
 

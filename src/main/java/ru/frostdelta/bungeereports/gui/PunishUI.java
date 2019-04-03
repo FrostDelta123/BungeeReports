@@ -7,7 +7,6 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import ru.frostdelta.bungeereports.holders.PunishHolder;
 import ru.frostdelta.bungeereports.utils.Utils;
 
 import java.util.Collections;
@@ -16,7 +15,7 @@ public class PunishUI implements InventoryHolder {
 
     public void openGUI(String player, Player moder, String sender) {
 
-        Inventory inv = Bukkit.createInventory(new PunishHolder(), 9, Utils.PUNISH_INV_NAME);
+        Inventory inv = Bukkit.createInventory(this, 9, Utils.PUNISH_INV_NAME);
 
 
         ItemStack accept = new ItemStack(Material.GREEN_RECORD);
