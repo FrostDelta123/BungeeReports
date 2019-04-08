@@ -14,7 +14,6 @@ import ru.frostdelta.bungeereports.modules.VaultLoader;
 import ru.frostdelta.bungeereports.pluginMessage.AntiCheat;
 import ru.frostdelta.bungeereports.pluginMessage.Dump;
 import ru.frostdelta.bungeereports.pluginMessage.PluginMessage;
-import ru.frostdelta.bungeereports.utils.Utils;
 
 import java.io.File;
 import java.io.IOException;
@@ -29,9 +28,7 @@ import java.util.List;
 
 public class Loader extends JavaPlugin {
 
-    private Utils Utils;
     private Loader plugin = this;
-    private Network db = new Network();
     private boolean vaultEnabled;
     private boolean rewardsEnabled;
     private boolean customEnabled;
@@ -79,11 +76,11 @@ public class Loader extends JavaPlugin {
         whitelist = getConfig().getStringList("whitelist");
         spectateEnabled = getConfig().getBoolean("spectate");
         debugEnabled = getConfig().getBoolean("debug");
-        db.url = getConfig().getString("url");
-        db.username = getConfig().getString("username");
-        db.password = getConfig().getString("password");
+        Network.url = getConfig().getString("url");
+        Network.username = getConfig().getString("username");
+        Network.password = getConfig().getString("password");
         bungee = getConfig().getBoolean("bungee.enabled");
-        new Executor().bungee = getConfig().getBoolean("bungee.enabled");
+        Executor.bungee = getConfig().getBoolean("bungee.enabled");
         modEnabled = getConfig().getBoolean("mod.enabled");
         isModUsed = getConfig().getBoolean("mod.use");
         banSystemUsed = getConfig().getBoolean("ban.enabled");
@@ -93,8 +90,8 @@ public class Loader extends JavaPlugin {
             @Override
             public void run() {
                 try {
-                    db.openConnection();
-                    db.createDB();
+                    Network.openConnection();
+                    Network.createDB();
                     HashedLists.loadReports();
                     autoUnban();
                 } catch (SQLException e) {
@@ -163,7 +160,7 @@ public class Loader extends JavaPlugin {
             @Override
             public void run() {
                 long time = System.currentTimeMillis()/1000;
-                db.autoUnban(time);
+                Network.autoUnban(time);
             }
         }, 0L, 1200L);
     }
@@ -171,42 +168,41 @@ public class Loader extends JavaPlugin {
     private void loadMessages(){
         FileConfiguration config = this.getConfig();
 
-        Utils.SEND_MOD_MESSAGE = config.getString("messages.send-mod-message").replaceAll("'","");
-        Utils.DUMP_NOT_FOUND = config.getString("messages.dump-not-found").replaceAll("'","");
-        Utils.DUMP_CREATED = config.getString("messages.dump-created").replaceAll("'","");
-        Utils.DUMP_COMMAND_ERROR = config.getString("messages.dump-command-error").replaceAll("'","");
-        Utils.CONFIG_RELOADED = config.getString("messages.config-reload").replaceAll("'","");
-        Utils.SCREEN_CMMAND_ERROR = config.getString("messages.screen-command-error").replaceAll("'","");
-        Utils.PLAYER_NOT_FOUND = config.getString("messages.player-not-found").replaceAll("'","");
-        Utils.SPECTATE_ERROR = config.getString("messages.spectate-command-error").replaceAll("'","");
-        Utils.PUNISH_TIME = config.getString("messages.ban-time").replaceAll("'","");
-        Utils.PUNISH_TYPE = config.getString("messages.ban-type").replaceAll("'","");
-        Utils.REJECT = config.getString("messages.reject").replaceAll("'","");
-        Utils.REPORT_SENDER = config.getString("messages.report-sender").replaceAll("'","");
-        Utils.REPORT_REASON = config.getString("messages.report-reason").replaceAll("'","");
-        Utils.REPORT_COMMENT = config.getString("messages.report-comment").replaceAll("'","");
-        Utils.NO_REPORTS = config.getString("messages.no-reports").replaceAll("'","");
-        Utils.GET_REPORTS_INV_NAME = config.getString("messages.getreports-inv-name").replaceAll("'","");
-        Utils.ACCEPT = config.getString("messages.accept").replaceAll("'","");
-        Utils.SPECTATE = config.getString("messages.spectate").replaceAll("'","");
-        Utils.PUNISH_INV_NAME = config.getString("messages.punish-inv-name").replaceAll("'","");
-        Utils.REASONS_INV_NAME = config.getString("messages.reasons-inv-name").replaceAll("'","");
-        Utils.REPORTS_INV_NAME = config.getString("messages.reports-inv-name").replaceAll("'","");
-        Utils.REWARD_MESSAGE = config.getString("messages.reward-message").replaceAll("'","");
-        Utils.SPECTATE_TOGGLE_OFF = config.getString("messages.spectate-toggle-off").replaceAll("'","");
-        Utils.SPECTATE_PLAYER = config.getString("messages.spectate-player").replaceAll("'","");
-        Utils.REPORT_ACCEPT = config.getString("messages.report-accept").replaceAll("'","");
-        Utils.REPORT_REJECT = config.getString("messages.report-reject").replaceAll("'","");
-        Utils.BAN_MESSAGE = config.getString("messages.ban-message").replaceAll("'","");
-        Utils.MUTE_MESSAGE = config.getString("messages.mute-message").replaceAll("'","");
-        Utils.CHAT_COMMENT = config.getString("messages.chat-comment").replaceAll("'","");
-        Utils.SUCCESS_REPORT = config.getString("messages.success-report").replaceAll("'","");
-        Utils.REPORT_UNSUCCESS = config.getString("messages.report-unsuccess").replaceAll("'","");
+        ru.frostdelta.bungeereports.utils.Messages.SEND_MOD_MESSAGE = config.getString("messages.send-mod-message").replaceAll("'","");
+        ru.frostdelta.bungeereports.utils.Messages.DUMP_NOT_FOUND = config.getString("messages.dump-not-found").replaceAll("'","");
+        ru.frostdelta.bungeereports.utils.Messages.DUMP_CREATED = config.getString("messages.dump-created").replaceAll("'","");
+        ru.frostdelta.bungeereports.utils.Messages.DUMP_COMMAND_ERROR = config.getString("messages.dump-command-error").replaceAll("'","");
+        ru.frostdelta.bungeereports.utils.Messages.CONFIG_RELOADED = config.getString("messages.config-reload").replaceAll("'","");
+        ru.frostdelta.bungeereports.utils.Messages.SCREEN_CMMAND_ERROR = config.getString("messages.screen-command-error").replaceAll("'","");
+        ru.frostdelta.bungeereports.utils.Messages.PLAYER_NOT_FOUND = config.getString("messages.player-not-found").replaceAll("'","");
+        ru.frostdelta.bungeereports.utils.Messages.SPECTATE_ERROR = config.getString("messages.spectate-command-error").replaceAll("'","");
+        ru.frostdelta.bungeereports.utils.Messages.PUNISH_TIME = config.getString("messages.ban-time").replaceAll("'","");
+        ru.frostdelta.bungeereports.utils.Messages.PUNISH_TYPE = config.getString("messages.ban-type").replaceAll("'","");
+        ru.frostdelta.bungeereports.utils.Messages.REJECT = config.getString("messages.reject").replaceAll("'","");
+        ru.frostdelta.bungeereports.utils.Messages.REPORT_SENDER = config.getString("messages.report-sender").replaceAll("'","");
+        ru.frostdelta.bungeereports.utils.Messages.REPORT_REASON = config.getString("messages.report-reason").replaceAll("'","");
+        ru.frostdelta.bungeereports.utils.Messages.REPORT_COMMENT = config.getString("messages.report-comment").replaceAll("'","");
+        ru.frostdelta.bungeereports.utils.Messages.NO_REPORTS = config.getString("messages.no-reports").replaceAll("'","");
+        ru.frostdelta.bungeereports.utils.Messages.GET_REPORTS_INV_NAME = config.getString("messages.getreports-inv-name").replaceAll("'","");
+        ru.frostdelta.bungeereports.utils.Messages.ACCEPT = config.getString("messages.accept").replaceAll("'","");
+        ru.frostdelta.bungeereports.utils.Messages.SPECTATE = config.getString("messages.spectate").replaceAll("'","");
+        ru.frostdelta.bungeereports.utils.Messages.PUNISH_INV_NAME = config.getString("messages.punish-inv-name").replaceAll("'","");
+        ru.frostdelta.bungeereports.utils.Messages.REASONS_INV_NAME = config.getString("messages.reasons-inv-name").replaceAll("'","");
+        ru.frostdelta.bungeereports.utils.Messages.REPORTS_INV_NAME = config.getString("messages.reports-inv-name").replaceAll("'","");
+        ru.frostdelta.bungeereports.utils.Messages.REWARD_MESSAGE = config.getString("messages.reward-message").replaceAll("'","");
+        ru.frostdelta.bungeereports.utils.Messages.SPECTATE_TOGGLE_OFF = config.getString("messages.spectate-toggle-off").replaceAll("'","");
+        ru.frostdelta.bungeereports.utils.Messages.SPECTATE_PLAYER = config.getString("messages.spectate-player").replaceAll("'","");
+        ru.frostdelta.bungeereports.utils.Messages.REPORT_ACCEPT = config.getString("messages.report-accept").replaceAll("'","");
+        ru.frostdelta.bungeereports.utils.Messages.REPORT_REJECT = config.getString("messages.report-reject").replaceAll("'","");
+        ru.frostdelta.bungeereports.utils.Messages.BAN_MESSAGE = config.getString("messages.ban-message").replaceAll("'","");
+        ru.frostdelta.bungeereports.utils.Messages.MUTE_MESSAGE = config.getString("messages.mute-message").replaceAll("'","");
+        ru.frostdelta.bungeereports.utils.Messages.CHAT_COMMENT = config.getString("messages.chat-comment").replaceAll("'","");
+        ru.frostdelta.bungeereports.utils.Messages.SUCCESS_REPORT = config.getString("messages.success-report").replaceAll("'","");
+        ru.frostdelta.bungeereports.utils.Messages.REPORT_UNSUCCESS = config.getString("messages.report-unsuccess").replaceAll("'","");
     }
 
     public void loadConfig(){
 
-        Executor executor = new Executor();
         vaultEnabled = getConfig().getBoolean("vault.enabled");
         rewardsEnabled = getConfig().getBoolean("reward.enabled");
         customEnabled = getConfig().getBoolean("customreward.enabled");
@@ -217,11 +213,11 @@ public class Loader extends JavaPlugin {
         whitelist = getConfig().getStringList("whitelist");
         spectateEnabled = getConfig().getBoolean("spectate");
         debugEnabled = getConfig().getBoolean("debug");
-        db.url = getConfig().getString("url").replaceAll("'","");;
-        db.username = getConfig().getString("username").replaceAll("'","");;
-        db.password = getConfig().getString("password").replaceAll("'","");;
+        Network.url = getConfig().getString("url").replaceAll("'","");
+        Network.username = getConfig().getString("username").replaceAll("'","");
+        Network.password = getConfig().getString("password").replaceAll("'","");
         bungee = getConfig().getBoolean("bungee.enabled");
-        executor.bungee = getConfig().getBoolean("bungee.enabled");
+        Executor.bungee = getConfig().getBoolean("bungee.enabled");
         modEnabled = getConfig().getBoolean("mod.enabled");
         isModUsed = getConfig().getBoolean("mod.use");
         banSystemUsed = getConfig().getBoolean("ban.enabled");
@@ -231,7 +227,7 @@ public class Loader extends JavaPlugin {
     public void sendDump(Player p, ByteArrayDataOutput buffer) {
         p.sendPluginMessage(plugin, "Dump", buffer.toByteArray());
         if(plugin.isDebugEnabled()){
-            p.sendMessage(Utils.SEND_MOD_MESSAGE);
+            p.sendMessage(ru.frostdelta.bungeereports.utils.Messages.SEND_MOD_MESSAGE);
         }
 
     }
@@ -239,7 +235,7 @@ public class Loader extends JavaPlugin {
     public void sendMessage(Player p, ByteArrayDataOutput buffer) {
         p.sendPluginMessage(plugin, "AntiCheat", buffer.toByteArray());
         if(plugin.isDebugEnabled()){
-            p.sendMessage(Utils.SEND_MOD_MESSAGE);
+            p.sendMessage(ru.frostdelta.bungeereports.utils.Messages.SEND_MOD_MESSAGE);
         }
 
     }

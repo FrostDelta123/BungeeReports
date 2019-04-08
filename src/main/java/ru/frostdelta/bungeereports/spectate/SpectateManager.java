@@ -4,43 +4,42 @@ import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
-import ru.frostdelta.bungeereports.utils.Utils;
+import ru.frostdelta.bungeereports.utils.Messages;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class SpectateManager {
 
-    private Map<Entity, Player> targetMap = new HashMap<Entity, Player>();
+    private static Map<Entity, Player> targetMap = new HashMap<Entity, Player>();
 
-    public void spectateOff(Player p){
+    public static void spectateOff(Player p){
 
         p.setGameMode(GameMode.SURVIVAL);
         getTarget().remove(p.getSpectatorTarget());
-        p.sendMessage(Utils.SPECTATE_TOGGLE_OFF);
-
+        p.sendMessage(Messages.SPECTATE_TOGGLE_OFF);
     }
 
-    public boolean isSpectate(Player p){
+    public static boolean isSpectate(Player p){
 
         return p.getGameMode() == GameMode.SPECTATOR;
 
     }
 
-    public void setSpectate(Player p, Player tar){
+    public static void setSpectate(Player p, Player tar){
 
         p.setGameMode(GameMode.SPECTATOR);
         p.setSpectatorTarget(tar);
         getTarget().put(p, tar);
-        p.sendMessage(Utils.SPECTATE_PLAYER + tar.getName());
+        p.sendMessage(Messages.SPECTATE_PLAYER + tar.getName());
         p.sendMessage(ChatColor.GOLD + "Для отмены пропишите /spectateoff");
     }
 
-    public boolean isTarget(Entity p){
+    public static boolean isTarget(Entity p){
         return getTarget().containsKey(p);
     }
 
-    public Map getTarget(){
+    public static Map getTarget(){
         return targetMap;
     }
 

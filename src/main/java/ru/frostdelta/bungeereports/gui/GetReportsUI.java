@@ -9,7 +9,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import ru.frostdelta.bungeereports.EventHandler;
 import ru.frostdelta.bungeereports.Loader;
-import ru.frostdelta.bungeereports.utils.Utils;
+import ru.frostdelta.bungeereports.utils.Messages;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -38,7 +38,7 @@ public class GetReportsUI implements InventoryHolder {
                 }
             }
 
-            Inventory inv = Bukkit.createInventory(this, slots, Utils.GET_REPORTS_INV_NAME);
+            Inventory inv = Bukkit.createInventory(this, slots, Messages.GET_REPORTS_INV_NAME);
 
 
 
@@ -50,9 +50,9 @@ public class GetReportsUI implements InventoryHolder {
 
                 ArrayList<String> lore = new ArrayList<String>();
 
-                lore.add(Utils.REPORT_SENDER + senderList.get(x));
-                lore.add(Utils.REPORT_REASON + reasonList.get(x));
-                lore.add(Utils.REPORT_COMMENT + comment.get(x));
+                lore.add(Messages.REPORT_SENDER + senderList.get(x));
+                lore.add(Messages.REPORT_REASON + reasonList.get(x));
+                lore.add(Messages.REPORT_COMMENT + comment.get(x));
                 itemMeta.setLore(lore);
 
 
@@ -65,7 +65,7 @@ public class GetReportsUI implements InventoryHolder {
             //Какой же это костыль, самому стыдно.
             EventHandler handler = new EventHandler(sender);
             p.openInventory(inv);
-        }else p.sendMessage(Utils.NO_REPORTS);
+        }else p.sendMessage(Messages.NO_REPORTS);
 
     }
 

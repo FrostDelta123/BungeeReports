@@ -12,53 +12,50 @@ import java.util.HashMap;
 
 public class Network {
 
-    public String url, username, password;
+    public static String url, username, password;
     private static HashMap<String, PreparedStatement> preparedStatements = new HashMap<>();
-    private Connection connection;
+    private static Connection connection;
 
     public Network() {
 
     }
 
-    public void openConnection() throws SQLException, ClassNotFoundException {
+    public static void openConnection() throws SQLException, ClassNotFoundException {
         if (connection != null && !connection.isClosed()) {
             return;
         }
-
-        synchronized (this) {
-            if (connection != null && !connection.isClosed()) {
-                return;
-            }
-            Class.forName("com.mysql.jdbc.Driver");
-            connection = DriverManager.getConnection(url +
-                    "?useUnicode=true&characterEncoding=UTF-8", this.username, this.password);
-
-            preparedStatements.put("addReport", connection.prepareStatement(
-                    "INSERT INTO `reports` (sender, player, reason, comment, solved) VALUES (?,?,?,?,?)"));
-            preparedStatements.put("totalReports", connection.prepareStatement(
-                    "SELECT COUNT(*) FROM `reports` WHERE `solved`=?"));
-            preparedStatements.put("playerReports", connection.prepareStatement(
-                    "SELECT COUNT(*) FROM `reports` WHERE `sender`=? AND `solved`=?"));
-            preparedStatements.put("reportList", connection.prepareStatement(
-                    "SELECT * FROM `reports` WHERE `solved`=?"));
-            preparedStatements.put("updateReport", connection.prepareStatement(
-                    "UPDATE `reports` SET `solved`=? WHERE `player`=? AND `sender`=? AND `solved`=?"));
-            preparedStatements.put("purge", connection.prepareStatement(
-                    "DELETE FROM `reports` WHERE `sender`=? AND `solved`=?"));
-            preparedStatements.put("addScreenshot",
-                    connection.prepareStatement(
-                            "INSERT INTO `screen` (player, screenshots) VALUES (?,?)"
-                                    + " ON DUPLICATE KEY "
-                                    + "UPDATE `screenshots` = IF(player=?,CONCAT(screenshots,?),screenshots);"));
-            preparedStatements.put("getScreenshots", connection.prepareStatement(
-                    "SELECT `screenshots` FROM `screen` WHERE `player`=?;"));
-            preparedStatements.put("checkBan", connection.prepareStatement(
-                    "SELECT `type` FROM `banlist` WHERE player=?"));
-            preparedStatements.put("autoUnban", connection.prepareStatement(
-                    "DELETE FROM `banlist` WHERE unbantime<? AND unbantime<>0"));
-            preparedStatements.put("addBan", connection.prepareStatement(
-                    "INSERT INTO `banlist` (player, bantime, unbantime, type) VALUES (?,?,?,?) "));
+        if (connection != null && !connection.isClosed()) {
+            return;
         }
+        Class.forName("com.mysql.jdbc.Driver");
+        connection = DriverManager.getConnection(url +
+                "?useUnicode=true&characterEncoding=UTF-8", username, password);
+        preparedStatements.put("addReport", connection.prepareStatement(
+                "INSERT INTO `reports` (sender, player, reason, comment, solved) VALUES (?,?,?,?,?)"));
+        preparedStatements.put("totalReports", connection.prepareStatement(
+                "SELECT COUNT(*) FROM `reports` WHERE `solved`=?"));
+        preparedStatements.put("playerReports", connection.prepareStatement(
+                "SELECT COUNT(*) FROM `reports` WHERE `sender`=? AND `solved`=?"));
+        preparedStatements.put("reportList", connection.prepareStatement(
+                "SELECT * FROM `reports` WHERE `solved`=?"));
+        preparedStatements.put("updateReport", connection.prepareStatement(
+                "UPDATE `reports` SET `solved`=? WHERE `player`=? AND `sender`=? AND `solved`=?"));
+        preparedStatements.put("purge", connection.prepareStatement(
+                "DELETE FROM `reports` WHERE `sender`=? AND `solved`=?"));
+        preparedStatements.put("addScreenshot",
+                connection.prepareStatement(
+                        "INSERT INTO `screen` (player, screenshots) VALUES (?,?)"
+                                + " ON DUPLICATE KEY "
+                                + "UPDATE `screenshots` = IF(player=?,CONCAT(screenshots,?),screenshots);"));
+        preparedStatements.put("getScreenshots", connection.prepareStatement(
+                "SELECT `screenshots` FROM `screen` WHERE `player`=?;"));
+        preparedStatements.put("checkBan", connection.prepareStatement(
+                "SELECT `type` FROM `banlist` WHERE player=?"));
+        preparedStatements.put("autoUnban", connection.prepareStatement(
+                "DELETE FROM `banlist` WHERE unbantime<? AND unbantime<>0"));
+        preparedStatements.put("addBan", connection.prepareStatement(
+                "INSERT INTO `banlist` (player, bantime, unbantime, type) VALUES (?,?,?,?) "));
+
 
     }
 
@@ -75,7 +72,7 @@ public class Network {
         }
     }
 
-    public void autoUnban(long unban) {
+    public static void autoUnban(long unban) {
         try {
             PreparedStatement autoUnban = preparedStatements.get("autoUnban");
             autoUnban.setLong(1, unban);
@@ -113,7 +110,7 @@ public class Network {
         }
     }
 
-    public String getScreenshots(String player) {
+    public static String getScreenshots(String player) {
         try {
             PreparedStatement getScreenshots = preparedStatements.get("getScreenshots");
             getScreenshots.setString(1, player);
@@ -128,7 +125,7 @@ public class Network {
         return "";
     }
 
-    public void customReward(String table, String money, String playerCol, double amount,
+    public static void customReward(String table, String money, String playerCol, double amount,
                              String player, String conUrl, String user, String pass) {
         try {
            Connection con = DriverManager.getConnection(conUrl + "?useUnicode=true&characterEncoding=UTF-8", user, pass);
@@ -141,16 +138,14 @@ public class Network {
     }
 
 
-    public void createDB() {
+    public static void createDB() {
         try {
 
             Statement statement = connection.createStatement();
             String sql = "CREATE TABLE IF NOT EXISTS `reports` (sender varchar(200), player varchar(200), reason varchar(200), comment varchar(200), solved varchar(200)) CHARACTER SET utf8 COLLATE utf8_general_ci";
             String sql2 = "CREATE TABLE IF NOT EXISTS `banlist` (player varchar(200), bantime bigint(200), unbantime bigint(200), type varchar(200)) CHARACTER SET utf8 COLLATE utf8_general_ci";
-            //Заебенить автосоздание
             statement.executeUpdate(sql);
             statement.executeUpdate(sql2);
-
             System.out.println("Database created!");
         } catch (SQLException sqlException) {
             if (sqlException.getErrorCode() == 1007) {
@@ -161,7 +156,7 @@ public class Network {
         }
     }
 
-    public void purge(String sender, String solved) {
+    public static void purge(String sender, String solved) {
         try {
             PreparedStatement purge = preparedStatements.get("purge");
             purge.setString(1, sender);
@@ -172,7 +167,7 @@ public class Network {
         }
     }
 
-    public int playerReports(String sender, String solved) {
+    public static int playerReports(String sender, String solved) {
         try {
             PreparedStatement playerReports = preparedStatements.get("playerReports");
             playerReports.setString(1, sender);
@@ -188,7 +183,7 @@ public class Network {
         return 0;
     }
 
-    public void updateReport(String solved, String player, String sender) {
+    public static void updateReport(String solved, String player, String sender) {
         try {
             PreparedStatement updateReport = preparedStatements.get("updateReport");
             updateReport.setString(1, solved );

@@ -6,7 +6,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import ru.frostdelta.bungeereports.action.Action;
 import ru.frostdelta.bungeereports.executor.Executor;
-import ru.frostdelta.bungeereports.utils.Utils;
+import ru.frostdelta.bungeereports.utils.Messages;
 
 public class ScreenManager {
 
@@ -29,17 +29,16 @@ public class ScreenManager {
 
     public void getScreenshot(String name, Player player){
         Loader plugin = Loader.inst();
-        Network db = new Network();
-        String screenshots = db.getScreenshots(name);
+        String screenshots = Network.getScreenshots(name);
         if (!screenshots.isEmpty()) {
             ByteArrayDataOutput out = ByteStreams.newDataOutput();
             out.writeUTF(Action.SCREENSHOTS.getActionName());
             out.writeUTF(name);
-            out.writeUTF(db.getScreenshots(name));
+            out.writeUTF(Network.getScreenshots(name));
             plugin.sendMessage(player, out);
 
         } else {
-            player.sendMessage(Utils.SCREEN_CMMAND_ERROR);
+            player.sendMessage(Messages.SCREEN_CMMAND_ERROR);
         }
     }
 

@@ -16,7 +16,7 @@ import ru.frostdelta.bungeereports.executor.Executor;
 import ru.frostdelta.bungeereports.gui.*;
 import ru.frostdelta.bungeereports.hash.HashedLists;
 import ru.frostdelta.bungeereports.spectate.SpectateManager;
-import ru.frostdelta.bungeereports.utils.Utils;
+import ru.frostdelta.bungeereports.utils.Messages;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -34,8 +34,6 @@ public class EventHandler implements Listener {
     private Loader plugin;
     private int index;
     private Network network;
-    private final UpdateReport update = new UpdateReport();
-    private final SpectateManager spectateManager = new SpectateManager();
     private List<Player> mutelist = new ArrayList<Player>();
     private Map<Player, Report> reports = new HashMap<Player, Report>();
     private static Map<Integer, String> send = new HashMap<>();
@@ -47,10 +45,10 @@ public class EventHandler implements Listener {
 
     @org.bukkit.event.EventHandler(priority = EventPriority.LOW)
     public void playerDisconnect(PlayerQuitEvent e){
-        if(spectateManager.isTarget(e.getPlayer())){
-            Player player = (Player)spectateManager.getTarget().get(e.getPlayer());
-            spectateManager.spectateOff(player);
-            spectateManager.getTarget().remove(e.getPlayer());
+        if(SpectateManager.isTarget(e.getPlayer())){
+            Player player = (Player)SpectateManager.getTarget().get(e.getPlayer());
+            SpectateManager.spectateOff(player);
+            SpectateManager.getTarget().remove(e.getPlayer());
             player.sendMessage(ChatColor.RED + "Player leave the game");
         }
         if(mutelist.contains(e.getPlayer())){
@@ -64,7 +62,7 @@ public class EventHandler implements Listener {
     public void checkBan(PlayerJoinEvent e){
         String type = network.checkBan(e.getPlayer().getName());
         if(type.equalsIgnoreCase("ban") || type.equalsIgnoreCase("tempban")){
-            e.getPlayer().kickPlayer(Utils.BAN_MESSAGE);
+            e.getPlayer().kickPlayer(Messages.BAN_MESSAGE);
         }
         if(type.equalsIgnoreCase("mute")){
             mutelist.add(e.getPlayer());
@@ -84,14 +82,14 @@ public class EventHandler implements Listener {
         String player = e.getPlayer().getName();
         if (mutelist.contains(e.getPlayer())){
             e.setCancelled(true);
-            e.getPlayer().sendMessage(Utils.MUTE_MESSAGE);
+            e.getPlayer().sendMessage(Messages.MUTE_MESSAGE);
         }
        if(report.getSender().equalsIgnoreCase(player)){
            String reason = report.getReason();
            network.addReport(player, report.getPlayer(),reason, e.getMessage());
 
            HashedLists.loadReports();
-           e.getPlayer().sendMessage(Utils.SUCCESS_REPORT);
+           e.getPlayer().sendMessage(Messages.SUCCESS_REPORT);
 
            e.setCancelled(true);
        }
@@ -110,12 +108,12 @@ public class EventHandler implements Listener {
 
             if(e.getInventory().getHolder() instanceof BanReasons && !e.getCurrentItem().getType().equals(Material.AIR)){
 
-                if(e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase(Utils.REJECT)){
+                if(e.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase(Messages.REJECT)){
                     Report currentReport = getReports().get((Player)e.getWhoClicked());
-                    update.updateReport(currentReport.getPlayer(), e.getInventory().getName(), "reject");
+                    Network.updateReport(currentReport.getPlayer(), e.getInventory().getName(), "reject");
                     getReports().remove((Player)e.getWhoClicked());
                     p.getOpenInventory().close();
-                    p.sendMessage(Utils.REPORT_REJECT);
+                    p.sendMessage(Messages.REPORT_REJECT);
                     HashedLists.changeCount(index);
                     e.setCancelled(true);
                     return;
@@ -127,14 +125,14 @@ public class EventHandler implements Listener {
                 Report report = getReports().get((Player)e.getWhoClicked());
                 network.addBan(report.getPlayer(), System.currentTimeMillis()/1000,time, type);
                 if(Bukkit.getPlayer(report.getPlayer()) != null && type.equals("ban") || type.equals("tempban")){
-                    Bukkit.getPlayer(report.getPlayer()).kickPlayer(Utils.BAN_MESSAGE);
+                    Bukkit.getPlayer(report.getPlayer()).kickPlayer(Messages.BAN_MESSAGE);
                 }
                 if((Bukkit.getPlayer(report.getPlayer()) != null && type.equals("mute"))){
                     mutelist.add((Bukkit.getPlayer(report.getPlayer())));
                 }
-                update.updateReport(report.getPlayer(), e.getInventory().getName(), "accept");
+                Network.updateReport(report.getPlayer(), e.getInventory().getName(), "accept");
                 p.getOpenInventory().close();
-                p.sendMessage(Utils.REPORT_ACCEPT);
+                p.sendMessage(Messages.REPORT_ACCEPT);
                 HashedLists.changeCount(index);
                 getReports().remove(p);
 
@@ -147,17 +145,17 @@ public class EventHandler implements Listener {
                 Report rep = getReports().get((Player)e.getWhoClicked());
                 switch(e.getSlot()){
                     case 2:
-                        update.updateReport(rep.getPlayer(), s, "accept");
+                        Network.updateReport(rep.getPlayer(), s, "accept");
                         getReports().remove((Player)e.getWhoClicked());
                         p.getOpenInventory().close();
-                        p.sendMessage(Utils.REPORT_ACCEPT);
+                        p.sendMessage(Messages.REPORT_ACCEPT);
                         HashedLists.changeCount(index);
                         break;
                     case 6:
-                        update.updateReport(rep.getPlayer(), s, "reject");
+                        Network.updateReport(rep.getPlayer(), s, "reject");
                         getReports().remove((Player)e.getWhoClicked());
                         p.getOpenInventory().close();
-                        p.sendMessage(Utils.REPORT_REJECT);
+                        p.sendMessage(Messages.REPORT_REJECT);
                         HashedLists.changeCount(index);
                         break;
                     case 8:
@@ -211,7 +209,7 @@ public class EventHandler implements Listener {
                 } else {
                     p.getOpenInventory().close();
                     e.setCancelled(true);
-                    p.sendMessage(ChatColor.RED + Utils.REPORT_UNSUCCESS);
+                    p.sendMessage(ChatColor.RED + Messages.REPORT_UNSUCCESS);
                 }
             }
 
@@ -227,12 +225,12 @@ public class EventHandler implements Listener {
                     HashedLists.addReport(e.getWhoClicked().getName(), report.getPlayer(), e.getCurrentItem().getItemMeta().getDisplayName(), "");
                     getReports().remove((Player)e.getWhoClicked());
                     e.getWhoClicked().getOpenInventory().close();
-                    p.sendMessage(Utils.SUCCESS_REPORT);
+                    p.sendMessage(Messages.SUCCESS_REPORT);
 
                 } else {
                     report.setReason(e.getCurrentItem().getItemMeta().getDisplayName());
                     e.getWhoClicked().getOpenInventory().close();
-                    e.getWhoClicked().sendMessage(Utils.CHAT_COMMENT);
+                    e.getWhoClicked().sendMessage(Messages.CHAT_COMMENT);
                 }
 
                 e.setCancelled(true);

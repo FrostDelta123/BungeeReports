@@ -8,7 +8,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
-import ru.frostdelta.bungeereports.utils.Utils;
+import ru.frostdelta.bungeereports.utils.Messages;
 
 public class UserUI implements InventoryHolder {
 
@@ -23,7 +23,7 @@ public class UserUI implements InventoryHolder {
             }
         }
 
-        Inventory inv = Bukkit.createInventory(this, slots, Utils.REPORTS_INV_NAME);
+        Inventory inv = Bukkit.createInventory(this, slots, Messages.REPORTS_INV_NAME);
 
                 int x = 0;
 

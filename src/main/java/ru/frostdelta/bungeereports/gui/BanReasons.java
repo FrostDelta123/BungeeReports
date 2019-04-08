@@ -9,7 +9,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import ru.frostdelta.bungeereports.Loader;
 import ru.frostdelta.bungeereports.ReasonAPI;
-import ru.frostdelta.bungeereports.utils.Utils;
+import ru.frostdelta.bungeereports.utils.Messages;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -48,8 +48,8 @@ public class BanReasons implements InventoryHolder {
             getAPI().put(list.get(0), new ReasonAPI(list.get(0), Integer.parseInt(list.get(1)), list.get(2)));
             itemMeta.setDisplayName(list.get(0));
             ArrayList<String> lore = new ArrayList<String>();
-            lore.add(Utils.PUNISH_TIME + getAPI().get(list.get(0)).getTime());
-            lore.add(Utils.PUNISH_TYPE  + getAPI().get(list.get(0)).getType());
+            lore.add(Messages.PUNISH_TIME + getAPI().get(list.get(0)).getTime());
+            lore.add(Messages.PUNISH_TYPE  + getAPI().get(list.get(0)).getType());
             itemMeta.setLore(lore);
             banButton.setItemMeta(itemMeta);
             inv.setItem(x, banButton);
@@ -58,7 +58,7 @@ public class BanReasons implements InventoryHolder {
 
         ItemStack rejectButton = new ItemStack(Material.REDSTONE_BLOCK);
         ItemMeta meta = rejectButton.getItemMeta();
-        meta.setDisplayName(Utils.REJECT);
+        meta.setDisplayName(Messages.REJECT);
         rejectButton.setItemMeta(meta);
 
         inv.setItem(x++, rejectButton);

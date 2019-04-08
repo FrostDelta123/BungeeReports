@@ -3,14 +3,13 @@ package ru.frostdelta.bungeereports.rewards;
 import org.bukkit.Bukkit;
 import ru.frostdelta.bungeereports.Loader;
 import ru.frostdelta.bungeereports.Network;
-import ru.frostdelta.bungeereports.utils.Utils;
+import ru.frostdelta.bungeereports.utils.Messages;
 
 public class GiveCustomReward {
 
     public void giveCustomReward(String player){
 
         Loader plugin = Loader.inst();
-        Network Network = new Network();
 
         String table = plugin.getConfig().getString("customreward.table");
         String nameCol = plugin.getConfig().getString("customreward.namecoloumn");
@@ -24,11 +23,10 @@ public class GiveCustomReward {
             Network.customReward(table, moneyCol, nameCol, plugin.getCustomRewardAmount(), player, url,username, password);
 
         }else {
-            IsUUID IsUUID = new IsUUID();
             IsUUID.getUUID(table, moneyCol, nameCol, player);
         }
 
-        Bukkit.getPlayer(player).sendMessage(Utils.REWARD_MESSAGE + plugin.getRewardAmount());
+        Bukkit.getPlayer(player).sendMessage(Messages.REWARD_MESSAGE + plugin.getRewardAmount());
 
     }
 

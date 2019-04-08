@@ -7,7 +7,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import ru.frostdelta.bungeereports.utils.Utils;
+import ru.frostdelta.bungeereports.utils.Messages;
 
 import java.util.Collections;
 
@@ -15,7 +15,7 @@ public class PunishUI implements InventoryHolder {
 
     public void openGUI(String player, Player moder, String sender) {
 
-        Inventory inv = Bukkit.createInventory(this, 9, Utils.PUNISH_INV_NAME);
+        Inventory inv = Bukkit.createInventory(this, 9, Messages.PUNISH_INV_NAME);
 
 
         ItemStack accept = new ItemStack(Material.GREEN_RECORD);
@@ -28,7 +28,7 @@ public class PunishUI implements InventoryHolder {
         ItemMeta denyMeta = deny.getItemMeta();
         ItemMeta spectateMeta = spectate.getItemMeta();
 
-        acceptItemMeta.setDisplayName(Utils.ACCEPT);
+        acceptItemMeta.setDisplayName(Messages.ACCEPT);
         accept.setItemMeta(acceptItemMeta);
         inv.setItem(2, accept);
 
@@ -37,11 +37,11 @@ public class PunishUI implements InventoryHolder {
         send.setItemMeta(itemMeta);
         inv.setItem(4, send);
 
-        denyMeta.setDisplayName(Utils.REJECT);
+        denyMeta.setDisplayName(Messages.REJECT);
         deny.setItemMeta(denyMeta);
         inv.setItem(6, deny);
 
-        spectateMeta.setDisplayName(Utils.SPECTATE);
+        spectateMeta.setDisplayName(Messages.SPECTATE);
         spectateMeta.setLore(Collections.singletonList("BETA"));
         spectate.setItemMeta(spectateMeta);
 

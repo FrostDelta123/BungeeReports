@@ -13,12 +13,12 @@ import ru.frostdelta.bungeereports.Loader;
 import ru.frostdelta.bungeereports.Network;
 import ru.frostdelta.bungeereports.NonBungee;
 import ru.frostdelta.bungeereports.action.Action;
-import ru.frostdelta.bungeereports.chat.PasteBinAPI;
+import ru.frostdelta.bungeereports.chat.HastebinAPI;
 import ru.frostdelta.bungeereports.gui.GetReportsUI;
 import ru.frostdelta.bungeereports.hash.HashedLists;
 import ru.frostdelta.bungeereports.pluginMessage.GetPlayerCount;
 import ru.frostdelta.bungeereports.spectate.SpectateManager;
-import ru.frostdelta.bungeereports.utils.Utils;
+import ru.frostdelta.bungeereports.utils.Messages;
 
 import java.io.*;
 import java.nio.file.Files;
@@ -34,7 +34,7 @@ public class Executor implements CommandExecutor {
     private static Map<String, String> requestQueue = new HashMap<>();
     private static Map<Player, Action> actionDump = new HashMap<>();
 
-    public boolean bungee;
+    public static boolean bungee;
     private static List<Player> senders = new ArrayList<>();
     private boolean isBungee(){
         return bungee;
@@ -72,7 +72,7 @@ public class Executor implements CommandExecutor {
                 OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(args[0]);
                 File file = new File(plugin.getDataFolder().getAbsolutePath() + "/dump/" + offlinePlayer.getUniqueId().toString() + ".txt");
                 if (!file.exists()) {
-                    s.sendMessage(Utils.DUMP_NOT_FOUND);
+                    s.sendMessage(Messages.DUMP_NOT_FOUND);
                     return true;
                 }
                 ByteArrayDataOutput out = ByteStreams.newDataOutput();
@@ -98,9 +98,9 @@ public class Executor implements CommandExecutor {
                         while ((strLine = br.readLine()) != null){
                            dumpList.add(strLine);
                         }
-                        s.sendMessage(PasteBinAPI.post(dumpList));
+                        s.sendMessage(HastebinAPI.post(dumpList));
                     } catch (FileNotFoundException e) {
-                        s.sendMessage(Utils.DUMP_NOT_FOUND);
+                        s.sendMessage(Messages.DUMP_NOT_FOUND);
                         e.printStackTrace();
                     } catch (IOException e) {
                         e.printStackTrace();
@@ -119,9 +119,9 @@ public class Executor implements CommandExecutor {
               ByteArrayDataOutput out = ByteStreams.newDataOutput();
               out.writeUTF(Action.PROCESS.getActionName());
               plugin.sendDump(dumped, out);
-              s.sendMessage(Utils.DUMP_CREATED);
+              s.sendMessage(Messages.DUMP_CREATED);
               return true;
-            }else s.sendMessage(Utils.DUMP_COMMAND_ERROR);
+            }else s.sendMessage(Messages.DUMP_COMMAND_ERROR);
         }else
 
         if (cmd.getName().equalsIgnoreCase("report")) {
@@ -169,7 +169,7 @@ public class Executor implements CommandExecutor {
                 plugin.sendMessage(player, out);
                 return true;
             } else {
-                player.sendMessage(Utils.SCREEN_CMMAND_ERROR);
+                player.sendMessage(Messages.SCREEN_CMMAND_ERROR);
             }
         }else
 
@@ -180,7 +180,7 @@ public class Executor implements CommandExecutor {
 
             plugin.loadConfig();
 
-            s.sendMessage(Utils.CONFIG_RELOADED);
+            s.sendMessage(Messages.CONFIG_RELOADED);
             return true;
         }else
 
@@ -202,7 +202,7 @@ public class Executor implements CommandExecutor {
             if(cmd.getName().equalsIgnoreCase("spectateoff")){
                 if(spectateManager.isSpectate((Player)s)){
                     spectateManager.spectateOff((Player)s);
-                }else s.sendMessage(Utils.SPECTATE_ERROR);
+                }else s.sendMessage(Messages.SPECTATE_ERROR);
                 return true;
             }else
 
@@ -210,7 +210,7 @@ public class Executor implements CommandExecutor {
 
                 if(plugin.getServer().getPlayer(args[0]) != null){
                     spectateManager.setSpectate((Player)s, plugin.getServer().getPlayer(args[0]));
-                }else s.sendMessage(Utils.PLAYER_NOT_FOUND);
+                }else s.sendMessage(Messages.PLAYER_NOT_FOUND);
                 return true;
             }
 

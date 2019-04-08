@@ -9,8 +9,7 @@ public class VaultLoader {
 
     public static Economy economy = null;
 
-    public static boolean setupEconomy()
-    {
+    public static boolean setupEconomy() {
         RegisteredServiceProvider<Economy> economyProvider = getServer().getServicesManager().getRegistration(net.milkbowl.vault.economy.Economy.class);
         if (economyProvider != null) {
             economy = economyProvider.getProvider();

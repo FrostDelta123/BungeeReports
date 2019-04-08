@@ -13,7 +13,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class PasteBinAPI {
+public class HastebinAPI {
 
     public static String post(List<String> input) throws IOException{
 
