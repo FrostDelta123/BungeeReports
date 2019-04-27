@@ -30,7 +30,7 @@ public class SpectateManager {
 
         p.setGameMode(GameMode.SPECTATOR);
         p.setSpectatorTarget(tar);
-        getTarget().put(p, tar);
+        SpectateManager.getTarget().put(p, tar);
         p.sendMessage(Messages.SPECTATE_PLAYER + tar.getName());
         p.sendMessage(ChatColor.GOLD + "Для отмены пропишите /spectateoff");
     }
@@ -39,7 +39,7 @@ public class SpectateManager {
         return getTarget().containsKey(p);
     }
 
-    public static Map getTarget(){
+    public static Map<Entity, Player> getTarget(){
         return targetMap;
     }
 

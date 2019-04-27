@@ -102,7 +102,6 @@ public class EventHandler implements Listener {
     @org.bukkit.event.EventHandler
     public void onInventoryClick(InventoryClickEvent e){
 
-        ScreenManager screenManager = new ScreenManager();
         Player p = (Player) e.getWhoClicked();
         if(e.getSlotType() != InventoryType.SlotType.OUTSIDE && e.getSlotType() == InventoryType.SlotType.CONTAINER) {
 
@@ -141,8 +140,8 @@ public class EventHandler implements Listener {
 
             if (e.getInventory().getHolder() instanceof PunishUI && !e.getCurrentItem().getType().equals(Material.AIR)) {
                 String s = p.getOpenInventory().getItem(4).getItemMeta().getDisplayName();
-                SpectateManager sp = new SpectateManager();
-                Report rep = getReports().get((Player)e.getWhoClicked());
+
+                Report rep = getReports().get(e.getWhoClicked());
                 switch(e.getSlot()){
                     case 2:
                         Network.updateReport(rep.getPlayer(), s, "accept");
@@ -159,9 +158,9 @@ public class EventHandler implements Listener {
                         HashedLists.changeCount(index);
                         break;
                     case 8:
-                        if(Bukkit.getServer().getPlayer(rep.getPlayer()) != null && !sp.isSpectate(p)){
+                        if(Bukkit.getServer().getPlayer(rep.getPlayer()) != null && !SpectateManager.isSpectate(p)){
                             Player target = Bukkit.getServer().getPlayer(rep.getPlayer());
-                            sp.setSpectate(p,target);
+                            SpectateManager.setSpectate(p,target);
                             p.getOpenInventory().close();
                         }
                         break;
@@ -177,7 +176,7 @@ public class EventHandler implements Listener {
                 Report rp = new Report();
                 String s = send.get(e.getSlot());
                 if(plugin.isModUsed() && plugin.isModEnabled()) {
-                    screenManager.getScreenshot(e.getCurrentItem().getItemMeta().getDisplayName(), p);
+                    ScreenManager.getScreenshot(e.getCurrentItem().getItemMeta().getDisplayName(), p);
                 }
                 rp.setAdmin(e.getWhoClicked().getName());
                 rp.setPlayer(e.getCurrentItem().getItemMeta().getDisplayName());
@@ -219,7 +218,7 @@ public class EventHandler implements Listener {
                 if (!plugin.getConfig().getBoolean("comments")) {
 
                     if(plugin.isModUsed() && plugin.isModEnabled()) {
-                        screenManager.addScreenshot(Bukkit.getPlayer(report.getPlayer()), p);
+                        ScreenManager.addScreenshot(Bukkit.getPlayer(report.getPlayer()), p);
                     }
                     network.addReport(e.getWhoClicked().getName(), report.getPlayer(), e.getCurrentItem().getItemMeta().getDisplayName(), "");
                     HashedLists.addReport(e.getWhoClicked().getName(), report.getPlayer(), e.getCurrentItem().getItemMeta().getDisplayName(), "");

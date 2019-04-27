@@ -41,12 +41,13 @@ public class PunishUI implements InventoryHolder {
         deny.setItemMeta(denyMeta);
         inv.setItem(6, deny);
 
-        spectateMeta.setDisplayName(Messages.SPECTATE);
-        spectateMeta.setLore(Collections.singletonList("BETA"));
-        spectate.setItemMeta(spectateMeta);
 
-        inv.setItem(8, spectate);
-
+        if(!Bukkit.getServer().getBukkitVersion().contains("1.7")) {
+            spectateMeta.setDisplayName(Messages.SPECTATE);
+            spectateMeta.setLore(Collections.singletonList("BETA"));
+            spectate.setItemMeta(spectateMeta);
+            inv.setItem(8, spectate);
+        }
 
         moder.openInventory(inv);
 

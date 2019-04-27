@@ -10,7 +10,7 @@ import ru.frostdelta.bungeereports.utils.Messages;
 
 public class ScreenManager {
 
-    public void addScreenshot(Player targetPlayer, Player player){
+    public static void addScreenshot(Player targetPlayer, Player player){
 
         Loader plugin = Loader.inst();
         if (targetPlayer.isOnline()) {
@@ -27,7 +27,7 @@ public class ScreenManager {
         }
     }
 
-    public void getScreenshot(String name, Player player){
+    public static void getScreenshot(String name, Player player){
         Loader plugin = Loader.inst();
         String screenshots = Network.getScreenshots(name);
         if (!screenshots.isEmpty()) {
