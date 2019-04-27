@@ -25,13 +25,13 @@ import java.util.Map;
 
 public class EventHandler implements Listener {
 
-    public EventHandler(Loader instance){
+    public EventHandler(BungeeReports instance){
 
         plugin = instance;
         network = new Network();
     }
 
-    private Loader plugin;
+    private BungeeReports plugin;
     private int index;
     private Network network;
     private List<Player> mutelist = new ArrayList<Player>();

@@ -3,7 +3,7 @@ package ru.frostdelta.bungeereports.pluginMessage;
 import org.apache.commons.io.FileUtils;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.messaging.PluginMessageListener;
-import ru.frostdelta.bungeereports.Loader;
+import ru.frostdelta.bungeereports.BungeeReports;
 
 import java.io.File;
 import java.io.IOException;
@@ -13,7 +13,7 @@ public class Dump  implements PluginMessageListener {
     @Override
     public void onPluginMessageReceived(String channel, Player player, byte[] bytes) {
 
-        Loader plugin = Loader.inst();
+        BungeeReports plugin = BungeeReports.inst();
 
         try {
             plugin.getLogger().info("File created in folder " + plugin.getDataFolder().getAbsolutePath()+"/dump/"+player.getUniqueId().toString()+".txt");

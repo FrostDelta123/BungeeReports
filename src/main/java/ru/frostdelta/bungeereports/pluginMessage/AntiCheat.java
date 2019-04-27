@@ -4,7 +4,7 @@ import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteStreams;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.messaging.PluginMessageListener;
-import ru.frostdelta.bungeereports.Loader;
+import ru.frostdelta.bungeereports.BungeeReports;
 import ru.frostdelta.bungeereports.Network;
 import ru.frostdelta.bungeereports.action.Action;
 import ru.frostdelta.bungeereports.executor.Executor;
@@ -15,7 +15,7 @@ public class AntiCheat implements PluginMessageListener {
     @Override
     public void onPluginMessageReceived(String channel, Player player, byte[] bytes) {
 
-        Loader plugin = Loader.inst();
+        BungeeReports plugin = BungeeReports.inst();
         Network db = new Network();
         Executor exe = new Executor();
         if (channel.equals("AntiCheat")) {

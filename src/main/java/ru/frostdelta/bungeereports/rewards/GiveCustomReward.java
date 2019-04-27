@@ -1,7 +1,7 @@
 package ru.frostdelta.bungeereports.rewards;
 
 import org.bukkit.Bukkit;
-import ru.frostdelta.bungeereports.Loader;
+import ru.frostdelta.bungeereports.BungeeReports;
 import ru.frostdelta.bungeereports.Network;
 import ru.frostdelta.bungeereports.utils.Messages;
 
@@ -9,7 +9,7 @@ public class GiveCustomReward {
 
     public void giveCustomReward(String player){
 
-        Loader plugin = Loader.inst();
+        BungeeReports plugin = BungeeReports.inst();
 
         String table = plugin.getConfig().getString("customreward.table");
         String nameCol = plugin.getConfig().getString("customreward.namecoloumn");

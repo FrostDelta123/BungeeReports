@@ -232,7 +232,7 @@ public class Network {
 
     public void addReport(String sender, String player, String reason, String comment) {
         try {
-            Loader plugin = Loader.inst();
+            BungeeReports plugin = BungeeReports.inst();
             PreparedStatement addReport = preparedStatements.get("addReport");
             addReport.setString(1, sender);
             addReport.setString(2, player);

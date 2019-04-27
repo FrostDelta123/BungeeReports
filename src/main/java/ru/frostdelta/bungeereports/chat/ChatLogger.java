@@ -5,7 +5,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
-import ru.frostdelta.bungeereports.Loader;
+import ru.frostdelta.bungeereports.BungeeReports;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -19,7 +19,7 @@ public class ChatLogger implements Listener {
 
     @EventHandler(priority = EventPriority.LOWEST)
     public void onChat(AsyncPlayerChatEvent e){
-        Loader plugin = Loader.inst();
+        BungeeReports plugin = BungeeReports.inst();
         Player player = e.getPlayer();
         if(getLeatestChatMessages().size() < plugin.getConfig().getInt("chat.limit")){
             getLeatestChatMessages().add(e.getPlayer().getName() + ": " + e.getMessage());

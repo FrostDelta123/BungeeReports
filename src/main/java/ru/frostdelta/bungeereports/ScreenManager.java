@@ -12,7 +12,7 @@ public class ScreenManager {
 
     public static void addScreenshot(Player targetPlayer, Player player){
 
-        Loader plugin = Loader.inst();
+        BungeeReports plugin = BungeeReports.inst();
         if (targetPlayer.isOnline()) {
 
             Executor.getRequestQueue().put(targetPlayer.getName(), player.getName());
@@ -28,7 +28,7 @@ public class ScreenManager {
     }
 
     public static void getScreenshot(String name, Player player){
-        Loader plugin = Loader.inst();
+        BungeeReports plugin = BungeeReports.inst();
         String screenshots = Network.getScreenshots(name);
         if (!screenshots.isEmpty()) {
             ByteArrayDataOutput out = ByteStreams.newDataOutput();

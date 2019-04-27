@@ -1,7 +1,7 @@
 package ru.frostdelta.bungeereports.rewards;
 
 import org.bukkit.Bukkit;
-import ru.frostdelta.bungeereports.Loader;
+import ru.frostdelta.bungeereports.BungeeReports;
 import ru.frostdelta.bungeereports.Network;
 
 import java.util.UUID;
@@ -9,7 +9,7 @@ import java.util.UUID;
 public class IsUUID {
 
     public static void getUUID(String table, String money, String playerCol, String player) {
-        Loader plugin = Loader.inst();
+        BungeeReports plugin = BungeeReports.inst();
         UUID uuid = Bukkit.getPlayer(player).getUniqueId();
         String url = plugin.getUrl();
         String username = plugin.getUsername();

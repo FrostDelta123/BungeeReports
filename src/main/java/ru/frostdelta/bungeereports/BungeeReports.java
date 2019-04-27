@@ -26,9 +26,9 @@ import java.util.List;
  * @author FrostDelta123
  */
 
-public class Loader extends JavaPlugin {
+public class BungeeReports extends JavaPlugin {
 
-    private Loader plugin = this;
+    private BungeeReports plugin = this;
     private boolean vaultEnabled;
     private boolean rewardsEnabled;
     private boolean customEnabled;
@@ -41,14 +41,14 @@ public class Loader extends JavaPlugin {
     private boolean isModUsed;
     private boolean banSystemUsed;
     private List<String> whitelist = new ArrayList<String>();
-    private static Loader inst;
+    private static BungeeReports inst;
 
     private int rewardAmount;
     private int customRewardAmount;
     private FileConfiguration log;
 
 
-    public static Loader inst() {
+    public static BungeeReports inst() {
         return inst;
     }
 

@@ -7,7 +7,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import ru.frostdelta.bungeereports.Loader;
+import ru.frostdelta.bungeereports.BungeeReports;
 import ru.frostdelta.bungeereports.ReasonAPI;
 import ru.frostdelta.bungeereports.utils.Messages;
 
@@ -23,7 +23,7 @@ public class BanReasons implements InventoryHolder {
 
     public void openGUI(Player moder, String sender) {
 
-        Loader plugin = Loader.inst();
+        BungeeReports plugin = BungeeReports.inst();
 
         ItemStack banButton = new ItemStack(Material.EYE_OF_ENDER);
         ItemMeta itemMeta = banButton.getItemMeta();

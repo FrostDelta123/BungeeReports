@@ -7,7 +7,7 @@ import ru.frostdelta.bungeereports.rewards.GiveReward;
 public class CanReport {
 
     public void needReward(String player){
-        Loader plugin = Loader.inst();
+        BungeeReports plugin = BungeeReports.inst();
         int reportCount = Network.playerReports(player, "accept");
         int customReportsNeed = plugin.getConfig().getInt("customreward.reportsneed");
         int reportsneed = plugin.getConfig().getInt("reward.reportsneed");
@@ -26,7 +26,7 @@ public class CanReport {
 
 
     public boolean limit(String player){
-        Loader plugin = Loader.inst();
+        BungeeReports plugin = BungeeReports.inst();
         return Network.playerReports(player, "no") >= plugin.getConfig().getInt("limit.limit");
     }
 

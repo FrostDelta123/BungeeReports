@@ -12,7 +12,7 @@ public class NonBungee {
     public void getNonBungeePlayerlist(Player player){
 
 
-        Loader plugin = Loader.inst();
+        BungeeReports plugin = BungeeReports.inst();
         List<String> players = new ArrayList<String>();
 
         for(Player p : plugin.getServer().getOnlinePlayers()){

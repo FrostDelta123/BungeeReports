@@ -5,7 +5,7 @@ import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.messaging.PluginMessageListener;
-import ru.frostdelta.bungeereports.Loader;
+import ru.frostdelta.bungeereports.BungeeReports;
 import ru.frostdelta.bungeereports.executor.Executor;
 import ru.frostdelta.bungeereports.gui.UserUI;
 
@@ -16,7 +16,7 @@ public class PluginMessage implements PluginMessageListener {
     private final UserUI UserUI = new UserUI();
 
     public void sendMessage(Player player){
-        Loader plugin = Loader.inst();
+        BungeeReports plugin = BungeeReports.inst();
         if(!plugin.isEnabled()) return;
         ByteArrayDataOutput out = ByteStreams.newDataOutput();
 
@@ -30,7 +30,7 @@ public class PluginMessage implements PluginMessageListener {
     @Override
     @SuppressWarnings("unchecked")
     public void onPluginMessageReceived(String channel, Player player, byte[] message) {
-        Loader plugin = Loader.inst();
+        BungeeReports plugin = BungeeReports.inst();
         if (!channel.equals("BungeeCord") || !plugin.isEnabled()) {
             return;
         }

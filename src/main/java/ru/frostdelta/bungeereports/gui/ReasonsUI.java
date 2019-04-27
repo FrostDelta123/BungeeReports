@@ -7,16 +7,16 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import ru.frostdelta.bungeereports.Loader;
+import ru.frostdelta.bungeereports.BungeeReports;
 import ru.frostdelta.bungeereports.utils.Messages;
 
 import java.util.List;
 
 public class ReasonsUI implements InventoryHolder {
 
-    private Loader plugin;
+    private BungeeReports plugin;
 
-    public ReasonsUI(Loader instance){
+    public ReasonsUI(BungeeReports instance){
         plugin = instance;
     }
 

@@ -8,8 +8,8 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import ru.frostdelta.bungeereports.BungeeReports;
 import ru.frostdelta.bungeereports.CanReport;
-import ru.frostdelta.bungeereports.Loader;
 import ru.frostdelta.bungeereports.Network;
 import ru.frostdelta.bungeereports.NonBungee;
 import ru.frostdelta.bungeereports.action.Action;
@@ -43,7 +43,7 @@ public class Executor implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender s, Command cmd, String st, String[] args){
 
-        Loader plugin = Loader.inst();
+        BungeeReports plugin = BungeeReports.inst();
         Network db = new Network();
         Player player = (Player) s;
 
