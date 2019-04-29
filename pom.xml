@@ -46,7 +46,6 @@
         </resources>
     </build>
 
-
     <repositories>
         <repository>
             <id>vault-repo</id>
@@ -58,28 +57,26 @@
             <url>https://dl.bintray.com/endlesscode/repo</url>
         </repository>
     </repositories>
-    <dependencies>
 
+    <dependencies>
         <dependency>
             <groupId>net.milkbowl.vault</groupId>
             <artifactId>VaultAPI</artifactId>
-            <version>1.6</version>
+            <version>1.7</version>
             <scope>provided</scope>
         </dependency>
-
         <dependency>
             <groupId>commons-io</groupId>
             <artifactId>commons-io</artifactId>
             <version>2.6</version>
             <scope>compile</scope>
         </dependency>
-
         <dependency>
             <groupId>org.bukkit</groupId>
             <artifactId>bukkit</artifactId>
             <version>1.9-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
-
     </dependencies>
+
 </project>
