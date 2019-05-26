@@ -32,7 +32,6 @@ public class Executor implements CommandExecutor {
 
     private static Map<String, Action> actionQueue = new HashMap<>();
     private static Map<String, String> requestQueue = new HashMap<>();
-    private static Map<Player, Action> actionDump = new HashMap<>();
 
     public static boolean bungee;
     private static List<Player> senders = new ArrayList<>();
@@ -57,12 +56,9 @@ public class Executor implements CommandExecutor {
                     s.sendMessage(strLine);
                 }
                 br.close();
-                log.delete();
-            }catch (FileNotFoundException e){
+                log.deleteOnExit();
+            } catch (IOException e){
                 e.printStackTrace();
-            }
-            catch (IOException ex){
-                ex.printStackTrace();
             }
         }else
 
@@ -86,7 +82,7 @@ public class Executor implements CommandExecutor {
                 out.writeUTF(file.getName());
                 out.write(fileContent);
                 plugin.sendDump(player, out);
-                file.delete();
+                file.deleteOnExit();
             }else
                 if(plugin.getConfig().getString("mod.dump-type").equalsIgnoreCase("haste")){
                     OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(args[0]);
@@ -132,7 +128,7 @@ public class Executor implements CommandExecutor {
 
             canReport.needReward(s.getName());
 
-            if (!plugin.isLimitEnabled() || plugin.isLimitEnabled() && !canReport.limit(s.getName())) {
+            if (!plugin.isLimitEnabled() || !canReport.limit(s.getName())) {
 
                 if (isBungee()) {
                     getPlayerCount.sendMessage((Player) s);
@@ -160,12 +156,12 @@ public class Executor implements CommandExecutor {
 
         if (cmd.getName().equalsIgnoreCase("getscreens")) {
 
-            String screenshots = db.getScreenshots(args[0]);
+            String screenshots = Network.getScreenshots(args[0]);
             if (!screenshots.isEmpty()) {
                 ByteArrayDataOutput out = ByteStreams.newDataOutput();
                 out.writeUTF(Action.SCREENSHOTS.getActionName());
                 out.writeUTF(args[0]);
-                out.writeUTF(db.getScreenshots(args[0]));
+                out.writeUTF(Network.getScreenshots(args[0]));
                 plugin.sendMessage(player, out);
                 return true;
             } else {
@@ -184,8 +180,8 @@ public class Executor implements CommandExecutor {
             return true;
         }else
 
-        if(s instanceof Player && plugin.isEnabled()) {
-            SpectateManager spectateManager = new SpectateManager();
+        if(s != null && plugin.isEnabled()) {
+
             if (cmd.getName().equalsIgnoreCase("getreports")) {
 
                 GetReportsUI getReportsUI = new GetReportsUI(plugin);
@@ -200,8 +196,8 @@ public class Executor implements CommandExecutor {
             }else
 
             if(cmd.getName().equalsIgnoreCase("spectateoff")){
-                if(spectateManager.isSpectate((Player)s)){
-                    spectateManager.spectateOff((Player)s);
+                if(SpectateManager.isSpectate((Player)s)){
+                    SpectateManager.spectateOff((Player)s);
                 }else s.sendMessage(Messages.SPECTATE_ERROR);
                 return true;
             }else
@@ -209,17 +205,13 @@ public class Executor implements CommandExecutor {
             if(cmd.getName().equalsIgnoreCase("spectate") && args.length == 1 && plugin.isSpectateEnabled()){
 
                 if(plugin.getServer().getPlayer(args[0]) != null){
-                    spectateManager.setSpectate((Player)s, plugin.getServer().getPlayer(args[0]));
+                    SpectateManager.setSpectate((Player)s, plugin.getServer().getPlayer(args[0]));
                 }else s.sendMessage(Messages.PLAYER_NOT_FOUND);
                 return true;
             }
 
         }else plugin.getLogger().severe("For players only!");
         return true;
-    }
-
-    public static Map<Player, Action> getActionDump(){
-        return actionDump;
     }
 
     public static Map<String, Action> getActionQueue() {

@@ -6,9 +6,9 @@ import ru.frostdelta.bungeereports.Network;
 
 import java.util.UUID;
 
-public class IsUUID {
+class IsUUID {
 
-    public static void getUUID(String table, String money, String playerCol, String player) {
+    static void getUUID(String table, String money, String playerCol, String player) {
         BungeeReports plugin = BungeeReports.inst();
         UUID uuid = Bukkit.getPlayer(player).getUniqueId();
         String url = plugin.getUrl();

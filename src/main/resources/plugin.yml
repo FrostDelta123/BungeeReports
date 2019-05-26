@@ -1,6 +1,6 @@
 name: BungeeReports
 main: ru.frostdelta.bungeereports.BungeeReports
-version: 4.4.7
+version: ${project.version}
 authors: [FrostDelta123]
 description: BungeeReports bukkit plugin. Description here http://rubukkit.org/threads/mech-admin-bungeereports-v4-4-7-report-sistema-dlja-bungeecord-i-ne-tolko-1-7-10-1-13-2.158683/
 website: http://rubukkit.org/threads/mech-admin-bungeereports-v4-4-7-report-sistema-dlja-bungeecord-i-ne-tolko-1-7-10-1-13-2.158683/

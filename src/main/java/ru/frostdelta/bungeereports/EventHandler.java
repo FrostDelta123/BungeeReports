@@ -26,7 +26,6 @@ import java.util.Map;
 public class EventHandler implements Listener {
 
     public EventHandler(BungeeReports instance){
-
         plugin = instance;
         network = new Network();
     }

@@ -41,19 +41,14 @@ public class PluginMessage implements PluginMessageListener {
 
         if(subchannel.equalsIgnoreCase("PlayerCount")){
             String server = in.readUTF();
-            int playercount = in.readInt();
-
-            players = playercount;
+            players = in.readInt();
             sendMessage(player);
             return;
         }
 
         if(subchannel.equalsIgnoreCase("PlayerList")) {
             String server = in.readUTF();
-
             String[] playerList = in.readUTF().split(", ");
-
-
             if(player.hasPermission("bungeereports.player") && Executor.getSenders().contains(player)){
                 player.openInventory(UserUI.openGUI(player, players, playerList));
                 Executor.getSenders().remove(players);

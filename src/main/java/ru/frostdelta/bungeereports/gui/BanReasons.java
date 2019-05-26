@@ -11,10 +11,7 @@ import ru.frostdelta.bungeereports.BungeeReports;
 import ru.frostdelta.bungeereports.ReasonAPI;
 import ru.frostdelta.bungeereports.utils.Messages;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
 public class BanReasons implements InventoryHolder {
@@ -42,9 +39,7 @@ public class BanReasons implements InventoryHolder {
         int x = 0;
         for(String name : plugin.getConfig().getStringList("ban.reasons")){
             List<String> list = new ArrayList<String>();
-            for(String reason : name.split(":", 3)) {
-                list.add(reason);
-            }
+            list.addAll(Arrays.asList(name.split(":", 3)));
             getAPI().put(list.get(0), new ReasonAPI(list.get(0), Integer.parseInt(list.get(1)), list.get(2)));
             itemMeta.setDisplayName(list.get(0));
             ArrayList<String> lore = new ArrayList<String>();

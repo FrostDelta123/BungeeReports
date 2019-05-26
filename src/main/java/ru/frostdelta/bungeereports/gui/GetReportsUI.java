@@ -37,11 +37,7 @@ public class GetReportsUI implements InventoryHolder {
                     break;
                 }
             }
-
             Inventory inv = Bukkit.createInventory(this, slots, Messages.GET_REPORTS_INV_NAME);
-
-
-
             for (int x = 0; count > x; x++) {
 
                 ItemStack skull = new ItemStack(Material.SKULL_ITEM);
@@ -54,14 +50,11 @@ public class GetReportsUI implements InventoryHolder {
                 lore.add(Messages.REPORT_REASON + reasonList.get(x));
                 lore.add(Messages.REPORT_COMMENT + comment.get(x));
                 itemMeta.setLore(lore);
-
-
                 skull.setItemMeta(itemMeta);
                 sender.put(x,senderList.get(x));
 
                 inv.setItem(x, skull);
             }
-
             //Какой же это костыль, самому стыдно.
             EventHandler handler = new EventHandler(sender);
             p.openInventory(inv);
