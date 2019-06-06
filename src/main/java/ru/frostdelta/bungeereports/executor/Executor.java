@@ -3,6 +3,7 @@ package ru.frostdelta.bungeereports.executor;
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -41,6 +42,11 @@ public class Executor implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender s, Command cmd, String st, String[] args){
+
+        if(!(s instanceof Player)){
+            s.sendMessage(ChatColor.RED + "Команды от консоли недоступны!");
+            return true;
+        }
 
         BungeeReports plugin = BungeeReports.inst();
         Network db = new Network();
