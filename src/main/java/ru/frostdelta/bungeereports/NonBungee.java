@@ -10,8 +10,6 @@ import java.util.List;
 public class NonBungee {
 
     public void getNonBungeePlayerlist(Player player){
-
-
         BungeeReports plugin = BungeeReports.inst();
         List<String> players = new ArrayList<String>();
 
