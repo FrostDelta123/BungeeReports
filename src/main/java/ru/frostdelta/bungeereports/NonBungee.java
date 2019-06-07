@@ -2,7 +2,7 @@ package ru.frostdelta.bungeereports;
 
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
-import ru.frostdelta.bungeereports.gui.UserUI;
+import ru.frostdelta.bungeereports.gui.MainInterface;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +21,7 @@ public class NonBungee {
         String[] strings = players.stream().toArray(String[]::new);
 
         if(player.hasPermission("bungeereports.player")){
-            player.openInventory(new UserUI().openGUI(player, players.size(), strings));
+            player.openInventory(new MainInterface().openGUI(player, players.size(), strings));
         }else player.sendMessage(ChatColor.RED + "У вас нет прав!");
     }
 

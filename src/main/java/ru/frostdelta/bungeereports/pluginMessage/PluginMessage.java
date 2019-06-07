@@ -7,13 +7,11 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.messaging.PluginMessageListener;
 import ru.frostdelta.bungeereports.BungeeReports;
 import ru.frostdelta.bungeereports.executor.Executor;
-import ru.frostdelta.bungeereports.gui.UserUI;
+import ru.frostdelta.bungeereports.gui.MainInterface;
 
 public class PluginMessage implements PluginMessageListener {
 
     private int players;
-
-    private final UserUI UserUI = new UserUI();
 
     public void sendMessage(Player player){
         BungeeReports plugin = BungeeReports.inst();
@@ -35,22 +33,18 @@ public class PluginMessage implements PluginMessageListener {
             return;
         }
         ByteArrayDataInput in = ByteStreams.newDataInput(message);
-
         String subchannel = in.readUTF();
-
-
         if(subchannel.equalsIgnoreCase("PlayerCount")){
             String server = in.readUTF();
             players = in.readInt();
             sendMessage(player);
             return;
         }
-
         if(subchannel.equalsIgnoreCase("PlayerList")) {
             String server = in.readUTF();
             String[] playerList = in.readUTF().split(", ");
             if(player.hasPermission("bungeereports.player") && Executor.getSenders().contains(player)){
-                player.openInventory(UserUI.openGUI(player, players, playerList));
+                player.openInventory(new MainInterface(player, players, playerList).create());
                 Executor.getSenders().remove(players);
             }
         }

@@ -191,7 +191,7 @@ public class EventHandler implements Listener {
                 e.setCancelled(true);
             }
 
-            if (e.getInventory().getHolder() instanceof UserUI && !e.getCurrentItem().getType().equals(Material.AIR)) {
+            if (e.getInventory().getHolder() instanceof MainInterface && !e.getCurrentItem().getType().equals(Material.AIR)) {
 
                 if (!plugin.getWhitelist().contains(e.getCurrentItem().getItemMeta().getDisplayName())) {
 
