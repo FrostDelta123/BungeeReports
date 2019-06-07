@@ -19,7 +19,6 @@ public class GetReportsUI implements InventoryHolder {
     private Inventory inv;
 
     public GetReportsUI(Player p, int count, ArrayList<String> senderList, ArrayList<String> reasonList, ArrayList<String> playerList, ArrayList<String> comment) {
-
         if(!playerList.isEmpty()) {
 
             int slots = 9;
@@ -35,9 +34,7 @@ public class GetReportsUI implements InventoryHolder {
                 ItemStack skull = new ItemStack(Material.SKULL_ITEM);
                 ItemMeta itemMeta = skull.getItemMeta();
                 itemMeta.setDisplayName(playerList.get(x));
-
                 ArrayList<String> lore = new ArrayList<String>();
-
                 lore.add(Messages.REPORT_SENDER + senderList.get(x));
                 lore.add(Messages.REPORT_REASON + reasonList.get(x));
                 lore.add(Messages.REPORT_COMMENT + comment.get(x));
@@ -51,7 +48,6 @@ public class GetReportsUI implements InventoryHolder {
             EventHandler handler = new EventHandler(sender);
             p.openInventory(inv);
         }else p.sendMessage(Messages.NO_REPORTS);
-
     }
 
     public Inventory create(){

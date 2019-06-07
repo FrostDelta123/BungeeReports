@@ -22,16 +22,16 @@ public class MainInterface implements InventoryHolder {
             }
         }
         inv = Bukkit.createInventory(this, slots, Messages.REPORTS_INV_NAME);
-                int x = 0;
-                for (String player : playerList) {
-                    ItemStack skull = new ItemStack(Material.SKULL_ITEM, 1, (short) 3, (byte) SkullType.PLAYER.ordinal());
-                    SkullMeta itemMeta = (SkullMeta) skull.getItemMeta();
-                    itemMeta.setOwner(p.getName());
-                    itemMeta.setDisplayName(player);
-                    skull.setItemMeta(itemMeta);
-                    inv.setItem(x, skull);
-                    x++;
-                }
+        int x = 0;
+        for (String player : playerList) {
+            ItemStack skull = new ItemStack(Material.SKULL_ITEM, 1, (short) 3, (byte) SkullType.PLAYER.ordinal());
+            SkullMeta itemMeta = (SkullMeta) skull.getItemMeta();
+            itemMeta.setOwner(p.getName());
+            itemMeta.setDisplayName(player);
+            skull.setItemMeta(itemMeta);
+            inv.setItem(x, skull);
+            x++;
+        }
     }
     public Inventory create(){
         return inv;

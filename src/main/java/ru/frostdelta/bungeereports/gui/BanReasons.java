@@ -18,9 +18,7 @@ public class BanReasons implements InventoryHolder {
     private static Map<String, ReasonAPI> reasonAPIMap = new HashMap<String, ReasonAPI>();
     private Inventory inv;
     public BanReasons(String sender) {
-
         BungeeReports plugin = BungeeReports.inst();
-
         ItemStack banButton = new ItemStack(Material.EYE_OF_ENDER);
         ItemMeta itemMeta = banButton.getItemMeta();
 
