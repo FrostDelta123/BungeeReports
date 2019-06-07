@@ -2,7 +2,6 @@ package ru.frostdelta.bungeereports.gui;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
@@ -17,8 +16,8 @@ import java.util.*;
 public class BanReasons implements InventoryHolder {
 
     private static Map<String, ReasonAPI> reasonAPIMap = new HashMap<String, ReasonAPI>();
-
-    public void openGUI(Player moder, String sender) {
+    private Inventory inv;
+    public BanReasons(String sender) {
 
         BungeeReports plugin = BungeeReports.inst();
 
@@ -33,9 +32,7 @@ public class BanReasons implements InventoryHolder {
                 break;
             }
         }
-
-        Inventory inv = Bukkit.createInventory(this, slots, sender);
-
+        inv = Bukkit.createInventory(this, slots, sender);
         int x = 0;
         for(String name : plugin.getConfig().getStringList("ban.reasons")){
             List<String> list = new ArrayList<String>();
@@ -50,15 +47,16 @@ public class BanReasons implements InventoryHolder {
             inv.setItem(x, banButton);
             x++;
         }
-
         ItemStack rejectButton = new ItemStack(Material.REDSTONE_BLOCK);
         ItemMeta meta = rejectButton.getItemMeta();
         meta.setDisplayName(Messages.REJECT);
         rejectButton.setItemMeta(meta);
 
         inv.setItem(x++, rejectButton);
-        moder.openInventory(inv);
+    }
 
+    public Inventory create(){
+        return inv;
     }
 
     public static Map<String, ReasonAPI> getAPI(){

@@ -171,7 +171,6 @@ public class EventHandler implements Listener {
             if (e.getInventory().getHolder() instanceof GetReportsUI && !e.getCurrentItem().getType().equals(Material.AIR)) {
 
                 PunishUI PunishUI = new PunishUI();
-                BanReasons banReasons = new BanReasons();
                 Report rp = new Report();
                 String s = send.get(e.getSlot());
                 if(plugin.isModUsed() && plugin.isModEnabled()) {
@@ -184,7 +183,7 @@ public class EventHandler implements Listener {
                 if(!plugin.isBanSystemUsed()) {
                     PunishUI.openGUI(e.getCurrentItem().getItemMeta().getDisplayName(), p, s);
                 }else{
-                    banReasons.openGUI(p, s);
+                    p.openInventory(new BanReasons(s).create());
                 }
                 index = e.getSlot();
 
