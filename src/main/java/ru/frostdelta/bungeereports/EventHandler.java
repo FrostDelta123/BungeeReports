@@ -192,14 +192,12 @@ public class EventHandler implements Listener {
             if (e.getInventory().getHolder() instanceof MainInterface && !e.getCurrentItem().getType().equals(Material.AIR)) {
 
                 if (!plugin.getWhitelist().contains(e.getCurrentItem().getItemMeta().getDisplayName())) {
-
-                    ReasonsUI ReasonsUI = new ReasonsUI(plugin);
                     Report curentReport = new Report();
                     curentReport.setSender(e.getWhoClicked().getName());
                     curentReport.setPlayer(e.getCurrentItem().getItemMeta().getDisplayName());
 
                     p.getOpenInventory().close();
-                    ReasonsUI.openGUI(p);
+                    p.openInventory(new ReasonChooseInterface().create());
                     getReports().put((Player)e.getWhoClicked(),curentReport);
                     e.setCancelled(true);
                 } else {
@@ -209,7 +207,7 @@ public class EventHandler implements Listener {
                 }
             }
 
-            if (e.getInventory().getHolder() instanceof ReasonsUI && !e.getCurrentItem().getType().equals(Material.AIR)) {
+            if (e.getInventory().getHolder() instanceof ReasonChooseInterface && !e.getCurrentItem().getType().equals(Material.AIR)) {
 
                 Report report = getReports().get((Player)e.getWhoClicked());
                 if (!plugin.getConfig().getBoolean("comments")) {
