@@ -44,7 +44,7 @@ public class Executor implements CommandExecutor {
     public boolean onCommand(CommandSender s, Command cmd, String st, String[] args){
 
         if(!(s instanceof Player)){
-            s.sendMessage(ChatColor.RED + "Команды от консоли недоступны!");
+            s.sendMessage(ChatColor.RED + "Console commands not allowed!");
             return true;
         }
 
