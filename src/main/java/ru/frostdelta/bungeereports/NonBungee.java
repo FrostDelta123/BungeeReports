@@ -21,7 +21,7 @@ public class NonBungee {
         String[] strings = players.stream().toArray(String[]::new);
 
         if(player.hasPermission("bungeereports.player")){
-            player.openInventory(new MainInterface().openGUI(player, players.size(), strings));
+            player.openInventory(new MainInterface(player, players.size(), strings).create());
         }else player.sendMessage(ChatColor.RED + "У вас нет прав!");
     }
 
