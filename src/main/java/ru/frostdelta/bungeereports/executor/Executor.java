@@ -9,6 +9,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
 import ru.frostdelta.bungeereports.BungeeReports;
 import ru.frostdelta.bungeereports.CanReport;
 import ru.frostdelta.bungeereports.Network;
@@ -179,25 +180,21 @@ public class Executor implements CommandExecutor {
 
             plugin.loadConfig();
             plugin.getConfig().options().copyHeader(true);
-
             plugin.loadConfig();
-
             s.sendMessage(Messages.CONFIG_RELOADED);
             return true;
         }else
 
-        if(s != null && plugin.isEnabled()) {
+        if(plugin.isEnabled()) {
 
             if (cmd.getName().equalsIgnoreCase("getreports")) {
-
-                GetReportsUI getReportsUI = new GetReportsUI(plugin);
-
-                getReportsUI.openGUI((Player) s,
+                Inventory i = new GetReportsUI((Player) s,
                         HashedLists.getTotalRepors(),
                         HashedLists.getSenderList(),
                         HashedLists.getReasonList(),
                         HashedLists.getReportList(),
-                        HashedLists.getCommentList());
+                        HashedLists.getCommentList()).create();
+                ((Player) s).openInventory(i);
                 return true;
             }else
 

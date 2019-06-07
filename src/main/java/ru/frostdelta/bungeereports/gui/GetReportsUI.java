@@ -7,7 +7,6 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import ru.frostdelta.bungeereports.BungeeReports;
 import ru.frostdelta.bungeereports.EventHandler;
 import ru.frostdelta.bungeereports.utils.Messages;
 
@@ -16,17 +15,10 @@ import java.util.HashMap;
 
 public class GetReportsUI implements InventoryHolder {
 
-    private BungeeReports plugin;
-
-    public GetReportsUI(BungeeReports instance){
-
-        plugin = instance;
-
-    }
-
     public HashMap<Integer, String> sender = new HashMap<Integer, String>();
+    private Inventory inv;
 
-    public void openGUI(Player p, int count, ArrayList<String> senderList, ArrayList<String> reasonList, ArrayList<String> playerList, ArrayList<String> comment) {
+    public GetReportsUI(Player p, int count, ArrayList<String> senderList, ArrayList<String> reasonList, ArrayList<String> playerList, ArrayList<String> comment) {
 
         if(!playerList.isEmpty()) {
 
@@ -37,7 +29,7 @@ public class GetReportsUI implements InventoryHolder {
                     break;
                 }
             }
-            Inventory inv = Bukkit.createInventory(this, slots, Messages.GET_REPORTS_INV_NAME);
+            inv = Bukkit.createInventory(this, slots, Messages.GET_REPORTS_INV_NAME);
             for (int x = 0; count > x; x++) {
 
                 ItemStack skull = new ItemStack(Material.SKULL_ITEM);
@@ -60,6 +52,10 @@ public class GetReportsUI implements InventoryHolder {
             p.openInventory(inv);
         }else p.sendMessage(Messages.NO_REPORTS);
 
+    }
+
+    public Inventory create(){
+        return inv;
     }
 
     @Override
