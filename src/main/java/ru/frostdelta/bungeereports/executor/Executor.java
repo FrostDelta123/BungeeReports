@@ -19,6 +19,7 @@ import ru.frostdelta.bungeereports.chat.HastebinAPI;
 import ru.frostdelta.bungeereports.gui.GetReportsUI;
 import ru.frostdelta.bungeereports.hash.HashedLists;
 import ru.frostdelta.bungeereports.pluginMessage.GetPlayerCount;
+import ru.frostdelta.bungeereports.pluginMessage.LockerListener;
 import ru.frostdelta.bungeereports.spectate.SpectateManager;
 import ru.frostdelta.bungeereports.utils.Messages;
 
@@ -53,9 +54,14 @@ public class Executor implements CommandExecutor {
         Player player = (Player) s;
 
         if(cmd.getName().equalsIgnoreCase("getclasses") && args.length == 1){
-            ByteArrayDataOutput out = ByteStreams.newDataOutput();
-            out.writeUTF(Action.CLASSES.getActionName());
-            BungeeReports.sendMessage(player, out);
+
+            Player target = Bukkit.getPlayer(args[0]);
+            if(target != null) {
+                ByteArrayDataOutput out = ByteStreams.newDataOutput();
+                out.writeUTF(Action.CLASSES.getActionName());
+                BungeeReports.sendMessage(player, out);
+                LockerListener.requestMap.put(target, player);
+            }else player.sendMessage(ChatColor.RED + "Player " + args[0] + " offline!");
             return true;
         }else
 
