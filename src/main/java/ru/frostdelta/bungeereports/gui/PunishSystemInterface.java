@@ -8,8 +8,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import ru.frostdelta.bungeereports.utils.Messages;
 
-import java.util.Collections;
-
 public class PunishSystemInterface implements InventoryHolder {
 
     private Inventory inv;
@@ -35,7 +33,6 @@ public class PunishSystemInterface implements InventoryHolder {
         inv.setItem(6, deny);
         if(!Bukkit.getServer().getBukkitVersion().contains("1.7")) {
             spectateMeta.setDisplayName(Messages.SPECTATE);
-            spectateMeta.setLore(Collections.singletonList("BETA"));
             spectate.setItemMeta(spectateMeta);
             inv.setItem(8, spectate);
         }
