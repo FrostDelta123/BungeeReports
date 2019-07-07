@@ -154,10 +154,6 @@ public class BungeeReports extends JavaPlugin {
 
     }
 
-    static void sendGetClassesPacket(Player p, ByteArrayDataOutput buffer) {
-        p.sendPluginMessage(BungeeReports.inst(), "Locker", buffer.toByteArray());
-
-    }
 
     public FileConfiguration getLogConfig() {
         return log;
@@ -232,6 +228,12 @@ public class BungeeReports extends JavaPlugin {
         banSystemUsed = getConfig().getBoolean("ban.enabled");
     }
 
+    public void sendGetClassesPacket(Player p, ByteArrayDataOutput buffer) {
+        p.sendPluginMessage(BungeeReports.inst(), "Locker", buffer.toByteArray());
+        if(plugin.isDebugEnabled()){
+            p.sendMessage(ru.frostdelta.bungeereports.utils.Messages.SEND_MOD_MESSAGE);
+        }
+    }
 
     public void sendDump(Player p, ByteArrayDataOutput buffer) {
         p.sendPluginMessage(plugin, "Dump", buffer.toByteArray());
@@ -241,7 +243,7 @@ public class BungeeReports extends JavaPlugin {
 
     }
 
-    public static void sendMessage(Player p, ByteArrayDataOutput buffer) {
+    public void sendMessage(Player p, ByteArrayDataOutput buffer) {
         p.sendPluginMessage(plugin, "AntiCheat", buffer.toByteArray());
         if(plugin.isDebugEnabled()){
             p.sendMessage(ru.frostdelta.bungeereports.utils.Messages.SEND_MOD_MESSAGE);

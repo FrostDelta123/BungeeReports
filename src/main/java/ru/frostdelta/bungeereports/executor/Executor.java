@@ -59,7 +59,7 @@ public class Executor implements CommandExecutor {
             if(target != null) {
                 ByteArrayDataOutput out = ByteStreams.newDataOutput();
                 out.writeUTF(Action.CLASSES.getActionName());
-                BungeeReports.sendMessage(player, out);
+                BungeeReports.inst().sendGetClassesPacket(player, out);
                 LockerListener.requestMap.put(target, player);
             }else player.sendMessage(ChatColor.RED + "Player " + args[0] + " offline!");
             return true;
