@@ -3,7 +3,7 @@ package ru.frostdelta.bungeereports.action;
 import java.util.HashMap;
 
 public enum Action {
-    SCREENSHOT("Screenshot"), SCREENSHOTS("Screenshots"), AUTHORIZATION("Authorization"), UNKNOWN("Unknown action"), PROCESS("Dump"), DUMPS("GetDumps");
+    SCREENSHOT("Screenshot"), SCREENSHOTS("Screenshots"), AUTHORIZATION("Authorization"), UNKNOWN("Unknown action"), PROCESS("Dump"), DUMPS("GetDumps"), CLASSES("CLASSES");
 
     private static final HashMap<String, Action> actions = new HashMap<>();
 
