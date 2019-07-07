@@ -18,7 +18,7 @@ public class HastebinAPI {
     public static String post(List<String> input) throws IOException{
 
         Gson gson = new Gson();
-        HttpURLConnection connection = (HttpURLConnection) new URL("https://hastebin.com/documents").openConnection();
+        HttpURLConnection connection = (HttpURLConnection) new URL("https://paste.divinecode.org/documents").openConnection();
         connection.setDoInput(true);
         connection.setDoOutput(true);
         connection.setUseCaches(false);
@@ -42,6 +42,6 @@ public class HastebinAPI {
         }
         connection.disconnect();
 
-        return "https://hastebin.com/" +  gson.fromJson(result, JsonObject.class).get("key").getAsString();
+        return "https://paste.divinecode.org/" +  gson.fromJson(result, JsonObject.class).get("key").getAsString();
     }
 }
