@@ -129,7 +129,6 @@ public class BungeeReports extends JavaPlugin {
 
         if(isVaultEnabled()){
             VaultLoader.setupEconomy();
-
         }else {
             getLogger().info("Vault disabled!");
             getLogger().info("Выдача наград невозможна!");
