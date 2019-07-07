@@ -13,6 +13,7 @@ import ru.frostdelta.bungeereports.hash.HashedLists;
 import ru.frostdelta.bungeereports.modules.VaultLoader;
 import ru.frostdelta.bungeereports.pluginMessage.AntiCheat;
 import ru.frostdelta.bungeereports.pluginMessage.Dump;
+import ru.frostdelta.bungeereports.pluginMessage.LockerListener;
 import ru.frostdelta.bungeereports.pluginMessage.PluginMessage;
 
 import java.io.File;
@@ -118,6 +119,9 @@ public class BungeeReports extends JavaPlugin {
         if(isModEnabled()){
             this.getServer().getMessenger().registerOutgoingPluginChannel(this, "AntiCheat");
             this.getServer().getMessenger().registerIncomingPluginChannel(this, "AntiCheat", new AntiCheat());
+
+            this.getServer().getMessenger().registerOutgoingPluginChannel(this, "Locker");
+            this.getServer().getMessenger().registerIncomingPluginChannel(this, "Locker", new LockerListener());
 
             this.getServer().getMessenger().registerOutgoingPluginChannel(this, "Dump");
             this.getServer().getMessenger().registerIncomingPluginChannel(this, "Dump", new Dump());
