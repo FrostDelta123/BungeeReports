@@ -137,6 +137,7 @@ public class BungeeReports extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new EventHandler(this), this);
         getServer().getPluginManager().registerEvents(new ChatLogger(), this);
         try {
+            getCommand("getclasses").setExecutor(executor);
             getCommand("report").setExecutor(executor);
             getCommand("getreports").setExecutor(executor);
             getCommand("br").setExecutor(executor);
@@ -150,6 +151,11 @@ public class BungeeReports extends JavaPlugin {
         }catch (NullPointerException e){
             e.printStackTrace();
         }
+
+    }
+
+    static void sendGetClassesPacket(Player p, ByteArrayDataOutput buffer) {
+        p.sendPluginMessage(BungeeReports.inst(), "Locker", buffer.toByteArray());
 
     }
 
@@ -235,7 +241,7 @@ public class BungeeReports extends JavaPlugin {
 
     }
 
-    public void sendMessage(Player p, ByteArrayDataOutput buffer) {
+    public static void sendMessage(Player p, ByteArrayDataOutput buffer) {
         p.sendPluginMessage(plugin, "AntiCheat", buffer.toByteArray());
         if(plugin.isDebugEnabled()){
             p.sendMessage(ru.frostdelta.bungeereports.utils.Messages.SEND_MOD_MESSAGE);

@@ -50,8 +50,14 @@ public class Executor implements CommandExecutor {
         }
 
         BungeeReports plugin = BungeeReports.inst();
-        Network db = new Network();
         Player player = (Player) s;
+
+        if(cmd.getName().equalsIgnoreCase("getclasses") && args.length == 1){
+            ByteArrayDataOutput out = ByteStreams.newDataOutput();
+            out.writeUTF(Action.CLASSES.getActionName());
+            BungeeReports.sendMessage(player, out);
+            return true;
+        }else
 
         if(cmd.getName().equalsIgnoreCase("getlogs") && args.length == 2){
             try {
