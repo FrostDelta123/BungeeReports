@@ -2,26 +2,39 @@ name: BungeeReports
 main: ru.frostdelta.bungeereports.BungeeReports
 version: ${project.version}
 authors: [FrostDelta123]
-description: BungeeReports bukkit plugin. Description here http://rubukkit.org/threads/mech-admin-bungeereports-v4-4-7-report-sistema-dlja-bungeecord-i-ne-tolko-1-7-10-1-13-2.158683/
-website: http://rubukkit.org/threads/mech-admin-bungeereports-v4-4-7-report-sistema-dlja-bungeecord-i-ne-tolko-1-7-10-1-13-2.158683/
+description: BungeeReports bukkit plugin. Description here http://rubukkit.org/threads/mech-admin-bungeereports-v4-4-10-report-sistema-dlja-bungeecord-i-ne-tolko-1-7-10-1-14-2.158683
+website: http://rubukkit.org/threads/mech-admin-bungeereports-v4-4-10-report-sistema-dlja-bungeecord-i-ne-tolko-1-7-10-1-14-2.158683
 commands:
+  getclasses:
+    permission: bungeereports.getclasses
+    permission-message: You dont have permissions!
   report:
     permission: bungeereports.player
+    permission-message: You dont have permissions!
   getreports:
     permission: bungeereports.admin
+    permission-message: You dont have permissions!
   br:
     permission: bungeereports.reload
+    permission-message: You dont have permissions!
   spectate:
     permission: bungeereports.spectate
+    permission-message: You dont have permissions!
   spectateoff:
     permission: bungeereports.spectate
+    permission-message: You dont have permissions!
   screen:
     permission: bungeereports.screen
+    permission-message: You dont have permissions!
   getscreens:
     permission: bungeereports.screen
+    permission-message: You dont have permissions!
   dump:
     permission: bungeereports.dump
+    permission-message: You dont have permissions!
   getdump:
     permission: bungeereports.dump
+    permission-message: You dont have permissions!
   getlogs:
     permission: bungeereports.admin
+    permission-message: You dont have permissions!
