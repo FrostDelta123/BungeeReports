@@ -7,7 +7,7 @@
     <groupId>BungeeReports</groupId>
     <packaging>jar</packaging>
     <artifactId>BungeeReports</artifactId>
-    <version>4.5.0</version>
+    <version>4.5.1</version>
 
     <build>
         <defaultGoal>clean package</defaultGoal>
