@@ -253,7 +253,7 @@ public class BungeeReports extends JavaPlugin {
         return modEnabled;
     }
 
-    private Boolean isVaultEnabled(){
+    public Boolean isVaultEnabled(){
         return vaultEnabled;
     }
 
