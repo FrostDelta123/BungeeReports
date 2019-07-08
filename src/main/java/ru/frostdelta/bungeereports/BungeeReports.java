@@ -91,7 +91,9 @@ public class BungeeReports extends JavaPlugin {
                 Network.openConnection();
                 Network.createDB();
                 HashedLists.loadReports();
-                autoUnban();
+                if(isBanSystemUsed()) {
+                    autoUnban();
+                }
             } catch (SQLException e) {
                 getLogger().severe("ERROR! Cant load SQL, check config!");
                 getLogger().severe("PLUGIN DISABLED");
