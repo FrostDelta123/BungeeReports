@@ -41,12 +41,11 @@ public class BungeeReports extends JavaPlugin {
     private boolean modEnabled;
     private boolean isModUsed;
     private boolean banSystemUsed;
-    private List<String> whitelist = new ArrayList<String>();
+    private List<String> whitelist = new ArrayList<>();
     private static BungeeReports inst;
 
     private int rewardAmount;
     private int customRewardAmount;
-    private FileConfiguration log;
 
 
     public static BungeeReports inst() {
@@ -65,7 +64,7 @@ public class BungeeReports extends JavaPlugin {
                 e.printStackTrace();
             }
         }
-        log = YamlConfiguration.loadConfiguration(chatlog);
+        YamlConfiguration.loadConfiguration(chatlog);
         Executor executor = new Executor();
         vaultEnabled = getConfig().getBoolean("vault.enabled");
         rewardsEnabled = getConfig().getBoolean("reward.enabled");
@@ -87,26 +86,23 @@ public class BungeeReports extends JavaPlugin {
         banSystemUsed = getConfig().getBoolean("ban.enabled");
         this.loadMessages();
 
-        Bukkit.getScheduler().runTaskAsynchronously(this, new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    Network.openConnection();
-                    Network.createDB();
-                    HashedLists.loadReports();
-                    autoUnban();
-                } catch (SQLException e) {
-                    getLogger().severe("ERROR! Cant load SQL, check config!");
-                    getLogger().severe("PLUGIN DISABLED");
-                    getLogger().severe("Set debug to true in config.yml");
+        Bukkit.getScheduler().runTaskAsynchronously(this, () -> {
+            try {
+                Network.openConnection();
+                Network.createDB();
+                HashedLists.loadReports();
+                autoUnban();
+            } catch (SQLException e) {
+                getLogger().severe("ERROR! Cant load SQL, check config!");
+                getLogger().severe("PLUGIN DISABLED");
+                getLogger().severe("Set debug to true in config.yml");
 
-                    if(isDebugEnabled()){
-                        e.printStackTrace();
-                    }
-                    plugin.setEnabled(false);
-                } catch (ClassNotFoundException e) {
+                if(isDebugEnabled()){
                     e.printStackTrace();
                 }
+                plugin.setEnabled(false);
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
             }
         });
 
@@ -152,21 +148,15 @@ public class BungeeReports extends JavaPlugin {
             e.printStackTrace();
         }
 
+
+        this.getLogger().info("Developed by " + getDescription().getAuthors());
     }
 
-
-    public FileConfiguration getLogConfig() {
-        return log;
-    }
-
-    public void autoUnban(){
+    private void autoUnban(){
         BukkitScheduler scheduler = getServer().getScheduler();
-        scheduler.scheduleSyncRepeatingTask(this, new Runnable() {
-            @Override
-            public void run() {
-                long time = System.currentTimeMillis()/1000;
-                Network.autoUnban(time);
-            }
+        scheduler.scheduleSyncRepeatingTask(this, () -> {
+            long time = System.currentTimeMillis()/1000;
+            Network.autoUnban(time);
         }, 0L, 1200L);
     }
 
@@ -251,80 +241,67 @@ public class BungeeReports extends JavaPlugin {
 
     }
 
-    public Boolean isBanSystemUsed(){
+    Boolean isBanSystemUsed(){
         return banSystemUsed;
     }
 
-    public Boolean isModUsed(){
+    Boolean isModUsed(){
         return isModUsed;
     }
 
-    public Boolean isModEnabled(){
+    Boolean isModEnabled(){
         return modEnabled;
     }
 
-    public Boolean isVaultEnabled(){
+    private Boolean isVaultEnabled(){
         return vaultEnabled;
     }
 
-    public List<String> getWhitelist(){
+    List<String> getWhitelist(){
         return whitelist;
     }
 
-    public Boolean isBungee(){
+    private Boolean isBungee(){
         return bungee;
     }
 
-    public Boolean isDebugEnabled(){
+    private Boolean isDebugEnabled(){
         return debugEnabled;
     }
 
     public String getPassword(){
-
         return getConfig().getString("password").replaceAll("'","");
-
     }
 
     public String getUsername(){
-
         return getConfig().getString("username").replaceAll("'","");
-
     }
 
     public String getUrl(){
-
         return getConfig().getString("url").replaceAll("'","");
-
     }
 
     public boolean isUuid() {
-
         return uuid;
-
     }
 
-    public int getCustomRewardAmount(){
-
+    public int getCustomRewardAmount() {
         return customRewardAmount;
     }
 
     public int getRewardAmount(){
-
         return rewardAmount;
     }
 
     public boolean isLimitEnabled() {
-
         return limitEnabled;
     }
 
-    public boolean isRewardsEnabled() {
-
+    boolean isRewardsEnabled() {
         return rewardsEnabled;
     }
 
-    public boolean isCustomEnabled() {
-
+    boolean isCustomEnabled() {
         return customEnabled;
     }
 
@@ -332,7 +309,11 @@ public class BungeeReports extends JavaPlugin {
         return spectateEnabled;
     }
 
+
+    @Override
     public void onDisable(){
+        this.getLogger().info("Developed by " + getDescription().getAuthors());
+        this.getLogger().info("Plugin disabled!");
     }
 
 }
