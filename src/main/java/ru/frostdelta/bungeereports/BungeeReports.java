@@ -113,14 +113,7 @@ public class BungeeReports extends JavaPlugin {
         }else getLogger().info("BungeeCord disabled");
 
         if(isModEnabled()){
-            this.getServer().getMessenger().registerOutgoingPluginChannel(this, "AntiCheat");
-            this.getServer().getMessenger().registerIncomingPluginChannel(this, "AntiCheat", new AntiCheat());
-
-            this.getServer().getMessenger().registerOutgoingPluginChannel(this, "Locker");
-            this.getServer().getMessenger().registerIncomingPluginChannel(this, "Locker", new LockerListener());
-
-            this.getServer().getMessenger().registerOutgoingPluginChannel(this, "Dump");
-            this.getServer().getMessenger().registerIncomingPluginChannel(this, "Dump", new Dump());
+            this.registerModChannels();
         }else getLogger().info("Mod disabled");
 
         if(isVaultEnabled()){
@@ -150,6 +143,22 @@ public class BungeeReports extends JavaPlugin {
 
 
         this.getLogger().info("Developed by " + getDescription().getAuthors());
+    }
+
+    private void registerModChannels(){
+        String version = Bukkit.getServer().getBukkitVersion();
+        if(version.contains("1.13") || version.contains("1.14")) {
+           this.getLogger().warning("Mod cant be enabled on Minecraft 1.7.10+");
+           return;
+        }
+        this.getServer().getMessenger().registerOutgoingPluginChannel(this, "AntiCheat");
+        this.getServer().getMessenger().registerIncomingPluginChannel(this, "AntiCheat", new AntiCheat());
+
+        this.getServer().getMessenger().registerOutgoingPluginChannel(this, "Locker");
+        this.getServer().getMessenger().registerIncomingPluginChannel(this, "Locker", new LockerListener());
+
+        this.getServer().getMessenger().registerOutgoingPluginChannel(this, "Dump");
+        this.getServer().getMessenger().registerIncomingPluginChannel(this, "Dump", new Dump());
     }
 
     private void autoUnban(){
