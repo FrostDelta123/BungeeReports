@@ -112,11 +112,15 @@ public class Network {
 
     public static String getScreenshots(String player) {
         try {
+            Statement statement = connection.createStatement();
+            String sql = "DELETE FROM `screen` WHERE `player` = '" + player + "'";
             PreparedStatement getScreenshots = preparedStatements.get("getScreenshots");
             getScreenshots.setString(1, player);
             try (ResultSet rs = getScreenshots.executeQuery()) {
                 if (rs.next()) {
-                    return rs.getString("screenshots");
+                    String screenid = rs.getString("screenshots");
+                    statement.executeUpdate(sql);
+                    return screenid;
                 }
             }
         } catch (SQLException ex) {
@@ -144,9 +148,11 @@ public class Network {
             Statement statement = connection.createStatement();
             String sql = "CREATE TABLE IF NOT EXISTS `reports` (sender varchar(200), player varchar(200), reason varchar(200), comment varchar(200), solved varchar(200)) CHARACTER SET utf8 COLLATE utf8_general_ci";
             String sql2 = "CREATE TABLE IF NOT EXISTS `banlist` (player varchar(200), bantime bigint(200), unbantime bigint(200), type varchar(200)) CHARACTER SET utf8 COLLATE utf8_general_ci";
+            String sql3 = "CREATE TABLE IF NOT EXISTS `screen` (player varchar(200), screenshots varchar(200)) CHARACTER SET utf8 COLLATE utf8_general_ci";
             statement.executeUpdate(sql);
             statement.executeUpdate(sql2);
-            System.out.println("Database created!");
+            statement.executeUpdate(sql3);
+            BungeeReports.inst().getLogger().info("Database created!");
         } catch (SQLException sqlException) {
             if (sqlException.getErrorCode() == 1007) {
                 System.out.println(sqlException.getMessage());

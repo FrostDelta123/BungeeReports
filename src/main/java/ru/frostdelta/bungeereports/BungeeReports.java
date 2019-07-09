@@ -113,18 +113,15 @@ public class BungeeReports extends JavaPlugin {
             this.getServer().getMessenger().registerIncomingPluginChannel(this, "BungeeCord", new PluginMessage());
 
         }else getLogger().info("BungeeCord disabled");
-
         if(isModEnabled()){
             this.registerModChannels();
         }else getLogger().info("Mod disabled");
-
         if(isVaultEnabled()){
             VaultLoader.setupEconomy();
         }else {
             getLogger().info("Vault disabled!");
             getLogger().info("Выдача наград невозможна!");
         }
-
         getServer().getPluginManager().registerEvents(new EventHandler(this), this);
         getServer().getPluginManager().registerEvents(new ChatLogger(), this);
         try {
