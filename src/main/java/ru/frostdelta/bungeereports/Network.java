@@ -48,7 +48,7 @@ public class Network {
                                 + " ON DUPLICATE KEY "
                                 + "UPDATE `screenshots` = IF(player=?,CONCAT(screenshots,?),screenshots);"));
         preparedStatements.put("getScreenshots", connection.prepareStatement(
-                "SELECT `screenshots` FROM `screen` WHERE `player`=?;"));
+                "SELECT * FROM `screen` WHERE `player`=?;"));
         preparedStatements.put("checkBan", connection.prepareStatement(
                 "SELECT `type` FROM `banlist` WHERE player=?"));
         preparedStatements.put("autoUnban", connection.prepareStatement(
@@ -118,9 +118,10 @@ public class Network {
             getScreenshots.setString(1, player);
             try (ResultSet rs = getScreenshots.executeQuery()) {
                 if (rs.next()) {
-                    String screenid = rs.getString("screenshots");
-                    statement.executeUpdate(sql);
-                    return screenid;
+                    //String screenid = rs.getString("screenshots");
+                    //statement.executeUpdate(sql);
+                    //Bukkit.broadcastMessage(screenid);
+                    return rs.getString("screenshots");
                 }
             }
         } catch (SQLException ex) {
