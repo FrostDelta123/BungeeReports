@@ -35,9 +35,9 @@ public class GetReportsUI implements InventoryHolder {
                 ItemMeta itemMeta = skull.getItemMeta();
                 itemMeta.setDisplayName(playerList.get(x));
                 ArrayList<String> lore = new ArrayList<String>();
-                lore.add(Messages.REPORT_SENDER + senderList.get(x));
-                lore.add(Messages.REPORT_REASON + reasonList.get(x));
-                lore.add(Messages.REPORT_COMMENT + comment.get(x));
+                lore.add(Messages.REPORT_SENDER + " " + senderList.get(x));
+                lore.add(Messages.REPORT_REASON + " " + reasonList.get(x));
+                lore.add(Messages.REPORT_COMMENT + " " + comment.get(x));
                 itemMeta.setLore(lore);
                 skull.setItemMeta(itemMeta);
                 sender.put(x,senderList.get(x));

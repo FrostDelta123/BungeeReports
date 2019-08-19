@@ -86,6 +86,9 @@ public class EventHandler implements Listener {
             e.setCancelled(true);
             e.getPlayer().sendMessage(Messages.MUTE_MESSAGE);
         }
+        if(report == null){
+            return;
+        }
        if(report.getSender().equalsIgnoreCase(player)){
            String reason = report.getReason();
            network.addReport(player, report.getPlayer(),reason, e.getMessage());

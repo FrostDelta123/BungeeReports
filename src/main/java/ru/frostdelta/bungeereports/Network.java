@@ -254,7 +254,7 @@ public class Network {
                 }
                 File log = new File(plugin.getDataFolder().getAbsolutePath()+"/logs/" + player + "/" + sender +".txt");
                 PrintWriter pw = new PrintWriter(log);
-                pw.println("&4"+player + "'s messages:");
+                pw.println("&4" + player + "'s messages:");
                 if(!ChatLogger.getChatLog().get(Bukkit.getOfflinePlayer(player)).isEmpty()){
                     pw.println("Empty log!");
                     pw.close();
