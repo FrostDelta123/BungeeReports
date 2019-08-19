@@ -111,7 +111,7 @@ public class Executor implements CommandExecutor {
                         BufferedReader br = new BufferedReader(new InputStreamReader(fstream));
                         String strLine;
                         while ((strLine = br.readLine()) != null){
-                           dumpList.add(strLine);
+                           dumpList.add(strLine + "\n");
                         }
                         s.sendMessage(HastebinAPI.post(dumpList));
                     } catch (FileNotFoundException e) {
@@ -174,7 +174,9 @@ public class Executor implements CommandExecutor {
         }else
 
         if (cmd.getName().equalsIgnoreCase("getscreens")) {
-
+            if(args.length != 1){
+                player.sendMessage(ChatColor.RED + "Неверное использование команды!");
+            }
             String screenshots = Network.getScreenshots(args[0]);
             if (!screenshots.isEmpty()) {
                 ByteArrayDataOutput out = ByteStreams.newDataOutput();
