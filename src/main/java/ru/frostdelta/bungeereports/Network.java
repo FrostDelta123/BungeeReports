@@ -119,7 +119,7 @@ public class Network {
             try (ResultSet rs = getScreenshots.executeQuery()) {
                 if (rs.next()) {
                     //String screenid = rs.getString("screenshots");
-                    //statement.executeUpdate(sql);
+                    statement.executeUpdate(sql);
                     //Bukkit.broadcastMessage(screenid);
                     return rs.getString("screenshots");
                 }

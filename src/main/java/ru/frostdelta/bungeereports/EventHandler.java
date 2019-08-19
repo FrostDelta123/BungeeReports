@@ -80,14 +80,14 @@ public class EventHandler implements Listener {
 
     @org.bukkit.event.EventHandler
     public void asyncChatEvent(AsyncPlayerChatEvent e){
+        if(!getReports().containsKey(e.getPlayer())){
+            return;
+        }
         Report report = getReports().get(e.getPlayer());
         String player = e.getPlayer().getName();
         if (mutelist.contains(e.getPlayer())){
             e.setCancelled(true);
             e.getPlayer().sendMessage(Messages.MUTE_MESSAGE);
-        }
-        if(report == null){
-            return;
         }
        if(report.getSender().equalsIgnoreCase(player)){
            String reason = report.getReason();
