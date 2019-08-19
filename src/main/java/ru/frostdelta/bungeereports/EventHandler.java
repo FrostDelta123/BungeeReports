@@ -59,6 +59,9 @@ public class EventHandler implements Listener {
     //Сделать нормальные enum с типами банов, пока хуйня
     @org.bukkit.event.EventHandler
     public void checkBan(PlayerJoinEvent e){
+        if(!BungeeReports.inst().isBanSystemUsed()){
+            return;
+        }
         String type = network.checkBan(e.getPlayer().getName());
         if(type.equalsIgnoreCase("ban") || type.equalsIgnoreCase("tempban")){
             e.getPlayer().kickPlayer(Messages.BAN_MESSAGE);
