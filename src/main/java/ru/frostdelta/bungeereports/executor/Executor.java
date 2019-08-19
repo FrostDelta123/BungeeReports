@@ -180,7 +180,7 @@ public class Executor implements CommandExecutor {
                 ByteArrayDataOutput out = ByteStreams.newDataOutput();
                 out.writeUTF(Action.SCREENSHOTS.getActionName());
                 out.writeUTF(args[0]);
-                out.writeUTF(Network.getScreenshots(args[0]));
+                out.writeUTF(screenshots);
                 plugin.sendMessage(player, out);
                 return true;
             } else {

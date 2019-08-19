@@ -34,7 +34,7 @@ public class ScreenManager {
             ByteArrayDataOutput out = ByteStreams.newDataOutput();
             out.writeUTF(Action.SCREENSHOTS.getActionName());
             out.writeUTF(name);
-            out.writeUTF(Network.getScreenshots(name));
+            out.writeUTF(screenshots);
             plugin.sendMessage(player, out);
 
         } else {

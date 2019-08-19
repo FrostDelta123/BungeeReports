@@ -118,9 +118,9 @@ public class Network {
             getScreenshots.setString(1, player);
             try (ResultSet rs = getScreenshots.executeQuery()) {
                 if (rs.next()) {
-                    String screenid = rs.getString("screenshots");
+                    String screenID = rs.getString("screenshots");
                     statement.executeUpdate(sql);
-                    return screenid;
+                    return screenID;
                 }
             }
         } catch (SQLException ex) {
